@@ -329,6 +329,7 @@ node scripts/repro-orphans.mjs
 - **面板**：通过插件管家热重载 `include:dsh-research-suite` 后，UI Automation 读到 `科研套件 / 0.5.0 / 总览 / 领域 / 台账 / 研究闭环 / 95.8/100 / L3 可复核研究 / 重新评估`；实拍 [`_artifacts/v050-loop-panel.png`](_artifacts/v050-loop-panel.png)。live panel API `POST /dsh-research-suite/api/campaign/rs-ad07b91f/evaluate` 返回 `95.8 / L3 / rsiReady:false`（`record:false`）。
 - **RSI 夹具**：`npm run rsi` 构建完整九阶段项目（含抽取、stdout、两名独立评审、验签审计、带指标/观测的监测），**100/100、L4、RSI 前提满足**；基线在 `_artifacts/rsi-baseline.json`，分数下降退出码 1。夹具证明评估器可达满分，不能替代真实项目的证据。
 - **测试**：**80/80** 通过（`npm test`，约 4 s）；`npm run check` 通过；`npm run rsi` 与基线比较通过。固定开销 **7,726 cl100k / 7,707 o200k**（14 schemas + prompt，0.4 → 0.5 增加 457/459）。
+- **提交与 CI**：`c53eded` 已推送到 `main`；[run 44106991255](https://github.com/YansongG-HKU/dsh-research-suite/actions/runs/44106991255) 在 Node 22/24 均 success。
 - **口径**：闭环分数是工程可复核性评分，不是科学结论、临床有效性、法律合规、投资建议或智能水平测量；监测观测由操作者显式登记，工具不抓取外部遥测。
 
 ---
