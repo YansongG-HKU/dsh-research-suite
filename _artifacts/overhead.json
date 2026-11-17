@@ -1,9 +1,9 @@
 {
-  "promptText": "Research Suite (科研套件) is the project container for multi-step research here. Use it whenever the task will outlive one answer: literature reviews, replications, data analyses, evaluations, due diligence, or anything the user calls a 研究/项目/综述/复现/尽调/评测. A campaign has nine gates: scoping → survey → hypothesis → design → execute → analyze → write → review → release. Start with rsx_template action:\"apply\" (11 task presets + replication/ablation/adversarial-review protocols) or rsx_campaign action:\"create\". Record the question, scope and success criteria, then run rsx_gate action:\"check\" before advancing. For sector work select a domain profile with rsx_domain action:\"set\": finance, ai, medicine or industrial. A profile turns protocol fields into blocking checks at their stages (point-in-time/OOS dates, TRIPOD+AI, PRISMA counts, MSA/DOE, review roles, monitoring); it is an alignment checklist, not a certification claim. Use rsx_domain action:\"check\" to see the exact missing fields for the current stage. Log as you work, not at the end: rsx_source for what you read (action:\"import\" ingests Zotero/Scholar BibTeX), rsx_claim for what you assert, rsx_evidence to link claim↔source/run, rsx_run for a real command + seed + metrics, rsx_number for every number with trace run:R-xxxxxxxxxx#metric or source:S-0001, rsx_extract to build the source × dimension matrix, rsx_artifact for datasets/code/environments, rsx_figure for figure+code+data provenance. Numbers in the manuscript are written as {{N-0001}} and citations as [[src:S-0001]]; the write gate rejects orphan digits and unknown refs. Before the review gate, run rsx_review action:\"audit\": it checks citations resolve, quotes occur in the captured text, numbers match the run that produced them, figures carry code+data, the pre-registration still describes the analysis, and domain fields/roles are present. Findings are blocking/major/minor/info; only blocking stops the gate, and any later edit makes the audit stale. For a domain campaign add one rsx_gate action:\"review\" per domain role, then audit after those reviews. Never invent a ledger entry: run the command first, then record what actually happened. If a gate blocks, read detail.blocking and fix the checks instead of working around them. Before delivery call rsx_write action:\"declaration\" (AI + watermark + human reviewer), record rsx_campaign action:\"monitor\" (plan, owner, cadence), then action:\"export\", and give the user the REPORT.md path plus DOMAIN.md / references.bib / AUDIT.md / provenance.json. The sidebar panel shows the same state; the user can create campaigns, inspect the ledger, browse templates, edit domain/monitoring state and read the report there. Continue an existing campaign by reading rsx_campaign action:\"status\" rather than starting over.",
+  "promptText": "Research Suite (科研套件) is the project container for multi-step research here. Use it whenever the task will outlive one answer: literature reviews, replications, data analyses, evaluations, due diligence, or anything the user calls a 研究/项目/综述/复现/尽调/评测. A campaign has nine gates: scoping → survey → hypothesis → design → execute → analyze → write → review → release. Start with rsx_template action:\"apply\" (11 task presets + replication/ablation/adversarial-review protocols) or rsx_campaign action:\"create\". Record the question, scope and success criteria, then run rsx_gate action:\"check\" before advancing. For sector work select a domain profile with rsx_domain action:\"set\": finance, ai, medicine or industrial. A profile turns protocol fields into blocking checks at their stages (point-in-time/OOS dates, TRIPOD+AI, PRISMA counts, MSA/DOE, review roles, monitoring); conditional fields switch off when the design/risk tier makes them inapplicable. It is an alignment checklist, not a certification claim. Use rsx_domain action:\"check\" to see the exact missing fields for the current stage. Log as you work, not at the end: rsx_source for what you read (action:\"import\" ingests Zotero/Scholar BibTeX), rsx_claim for what you assert, rsx_evidence to link claim↔source/run, rsx_run for a real command + seed + metrics, rsx_number for every number with trace run:R-xxxxxxxxxx#metric or source:S-0001, rsx_extract to build the source × dimension matrix, rsx_artifact for datasets/code/environments, rsx_figure for figure+code+data provenance. Numbers in the manuscript are written as {{N-0001}} and citations as [[src:S-0001]]; the write gate rejects orphan digits and unknown refs. Before the review gate, run rsx_review action:\"audit\": it checks citations resolve, quotes occur in the captured text, numbers match the run that produced them, figures carry code+data, the pre-registration still describes the analysis, and domain fields/roles are present. Findings are blocking/major/minor/info; only blocking stops the gate, and any later edit makes the audit stale. For a domain campaign add one rsx_gate action:\"review\" per domain role (affiliation, conflict, independent, qualification), then audit after those reviews. Never invent a ledger entry: run the command first, then record what actually happened. If a gate blocks, read detail.blocking and fix the checks instead of working around them. Before delivery call rsx_write action:\"declaration\" (AI + watermark + human reviewer), record rsx_campaign action:\"monitor\" (plan, owner, cadence, metrics, observations), run rsx_campaign action:\"evaluate\" for the 12-dimension loop score, then action:\"export\", and give the user the REPORT.md path plus LOOP.md / DOMAIN.md / references.bib / AUDIT.md / provenance.json. The sidebar panel shows the same state; the user can create campaigns, inspect the ledger, browse templates, edit domain/monitoring state, run the loop evaluation and read the report there. Continue an existing campaign by reading rsx_campaign action:\"status\" rather than starting over.",
   "schemas": [
     {
       "name": "rsx_campaign",
-      "description": "Research campaign control room: create/list/get/update a campaign, record the world model, the disconfirming search, the pre-registration and budget spend, and inspect integrity. A campaign moves through scoping → survey → hypothesis → design → execute → analyze → write → review → release. Use this first, then the entity tools (source/claim/evidence/run/number/extract/artifact/figure/review), then rsx_gate to advance. action:\"status\" returns the current stage, the gate state and the hash-chain integrity; action:\"world\" records entities/facts/questions/failures/coverage/novelty/safety used by the gates; action:\"monitor\" records the post-release monitoring plan that closes the loop.",
+      "description": "Research campaign control room: create/list/get/update a campaign, record the world model, the disconfirming search, the pre-registration and budget spend, and inspect integrity. A campaign moves through scoping → survey → hypothesis → design → execute → analyze → write → review → release. Use this first, then the entity tools (source/claim/evidence/run/number/extract/artifact/figure/review), then rsx_gate to advance. action:\"status\" returns the current stage, the gate state and the hash-chain integrity; action:\"world\" records entities/facts/questions/failures/coverage/novelty/safety used by the gates; action:\"monitor\" records the post-release monitoring plan that closes the loop; action:\"evaluate\" scores 12 research-loop dimensions, persists a baseline and returns the gaps.",
       "parameters": {
         "type": "object",
         "properties": {
@@ -20,7 +20,8 @@
               "budget",
               "archive",
               "status",
-              "monitor"
+              "monitor",
+              "evaluate"
             ],
             "description": "Operation (default: get)."
           },
@@ -71,7 +72,7 @@
           "monitoring": {
             "type": "object",
             "additionalProperties": true,
-            "description": "For monitor: {plan, owner, cadence, signals:[...], status:\"planned\"|\"active\"|\"paused\"|\"closed\", reviewedAt, notes}."
+            "description": "For monitor: {plan, owner, cadence, signals:[...], status:\"planned\"|\"active\"|\"paused\"|\"closed\"|\"alert\", reviewedAt, notes, metrics:[{name,target,tolerance,direction,min,max,unit}], observations:[{metric,value,at,note}]}."
           },
           "plan": {
             "type": "string",
@@ -92,6 +93,30 @@
             },
             "description": "Monitoring signals / metrics (monitor action)."
           },
+          "metrics": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": true
+            },
+            "description": "Monitoring metric definitions: {name,target,tolerance,direction,min,max,unit} (monitor action)."
+          },
+          "observations": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": true
+            },
+            "description": "Monitoring observations: {metric,value,at,note}; values are evaluated against the registered metric (monitor action)."
+          },
+          "reopen": {
+            "type": "boolean",
+            "description": "For monitor: move a released campaign back to analyze when an alert requires rework."
+          },
+          "reason": {
+            "type": "string",
+            "description": "Why the loop is reopened (monitor action)."
+          },
           "status": {
             "type": "string",
             "enum": [
@@ -99,7 +124,8 @@
               "planned",
               "active",
               "paused",
-              "closed"
+              "closed",
+              "alert"
             ],
             "description": "Monitoring status (monitor action)."
           },
@@ -817,7 +843,7 @@
     },
     {
       "name": "rsx_domain",
-      "description": "Domain research profiles: finance, AI/ML, medicine/clinical and industrial/engineering. Each profile maps required protocol fields to pipeline stages and adds blocking domain checks (PRISMA ordering, OOS dates, review roles, monitoring, etc.). action:\"list\" returns the four profiles; action:\"get\" returns the selected profile, values, completeness and current gate; action:\"set\" selects a profile and optionally merges values; action:\"check\" evaluates one stage. Selecting a domain is not a compliance claim: the profile is a structured alignment checklist. Use rsx_campaign action:\"monitor\" to close the post-release loop.",
+      "description": "Domain research profiles: finance, AI/ML, medicine/clinical and industrial/engineering. Each profile maps required protocol fields to pipeline stages and adds blocking domain checks (PRISMA ordering, OOS dates, review roles, monitoring, etc.); conditional fields switch off when the study design/risk tier makes them inapplicable. action:\"list\" returns the four profiles; action:\"get\" returns the selected profile, values, completeness and current gate; action:\"set\" selects a profile and optionally merges values; action:\"check\" evaluates one stage. Selecting a domain is not a compliance claim: the profile is a structured alignment checklist. Use rsx_campaign action:\"monitor\" for metrics/observations and action:\"evaluate\" for the 12-dimension loop score.",
       "parameters": {
         "type": "object",
         "properties": {
@@ -865,7 +891,7 @@
     },
     {
       "name": "rsx_gate",
-      "description": "The nine gates. action:\"check\" runs the gate for a stage (default: current) and records the result; action:\"advance\" advances only when the current stage passes, otherwise returns the blocking checks; action:\"back\" returns to an earlier stage with a reason. action:\"review\" records a structured review (reviewer, adversarial, verdict accept/minor/major/reject, issues with severity blocking/major/minor); the review gate needs two reviews and at least one adversarial. Review roles: a domain campaign needs one review per profile role (quant/risk, ml/safety, clinical/statistics, engineering/quality); pass role with the review. Run check before advance so you can see the exact blocking codes. Gate results are append-only history. The review gate also requires a fresh, passing automated audit whose HMAC signature verifies (`rsx_review action:\"audit\"`); release requires `stateOk !== false`.",
+      "description": "The nine gates. action:\"check\" runs the gate for a stage (default: current) and records the result; action:\"advance\" advances only when the current stage passes, otherwise returns the blocking checks; action:\"back\" returns to an earlier stage with a reason. action:\"review\" records a structured review (reviewer, affiliation, conflict, independent, qualification, adversarial, verdict accept/minor/major/reject, issues with severity blocking/major/minor); the review gate needs two reviews and at least one adversarial. Review roles: a domain campaign needs one review per profile role (quant/risk, ml/safety, clinical/statistics, engineering/quality); pass role with the review. 0.5 reviews also declare affiliation, conflict and independent so role coverage is not a string match. Run check before advance so you can see the exact blocking codes. Gate results are append-only history. The review gate also requires a fresh, passing automated audit whose HMAC signature verifies (`rsx_review action:\"audit\"`); release requires `stateOk !== false`.",
       "parameters": {
         "type": "object",
         "properties": {
@@ -907,6 +933,22 @@
             "type": "string",
             "description": "Reviewer name / role (review action)."
           },
+          "affiliation": {
+            "type": "string",
+            "description": "Reviewer affiliation or independent capacity (review action). Required for new domain role reviews."
+          },
+          "conflict": {
+            "type": "string",
+            "description": "Conflict-of-interest declaration, e.g. \"none\" or a concrete competing interest (review action). Required for new domain role reviews."
+          },
+          "independent": {
+            "type": "boolean",
+            "description": "False when the reviewer is not independent of the work; role coverage requires true (default true)."
+          },
+          "qualification": {
+            "type": "string",
+            "description": "Relevant qualification / expertise (optional review action)."
+          },
           "role": {
             "type": "string",
             "description": "Domain review role id (quant/risk, ml/safety, clinical/statistics, engineering/quality). Each domain role needs its own review."
@@ -943,7 +985,7 @@
     },
     {
       "name": "rsx_write",
-      "description": "Writing and delivery. action:\"manuscript\" stores the draft (text or path) and runs the write gate; \"declaration\" records AI assistance + watermark + model + human reviewer; \"render\" writes REPORT.md, campaign.json, ledger.jsonl, declaration.md, references.bib, MATRIX.md, matrix.csv, AUDIT.md, DOMAIN.md (when a domain profile is set), provenance.json and ro-crate-metadata.json into the campaign exports folder. action:\"export\" additionally copies artifacts and builds BUNDLE.zip. action:\"report\" returns the Markdown without writing. Manuscript rules: numbers as {{N-0001}}, sources as [[src:S-0001]]; the write gate rejects orphan digits and unknown refs.",
+      "description": "Writing and delivery. action:\"manuscript\" stores the draft (text or path) and runs the write gate; \"declaration\" records AI assistance + watermark + model + human reviewer; \"render\" writes REPORT.md, campaign.json, ledger.jsonl, declaration.md, references.bib, MATRIX.md, matrix.csv, AUDIT.md, DOMAIN.md (when a domain profile is set), LOOP.md (when evaluated), provenance.json and ro-crate-metadata.json into the campaign exports folder. action:\"export\" additionally copies artifacts and builds BUNDLE.zip. action:\"report\" returns the Markdown without writing. Manuscript rules: numbers as {{N-0001}}, sources as [[src:S-0001]]; the write gate rejects orphan digits and unknown refs.",
       "parameters": {
         "type": "object",
         "properties": {

@@ -7,10 +7,12 @@ import {
   DOMAIN_IDS,
   GENERAL_DOMAIN,
   domainChecks,
+  domainCompleteness,
   domainValueDefaults,
   fieldSatisfied,
   getDomain,
   listDomains,
+  renderDomainMarkdown,
   validateDomainValues,
 } from '../../lib/domains.js'
 import { checkGate } from '../../lib/gates.js'
@@ -157,7 +159,7 @@ test('medicine enforces PRISMA count monotonicity', () => {
     service.domain(id, {
       action: 'set',
       domain: 'medicine',
-      values: { prisma_identified: 5, prisma_included: 9 },
+      values: { study_design: 'systematic-review', prisma_identified: 5, prisma_included: 9 },
     })
     const gate = checkGate(store.get(id), 'survey')
     assert.ok(gate.blocking.includes('domain_medicine_prisma_included_lte_identified'))
@@ -170,11 +172,11 @@ test('domain review roles and monitoring are separate blocking checks', () => {
   const { service, store, cleanup } = makeService()
   try {
     const id = domainCampaign(service, 'ai')
-    service.gate(id, { action: 'review', reviewer: 'ML reviewer', role: 'ml', verdict: 'minor', notes: 'ml only' })
+    service.gate(id, { action: 'review', reviewer: 'ML reviewer', affiliation: '独立 ML 评审组', conflict: 'none', role: 'ml', verdict: 'minor', notes: 'ml only' })
     let review = checkGate(store.get(id), 'review')
     assert.ok(review.blocking.includes('domain_ai_review_safety'))
     assert.equal(review.blocking.includes('domain_ai_review_ml'), false)
-    service.gate(id, { action: 'review', reviewer: 'Safety reviewer', role: 'safety', adversarial: true, verdict: 'accept', notes: 'safety' })
+    service.gate(id, { action: 'review', reviewer: 'Safety reviewer', affiliation: '独立安全评审组', conflict: 'none', role: 'safety', adversarial: true, verdict: 'accept', notes: 'safety' })
     review = checkGate(store.get(id), 'review')
     assert.equal(review.blocking.includes('domain_ai_review_safety'), false)
 
@@ -280,6 +282,8 @@ test('full AI campaign runs all nine gates with domain fields, roles and monitor
     service.gate(id, {
       action: 'review',
       reviewer: 'ML reviewer',
+      affiliation: '独立 ML 评审组',
+      conflict: 'none',
       role: 'ml',
       adversarial: false,
       verdict: 'minor',
@@ -289,6 +293,8 @@ test('full AI campaign runs all nine gates with domain fields, roles and monitor
     service.gate(id, {
       action: 'review',
       reviewer: 'Safety reviewer',
+      affiliation: '独立安全评审组',
+      conflict: 'none',
       role: 'safety',
       adversarial: true,
       verdict: 'accept',
@@ -326,6 +332,76 @@ test('full AI campaign runs all nine gates with domain fields, roles and monitor
     const exported = service.write(id, { action: 'export' })
     assert.ok(existsSync(exported.paths.domain))
     assert.match(service.report(id).markdown, /## 1\.1 领域研究档案/u)
+  } finally {
+    cleanup()
+  }
+})
+
+test('conditional fields disappear when the design makes them inapplicable', () => {
+  const { service, store, cleanup } = makeService()
+  try {
+    const id = domainCampaign(service, 'medicine')
+    service.domain(id, { action: 'set', domain: 'medicine', values: { study_design: 'rct' } })
+    const rct = domainChecks(store.get(id), 'survey')
+    assert.equal(rct.some((item) => item.code.includes('prisma_')), false)
+    const rctCompleteness = domainCompleteness(store.get(id))
+    assert.ok(rctCompleteness.notApplicable >= 5)
+    const rctMarkdown = renderDomainMarkdown(store.get(id))
+    assert.match(rctMarkdown, /不适用/u)
+    assert.match(rctMarkdown, /参考：仅系统综述/u)
+
+    service.domain(id, { action: 'set', domain: 'medicine', values: { study_design: 'systematic-review' } })
+    const sr = domainChecks(store.get(id), 'survey')
+    assert.equal(sr.some((item) => item.code === 'domain_medicine_prisma_identified'), true)
+    assert.ok(domainCompleteness(store.get(id)).required > rctCompleteness.required)
+
+    const industrial = domainCampaign(service, 'industrial')
+    service.domain(industrial, { action: 'set', domain: 'industrial', values: { design_type: 'acceptance' } })
+    const acceptance = domainChecks(store.get(industrial), 'design')
+    assert.equal(acceptance.some((item) => item.code === 'domain_industrial_factors'), false)
+    service.domain(industrial, { action: 'set', domain: 'industrial', values: { design_type: 'doe' } })
+    const doe = domainChecks(store.get(industrial), 'design')
+    assert.equal(doe.some((item) => item.code === 'domain_industrial_factors'), true)
+  } finally {
+    cleanup()
+  }
+})
+
+test('new review records need identity, conflict and independence; duplicates do not cover roles', () => {
+  const { service, store, cleanup } = makeService()
+  try {
+    const id = domainCampaign(service, 'ai')
+    service.gate(id, { action: 'review', reviewer: 'Reviewer A', role: 'ml', verdict: 'minor', notes: 'no envelope' })
+    let review = checkGate(store.get(id), 'review')
+    assert.ok(review.blocking.includes('domain_ai_review_ml'))
+
+    service.gate(id, {
+      action: 'review',
+      reviewer: 'Reviewer B',
+      affiliation: 'Independent Lab',
+      conflict: 'none',
+      independent: true,
+      role: 'ml',
+      verdict: 'minor',
+      notes: 'with envelope',
+    })
+    review = checkGate(store.get(id), 'review')
+    assert.equal(review.blocking.includes('domain_ai_review_ml'), false)
+    assert.ok(review.blocking.includes('domain_ai_review_safety'))
+
+    service.gate(id, {
+      action: 'review',
+      reviewer: 'Reviewer B',
+      affiliation: 'Independent Lab',
+      conflict: 'none',
+      independent: true,
+      role: 'safety',
+      adversarial: true,
+      verdict: 'accept',
+      notes: 'same person, second role',
+    })
+    review = checkGate(store.get(id), 'review')
+    assert.ok(review.blocking.includes('domain_ai_review_independence'))
   } finally {
     cleanup()
   }

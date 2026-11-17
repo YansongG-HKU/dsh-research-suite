@@ -160,6 +160,9 @@ export function passReview(service, id) {
   service.gate(id, {
     action: 'review',
     reviewer: '方法与统计评审',
+    affiliation: '独立统计评审组',
+    conflict: 'none',
+    independent: true,
     adversarial: false,
     verdict: 'minor',
     issues: [{ severity: 'minor', title: '补充批次效应说明', resolved: true }],
@@ -168,6 +171,9 @@ export function passReview(service, id) {
   service.gate(id, {
     action: 'review',
     reviewer: '红队评审',
+    affiliation: '独立红队',
+    conflict: 'none',
+    independent: true,
     adversarial: true,
     verdict: 'accept',
     issues: [{ severity: 'major', title: '温度上限外推需谨慎', resolved: true }],

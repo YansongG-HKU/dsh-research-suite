@@ -187,6 +187,18 @@
           .finally(() => setBusy(false))
       }
 
+      const evaluateCampaign = (id) => {
+        setBusy(true)
+        apiPost("/api/campaign/" + id + "/evaluate", {})
+          .then((payload) => {
+            const evaluation = payload && payload.evaluation ? payload.evaluation : {}
+            notify((lang === "en" ? "Loop score " : "闭环成熟度 ") + (evaluation.score ?? "—") + "/100")
+            return loadDetail(id)
+          })
+          .catch((err) => notify(err.message || String(err), "bad"))
+          .finally(() => setBusy(false))
+      }
+
       const exportCampaign = (id) => {
         setBusy(true)
         apiPost("/api/export/" + id, {})
@@ -293,6 +305,7 @@
                   onNew: (kind) => (kind === "template" ? setView("templates") : setModal({ type: "new" })),
                   onPrompt: openPrompt,
                   onExport: exportCampaign,
+                  onEvaluate: evaluateCampaign,
                   onArchive: archiveCampaign,
                 })
               : null,

@@ -11,10 +11,14 @@
 - 事件链 SHA-256 逐条哈希，工件按内容寻址；`state.json` 带整体 digest 并锚定事件尾，跨进程写锁 + 读时哈希校验
 - 审查记录用本地 HMAC-SHA256 签名；review 闸门验签，篡改 findings/verdict/对象哈希会被挡住
 - 预注册、负对照、环境锁定、AI 声明、人工复核与发布后监测都是闸门的一部分
+- 条件适用性：字段/标准按研究设计与风险等级自动失效，不再用一条 `N/A` 掩盖所有设计差异
+- 监测判定：指标 + 观测 + 目标/容差 + 告警 + 回退，而不只是登记一个监测计划
+- 独立评审：机构、利益冲突、独立性声明；同一人不能同时覆盖两个领域角色
+- 12 维研究闭环评分（0–100）、版本化基线、`npm run rsi` 回归门槛，形成可比较的自我改进循环
 - 侧边栏面板：总览、领域、台账（断言/来源/数字/运行/证据/图/工件）、审查、模板、报告
 - 集百家之长：Claude Science 式 reviewer、Elicit 式抽取矩阵、Zotero/BibTeX、RO-Crate 1.1、W3C PROV-JSON、OSF 预注册、DVC/MLflow 溯源、PRISMA/CONSORT/TRIPOD+AI、NIST AI RMF、GIPS/Deflated Sharpe、ISO/IEC 17025/IATF 16949
 
-当前版本 **0.4.0**，72 个测试全绿；0.3.0 已在真实会话中跑通，0.4.0 的领域层已在真实桌面会话中跑完九阶段并完成导出与面板验收（见[验收](#验收)）。
+当前版本 **0.5.0**，80 个测试全绿，RSI 确定性夹具 100/100；0.4.0 的领域层已在真实桌面会话中跑完九阶段，0.5.0 在其上完成两次真实闭环评估（93.2 → 95.8，见[验收](#验收)）。
 
 ---
 
@@ -42,7 +46,7 @@ pnpm add "link:F:\dsh插件创造\workspace\dsh-research-suite"
 }
 ```
 
-重启 DSH（或重新加载该 bundle）后，工具栏出现 **科研套件**，同时注册十四个 `rsx_*` 工具。若通过插件市场发布，名称同为 `dsh-research-suite`，版本 `0.4.0`。
+重启 DSH（或重新加载该 bundle）后，工具栏出现 **科研套件**，同时注册十四个 `rsx_*` 工具。若通过插件市场发布，名称同为 `dsh-research-suite`，版本 `0.5.0`。
 
 配置写在 profile 的 `cordis.patch.yml`，也可以完全不管，走面板设置：
 
@@ -78,7 +82,7 @@ pnpm add "link:F:\dsh插件创造\workspace\dsh-research-suite"
 
 ---
 
-## 领域档案（0.4.0）
+## 领域档案（0.5.0）
 
 通用九闸门检查“有没有证据、有没有预注册、数字能否追溯”，但检查不出“金融回测有没有样本外”“医学综述有没有 PRISMA 计数”“工业测量系统有没有 GR&R”“AI 有没有污染检查”。领域档案把这些协议字段映射到阶段，做成**可执行的对齐清单**：
 
@@ -102,11 +106,41 @@ rsx_gate action:"check"
 
 - **字段不是提示词**：`required` 字段缺失会在对应阶段阻断 `advance`；`N/A — 具体原因`（原因至少 6 字）可豁免真正不适用的项，理由会保留在 `DOMAIN.md` 与审计里。
 - **两条跨字段规则**：金融 `in_sample_end < oos_start`；医学 `prisma_included <= prisma_identified`。规则只在两个值都有效时求值，N/A 不会误伤。
-- **角色分离**：review 阶段要求每个档案的两个角色各至少一条 `rsx_gate action:"review" role:"..."` 记录；角色化评审要在自动审查**之前**完成，否则审查会因缺角色而阻断。
-- **闭环**：release 阶段要求监测计划、负责人、频率与信号；发布后用 `rsx_campaign action:"monitor"` 更新状态/计划/信号。监测触发时可以 `rsx_gate action:"back"` 回到 analyze/design，修正后重新审查与发布，闸门历史保留整条回退路径。
+- **条件适用性（0.5）**：字段/标准可带 `when`。医学综述才要求 PRISMA 字段，RCT 才要求随机化/盲法；工业 DOE 才要求因子/水平/随机化。条件不满足时不阻断、不显示为待补；`DOMAIN.md` 标明标准是“适用”还是“参考”。
+- **角色分离与独立性（0.5）**：review 阶段要求每个档案的两个角色各至少一条 `rsx_gate action:"review" role:"..."` 记录；新评审要带 `affiliation`、`conflict`、`independent`，同一评审人不能覆盖两个角色。旧版评审保持兼容。
+- **监测判定（0.5）**：release 要求计划、负责人、频率与无告警；发布后用 `rsx_campaign action:"monitor"` 登记 `metrics` 与 `observations`，按 target/tolerance/min/max 判定，越界进入 `alert`，可 `reopen:true` 回到 analyze。信号没有指标、指标没有观测会作为覆盖缺口进入闭环评分。
 - **口径**：它是“标准/清单对齐”的记录结构，不声称认证、法律合规或临床合规；标准文本与适用性由领域评审人确认。
 
-新增一个领域只需在 `lib/domains.js` 加一个 profile（字段/阶段/规则/角色/监测），再加模板与测试；`domainChecks`、审计、面板、导出不需要改分支。详见 [领域研究闭环-0.4.0](docs/领域研究闭环-0.4.0.md)。
+新增一个领域只需在 `lib/domains.js` 加一个 profile（字段/阶段/条件/规则/角色/监测），再加模板与测试；`domainChecks`、审计、面板、导出不需要改分支。详见 [研究闭环-0.5.0](docs/研究闭环-0.5.0.md)。
+
+---
+
+## 研究闭环与 RSI（0.5.0）
+
+`rsx_campaign action:"evaluate"` 对当前项目计算 **12 维工程成熟度**；`rsx_write action:"export"` 写出 `LOOP.md` 并在 `REPORT.md` 第 19 节渲染同一结果。
+
+| 维度 | 权重 | 维度 | 权重 |
+| --- | ---: | --- | ---: |
+| 问题与边界 | 6 | 可复现执行 | 13 |
+| 证据测绘 | 10 | 数字与引文追溯 | 10 |
+| 可证伪假设 | 10 | 自动化审计 | 10 |
+| 预注册设计 | 7 | 独立评审 | 9 |
+| 领域适用性 | 7 | 发布后监测 | 8 |
+| 发布声明 | 6 | 台账完整性 | 4 |
+
+- 等级：≥90 且监测满分/评审 ≥80% 为 **L4 可审计闭环**；≥78 **L3 可复核研究**；≥55 **L2 证据化草稿**；>0 **L1 立项**。
+- 首次评估写入 `loopBaseline`；后续评估带 `previousScore`/`delta`，`loopEvaluations` 保留最近 50 次。评分只检查工程可复核性，不判断结论正确性。
+- 自我改进前提：新鲜验签审计、两名独立评审人、监测有指标/观测/无告警/无覆盖缺口、分数 ≥85。它是“可以开始比较候选改动”的门槛，不是自治声明。
+- `npm run rsi` 用确定性夹具走完整九阶段 + 抽取 + stdout + 独立评审 + 审计 + 监测，输出 `_artifacts/rsi-report.md` 并与 `_artifacts/rsi-baseline.json` 比较；分数下降退出码 1。当前基线 **100/100，L4，RSI 前提满足**。
+
+```powershell
+rsx_campaign action:"evaluate"
+rsx_write action:"export"
+npm run rsi
+npm run rsi -- --update-baseline   # 需要人工确认
+```
+
+详见 [研究闭环-0.5.0](docs/研究闭环-0.5.0.md)。
 
 ---
 
@@ -114,7 +148,7 @@ rsx_gate action:"check"
 
 | 工具 | 作用 |
 | --- | --- |
-| `rsx_campaign` | 建项目、查状态、写世界模型（实体/事实/失败/覆盖/查新/安全）、记录证伪检索、预注册、预算、发布后监测、归档；`update` 可设 `numbersAllowlist` 放行方法常量 |
+| `rsx_campaign` | 建项目、查状态、写世界模型（实体/事实/失败/覆盖/查新/安全）、记录证伪检索、预注册、预算、发布后监测（指标/观测/告警/回退）、12 维闭环评估、归档；`update` 可设 `numbersAllowlist` 放行方法常量 |
 | `rsx_domain` | 领域档案：`list/get/check/set`；四个领域、字段完整性、阶段检查、角色与监测状态；`set` 可只更新传入字段，切换档案会清空旧值 |
 | `rsx_template` | 11 个任务模板 + 3 个方法协议；`apply` 直接建项目并返回可粘贴提示词；带领域的模板自动启用档案 |
 | `rsx_source` | 登记论文/数据集/注册表/报告，抓取正文存为内容寻址工件；`import` 解析 BibTeX，`bibtex` 导出 `references.bib` |
@@ -126,8 +160,8 @@ rsx_gate action:"check"
 | `rsx_review` | 自动化审查：引用、引文、数字、图、预注册、负对照、抽取覆盖、领域字段/角色；记录 `subjectHash`、findings 与 HMAC 签名 |
 | `rsx_artifact` | 登记数据集/代码/环境/补充材料为内容寻址工件，带 role 与 description |
 | `rsx_figure` | 图 + 代码 + 数据 + 环境/运行/描述作为一个溯源单元；缺代码或数据会挡写作闸门 |
-| `rsx_gate` | check / advance / back / history / review，闸门历史只追加；review 闸门要求新鲜、通过且验签成功的审查，领域档案要求角色化评审 |
-| `rsx_write` | 手稿、AI 声明、渲染、导出（REPORT.md、DOMAIN.md、references.bib、MATRIX.md、AUDIT.md、provenance.json、ro-crate-metadata.json、BUNDLE.zip） |
+| `rsx_gate` | check / advance / back / history / review，闸门历史只追加；review 闸门要求新鲜、通过且验签成功的审查，领域档案要求角色化评审（机构/COI/独立性） |
+| `rsx_write` | 手稿、AI 声明、渲染、导出（REPORT.md、DOMAIN.md、LOOP.md、references.bib、MATRIX.md、AUDIT.md、provenance.json、ro-crate-metadata.json、BUNDLE.zip） |
 
 工具输出统一 `{ok:true, …}` 或 `{ok:false, code, error, repair, detail}`；`repair` 是给 agent 的下一步动作，不是给人看的错误页。
 
@@ -151,12 +185,12 @@ rsx_gate action:"check"
 
 侧边栏 **科研套件**（顺序 26）：
 
-- **总览**：项目状态、九阶段步进条、当前闸门、预算条、完整性、事件/工件计数、一键复制“继续研究”提示词、导出、归档
-- **领域**：选择/切换档案，字段完整度、待补字段、标准清单、角色化评审状态、发布后监测计划与信号
+- **总览**：项目状态、九阶段步进条、当前闸门、预算条、完整性、事件/工件计数、12 维闭环卡片（分数/等级/缺口/一键评估）、一键复制“继续研究”提示词、导出、归档
+- **领域**：选择/切换档案，字段完整度、条件不适用项、标准清单、角色化评审状态、发布后监测计划与信号
 - **台账**：断言、来源、数字、运行、证据、图、工件七个表；数字直接显示 trace 与不确定性，工件显示角色/字节/说明
 - **审查**：最新结论与 blocking/major/minor 计数、findings 表、来源×维度矩阵、运行审查、下载 `references.bib`
 - **模板**：任务/方法筛选，填占位符后直接建项目并给出提示词
-- **报告**：渲染 `REPORT.md`（18 节，含领域档案、自动化审查、证据矩阵、发布后监测、溯源性文件清单），下载 Markdown、AI 声明、导出研究包
+- **报告**：渲染 `REPORT.md`（19 节，含领域档案、自动化审查、证据矩阵、发布后监测、闭环评估、溯源性文件清单），下载 Markdown、AI 声明、导出研究包
 - 中文/英文切换，浅色/深色跟随系统，1440 / 1024 / 375 三档无横向溢出
 
 面板与工具读写同一份状态，HTTP 路由挂在 `/dsh-research-suite`：
@@ -180,7 +214,7 @@ $DSH_HOME/research-suite/
     .write.lock                  # 跨进程写锁（短生命周期）
     events.jsonl                 # JSONL: seq, ts, kind, actor, payload, prev, hash
     artifacts/<64hex>            # 内容寻址（id 为 sha256:<64hex>）
-    exports/REPORT.md DOMAIN.md campaign.json ledger.jsonl declaration.md references.bib MATRIX.md matrix.csv AUDIT.md provenance.json ro-crate-metadata.json BUNDLE.zip
+    exports/REPORT.md DOMAIN.md LOOP.md campaign.json ledger.jsonl declaration.md references.bib MATRIX.md matrix.csv AUDIT.md provenance.json ro-crate-metadata.json BUNDLE.zip
 ```
 
 - 事件哈希：`sha256(prev | ts | kind | actor | canon(payload))`，genesis 固定，重启后继续链
@@ -204,11 +238,11 @@ $DSH_HOME/research-suite/
 
 | 组成 | cl100k | o200k |
 | --- | ---: | ---: |
-| 系统提示词 section | 653 | 640 |
-| 14 个工具 schema | 6,616 | 6,608 |
-| **每次请求固定开销** | **7,269** | **7,248** |
+| 系统提示词 section | 707 | 694 |
+| 14 个工具 schema | 7,019 | 7,013 |
+| **每次请求固定开销** | **7,726** | **7,707** |
 
-单项目读取开销（本机 0.4 验收项目 `rs-ad07b91f`，44 事件 / 10 工件 / 已发布）：`REPORT.md` 7,168 字符（4,308 cl100k / 3,716 o200k）、`campaign.json` 37,219 字符（14,538 / 13,378）、`ledger.jsonl` 17,315 字符（8,221 / 7,999）、`declaration.md` 304 字符（220 / 180）。领域字段与监测会随 campaign 增长。
+单项目读取开销（本机 0.5 验收项目 `rs-ad07b91f`，59 事件 / 10 工件 / 已发布）：`REPORT.md` 8,743 字符（5,420 cl100k / 4,651 o200k）、`campaign.json` 46,989 字符（17,827 / 16,485）、`ledger.jsonl` 21,522 字符（10,114 / 9,888）、`declaration.md` 304 字符（220 / 180）、`LOOP.md` 1,855 字符（约 1.0k / 0.9k）。闭环评估历史已压缩为分数摘要，最新一次保留 12 维分数。
 
 复现：
 
@@ -217,7 +251,7 @@ node scripts/measure-overhead.mjs
 python scripts/measure_tokens.py --campaign "$env:DSH_HOME\research-suite\campaigns\rs-ad07b91f\exports" --out _artifacts
 ```
 
-结果落在 `_artifacts/overhead-tokens.md` 与 `_artifacts/tokens.json`。7.27k/请求是“十四个工具常驻”的代价；不做科研时可在插件管家禁用整个 bundle，开销归零。
+结果落在 `_artifacts/overhead-tokens.md` 与 `_artifacts/tokens.json`。7.73k/请求是“十四个工具常驻”的代价；不做科研时可在插件管家禁用整个 bundle，开销归零。0.5 比 0.4 增加 457/459 tokens，主要来自 `rsx_campaign` 的监测/评估字段与 `rsx_gate` 的评审身份字段。
 
 ---
 
@@ -225,10 +259,11 @@ python scripts/measure_tokens.py --campaign "$env:DSH_HOME\research-suite\campai
 
 ```powershell
 npm run check        # 语法 + client 构建新鲜度
-npm test             # 72 个测试
+npm test             # 80 个测试
+npm run rsi          # 12 维闭环评分 + 基线回归门槛
 ```
 
-覆盖：事件链与篡改/截断检测、状态 digest、跨实例与跨进程写锁、stale state、路径穿越、工件 64 MB 上限、非法 id、去重不重写、篡改修复、旧状态无 artifacts 数组、artifacts 目录双向对账（orphan_file / missing_entry）、读时 TOCTOU（同 fd 校验 + 内容哈希）、审查 HMAC 签名与验签失败阻断、损坏密钥 fail-closed、九道闸门逐项阻断、完整九阶段流程、四领域字段/规则/角色/监测、N/A 豁免与日期校验、领域审计与 DOMAIN.md 导出、领域模板传播、模板占位符、十四个工具 schema 与错误包装、自动化审查（引用/撤稿/引文失配/新鲜度/正文工件缺失/证据工件引用）、BibTeX 解析与往返（重复 key、kind 往返、100 条上限）、工件去重、图溯源、抽取矩阵/CSV（公式注入、表头特殊字符、空单元格）、PROV-JSON 关系解析与 RO-Crate figure→source 边、面板 HTTP、客户端纯函数。
+覆盖：事件链与篡改/截断检测、状态 digest、跨实例与跨进程写锁、stale state、路径穿越、工件 64 MB 上限、非法 id、去重不重写、篡改修复、旧状态无 artifacts 数组、artifacts 目录双向对账（orphan_file / missing_entry）、读时 TOCTOU（同 fd 校验 + 内容哈希）、审查 HMAC 签名与验签失败阻断、损坏密钥 fail-closed、九道闸门逐项阻断、完整九阶段流程、四领域字段/规则/角色/监测、条件适用性、评审身份/COI/独立性、监测指标判定/告警/回退、12 维闭环评分/基线/delta/LOOP.md、N/A 豁免与日期校验、领域审计与 DOMAIN.md 导出、领域模板传播、模板占位符、十四个工具 schema 与错误包装、自动化审查（引用/撤稿/引文失配/新鲜度/正文工件缺失/证据工件引用）、BibTeX 解析与往返（重复 key、kind 往返、100 条上限）、工件去重、图溯源、抽取矩阵/CSV（公式注入、表头特殊字符、空单元格）、PROV-JSON 关系解析与 RO-Crate figure→source 边、面板 HTTP（含 evaluate）、客户端纯函数。
 
 工件边界与对账探针（不依赖测试框架，失败时退出码 1）：
 
@@ -284,6 +319,18 @@ node scripts/repro-orphans.mjs
 - 提交与 CI：`6e70e80` 已推送到 `main`；[run 44100644820](https://github.com/YansongG-HKU/dsh-research-suite/actions/runs/44100644820) 在 Node 22/24 均 success。
 - 口径：该 campaign 的焊接数据是**固定种子的合成 DOE 夹具**，用于验证“真实命令 → 运行记录 → 数字 trace → 审计 → 导出”的管线，不是焊接物理结论；红队评审已把这一点写入记录。
 
+### 0.5.0 闭环与 RSI 验收（真实项目 + 确定性夹具）
+
+- **条件适用性**：医学 `study_design="rct"` 时 5 个 PRISMA 字段不再阻断，切到 `systematic-review` 后立即恢复；工业 `design_type="acceptance"` 时 DOE 因子字段不适用，切回 `doe` 后重新要求。测试覆盖 `fieldApplicability`、阶段检查、完成度与标准适用性。
+- **监测**：`rs-ad07b91f` 发布后登记 `mean_penetration_mm`（target 1.2、tolerance 0.05、higher）与一条观测 1.31mm；状态 active、告警 0、覆盖缺口 4（SPC/校准/缺陷率/安全事件尚未有指标定义）。观测备注明确“合成 DOE 夹具的确认运行均值；不是产线遥测”。越界场景测试验证 `alert` + `reopen` 回到 analyze，并写入 `monitoring.alert` / `loop.reopened` 事件。
+- **独立评审**：新评审 `schema:2`，缺机构/COI 不覆盖领域角色；同一评审人覆盖 ml + safety 时产生 `domain_ai_review_independence` 阻断。旧评审保持兼容。
+- **真实闭环评估**：`L-0001` **93.2/100**（L3，RSI 前提未满足）→ 登记监测指标/观测后 `L-0002` **95.8/100**（L3，RSI 前提仍未满足）；最终用真实工具 `rsx_campaign action:"evaluate"` 重跑得到 `L-0004`（95.8，delta 0，相对基线 +2.6）。剩余缺口：stdout 工件、抽取矩阵、4 个信号无指标。这是刻意保留的下一步，不是把“计划”算成“已监测”。
+- **导出**：`exports/LOOP.md` 含 `93.2 → 95.8` 基线与 `+2.6`；`REPORT.md` 第 19 节；`DOMAIN.md` 显示指标/观测/告警/缺口；`BUNDLE.zip` 22 条目、含 `LOOP.md`。
+- **面板**：通过插件管家热重载 `include:dsh-research-suite` 后，UI Automation 读到 `科研套件 / 0.5.0 / 总览 / 领域 / 台账 / 研究闭环 / 95.8/100 / L3 可复核研究 / 重新评估`；实拍 [`_artifacts/v050-loop-panel.png`](_artifacts/v050-loop-panel.png)。live panel API `POST /dsh-research-suite/api/campaign/rs-ad07b91f/evaluate` 返回 `95.8 / L3 / rsiReady:false`（`record:false`）。
+- **RSI 夹具**：`npm run rsi` 构建完整九阶段项目（含抽取、stdout、两名独立评审、验签审计、带指标/观测的监测），**100/100、L4、RSI 前提满足**；基线在 `_artifacts/rsi-baseline.json`，分数下降退出码 1。夹具证明评估器可达满分，不能替代真实项目的证据。
+- **测试**：**80/80** 通过（`npm test`，约 4 s）；`npm run check` 通过；`npm run rsi` 与基线比较通过。固定开销 **7,726 cl100k / 7,707 o200k**（14 schemas + prompt，0.4 → 0.5 增加 457/459）。
+- **口径**：闭环分数是工程可复核性评分，不是科学结论、临床有效性、法律合规、投资建议或智能水平测量；监测观测由操作者显式登记，工具不抓取外部遥测。
+
 ---
 
 ## 边界与不做的事
@@ -291,6 +338,8 @@ node scripts/repro-orphans.mjs
 - `rsx_run` **不执行命令**，只记录；agent 必须先用 shell/notebook 真跑，再登记真实输出。这是刻意设计：执行留在用户可审计的终端里。
 - 不内置文献检索/PDF 解析；检索由 agent 与现有工具完成，套件负责登记、哈希与引用一致性。
 - 不做统计推断；它检查“数字能否追到运行”，不检查“统计方法是否正确”（后者交给评审闸门与红队）。
+- 监测不自动采集：`metrics`/`observations` 必须显式登记；没有外部遥测、SPC 计算或自动回退。观测越界只产生告警与可选 `reopen`，是否停产由人决定。
+- 闭环评分只衡量工程可复核性；L4/RSI 前提不是科学正确性、临床有效性、法律合规或自治能力的证明。没有自动生成/合并代码，候选改动仍要人工审查、测试与发布。
 - `provenance.json` 现在是 **W3C PROV-JSON** 最小完整视图（entity/activity/agent + 五类关系）；它不声称覆盖 PROV-O 的全部约束（如 `prov:wasInformedBy`、角色限定），严格约束校验请用 PROV 工具链再做一层。
 - RO-Crate 的 figure→source 边用 `about` 表达“图解释该来源”；`isBasedOn` 仍指代码/数据工件，两者语义分开。
 - 审查签名是**本机 HMAC**，密钥在同机数据目录：能挡住改 `state.json`/findings 后重算哈希，但挡不住拥有数据目录与密钥的本地攻击者；要更强 trust root 需外部 KMS/时间戳/透明日志。

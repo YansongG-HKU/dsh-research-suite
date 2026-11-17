@@ -1,0 +1,86 @@
+{
+  "version": 1,
+  "harnessVersion": "0.5.0",
+  "campaign": "rsi-fixture",
+  "score": 100,
+  "grade": "A",
+  "level": "L4 可审计闭环",
+  "rsiReady": true,
+  "gaps": [],
+  "dimensions": [
+    {
+      "id": "question",
+      "score": 1,
+      "passed": 4,
+      "total": 4
+    },
+    {
+      "id": "survey",
+      "score": 1,
+      "passed": 7,
+      "total": 7
+    },
+    {
+      "id": "hypothesis",
+      "score": 1,
+      "passed": 8,
+      "total": 8
+    },
+    {
+      "id": "design",
+      "score": 1,
+      "passed": 9,
+      "total": 9
+    },
+    {
+      "id": "execution",
+      "score": 1,
+      "passed": 7,
+      "total": 7
+    },
+    {
+      "id": "traceability",
+      "score": 1,
+      "passed": 8,
+      "total": 8
+    },
+    {
+      "id": "audit",
+      "score": 1,
+      "passed": 5,
+      "total": 5
+    },
+    {
+      "id": "review",
+      "score": 1,
+      "passed": 6,
+      "total": 6
+    },
+    {
+      "id": "domain",
+      "score": 1,
+      "passed": 1,
+      "total": 1
+    },
+    {
+      "id": "monitoring",
+      "score": 1,
+      "passed": 9,
+      "total": 9
+    },
+    {
+      "id": "release",
+      "score": 1,
+      "passed": 6,
+      "total": 6
+    },
+    {
+      "id": "integrity",
+      "score": 1,
+      "passed": 4,
+      "total": 4
+    }
+  ],
+  "generatedAt": "2026-11-17T14:43:05.117Z",
+  "savedAt": "2026-11-17T14:43:05.131Z"
+}

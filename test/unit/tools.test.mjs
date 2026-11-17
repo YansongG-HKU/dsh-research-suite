@@ -37,7 +37,14 @@ test('fourteen tools are registered with strict schemas and renderers', () => {
   assert.equal(map.get('rsx_domain').parameters.properties.action.enum.includes('set'), true)
   assert.equal(map.get('rsx_domain').parameters.properties.action.enum.includes('check'), true)
   assert.equal(map.get('rsx_campaign').parameters.properties.action.enum.includes('monitor'), true)
+  assert.equal(map.get('rsx_campaign').parameters.properties.action.enum.includes('evaluate'), true)
+  assert.ok(map.get('rsx_campaign').parameters.properties.metrics, 'monitoring metrics must be exposed')
+  assert.ok(map.get('rsx_campaign').parameters.properties.observations, 'monitoring observations must be exposed')
+  assert.ok(map.get('rsx_campaign').parameters.properties.reopen, 'reopen must be exposed')
   assert.ok(map.get('rsx_gate').parameters.properties.role, 'review role must be exposed')
+  assert.ok(map.get('rsx_gate').parameters.properties.affiliation, 'review affiliation must be exposed')
+  assert.ok(map.get('rsx_gate').parameters.properties.conflict, 'review conflict must be exposed')
+  assert.ok(map.get('rsx_gate').parameters.properties.independent, 'review independence must be exposed')
 })
 
 test('rsx_campaign creates, reports status and rejects unknown actions', async () => {
@@ -72,6 +79,11 @@ test('rsx_campaign creates, reports status and rejects unknown actions', async (
   const missing = await campaign.execute({ action: 'get', campaign: 'rs-deadbeef' })
   assert.equal(missing.ok, false)
   assert.equal(missing.code, 'not_found')
+  const evaluated = await campaign.execute({ action: 'evaluate', campaign: created.campaign.id })
+  assert.equal(evaluated.ok, true)
+  assert.equal(evaluated.recorded, true)
+  assert.equal(evaluated.evaluation.dimensions.length, 12)
+  assert.equal(evaluated.evaluation.score < 45, true)
 })
 
 test('rsx_gate blocks an under-specified campaign and reports checks', async () => {

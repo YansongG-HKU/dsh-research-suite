@@ -15,7 +15,7 @@ window.__ModuleLoader__.load({
     const NS = "dsh-research-suite"
     const API_BASE = "/dsh-research-suite"
     const REQ_HEADER = "x-dsh-research-suite"
-    const VERSION = "0.4.0"
+    const VERSION = "0.5.0"
     const LANG_KEY = "dsh-research-suite.lang"
 
     const STAGES = [
@@ -971,6 +971,40 @@ window.__ModuleLoader__.load({
                   h("div", { className: "rsx-row" }, h("span", { className: "rsx-note" }, t("integrity") + ":"), h("span", { className: "rsx-mono" }, `${detail.integrity.artifacts} artifacts`)),
                 ),
               ),
+              h(
+                Card,
+                { title: lang === "en" ? "Research loop" : "研究闭环" },
+                (() => {
+                  const loop = state.loopEvaluation || null
+                  if (!loop) {
+                    return h(
+                      "div",
+                      { style: { display: "flex", flexDirection: "column", gap: 9 } },
+                      h("p", { className: "rsx-note" }, lang === "en" ? "Not evaluated yet. Score the 12 engineering dimensions and persist a baseline." : "尚未评估。计算 12 个工程维度并写入基线。"),
+                      h("button", { type: "button", className: "rsx-btn primary", onClick: () => p.onEvaluate(state.id) }, lang === "en" ? "Evaluate loop" : "运行闭环评估"),
+                    )
+                  }
+                  const gaps = safeArray(loop.gaps).slice(0, 3)
+                  return h(
+                    "div",
+                    { style: { display: "flex", flexDirection: "column", gap: 9 } },
+                    h(
+                      "div",
+                      { className: "rsx-row" },
+                      h("b", { style: { fontSize: 24 } }, `${loop.score}/100`),
+                      h(Badge, { tone: loop.score >= 85 ? "ok" : loop.score >= 65 ? "warn" : "bad" }, loop.grade),
+                      h("span", { className: "rsx-note" }, loop.level),
+                      h("div", { className: "rsx-top-spacer" }),
+                      loop.delta === null || loop.delta === undefined ? null : h(Badge, { tone: loop.delta >= 0 ? "ok" : "bad" }, `${loop.delta >= 0 ? "+" : ""}${loop.delta}`),
+                    ),
+                    h("div", { className: "rsx-note" }, loop.rsi && loop.rsi.ready ? (lang === "en" ? "RSI prerequisites met — compare the next candidate against this baseline." : "已具备自我改进前提；下一次候选改动与基线比较。") : (lang === "en" ? "Next: " + (safeArray(loop.nextActions)[0] ? safeArray(loop.nextActions)[0].action : "close the highest-weight gap") : "下一步：" + (safeArray(loop.nextActions)[0] ? safeArray(loop.nextActions)[0].action : "先补权重最高的缺口"))),
+                    gaps.length
+                      ? h("ul", { className: "rsx-note", style: { margin: 0, paddingLeft: 16 } }, gaps.map((gap) => h("li", { key: gap.dimension + gap.id }, gap.detail)))
+                      : null,
+                    h("button", { type: "button", className: "rsx-btn", onClick: () => p.onEvaluate(state.id) }, lang === "en" ? "Re-evaluate" : "重新评估"),
+                  )
+                })(),
+              ),
             )
           : null,
       )
@@ -1402,6 +1436,9 @@ window.__ModuleLoader__.load({
       const [owner, setOwner] = useState(monitoring.owner || "")
       const [cadence, setCadence] = useState(monitoring.cadence || "")
       const [signals, setSignals] = useState(safeArray(monitoring.signals).join(", "))
+      const [metricsText, setMetricsText] = useState("")
+      const [observationsText, setObservationsText] = useState("")
+      const [monitorError, setMonitorError] = useState("")
 
       useEffect(() => {
         setStatus(monitoring.status || "planned")
@@ -1409,6 +1446,9 @@ window.__ModuleLoader__.load({
         setOwner(monitoring.owner || "")
         setCadence(monitoring.cadence || "")
         setSignals(safeArray(monitoring.signals).join(", "))
+        setMetricsText("")
+        setObservationsText("")
+        setMonitorError("")
       }, [state && state.id, monitoring.updatedAt])
 
       if (!state) return h("div", { className: "rsx-loading" }, t("loading"))
@@ -1420,13 +1460,30 @@ window.__ModuleLoader__.load({
       const percent = completeness.required ? Math.round((completeness.filled / completeness.required) * 100) : 100
 
       const save = () => {
-        p.onSaveMonitoring({
+        const payload = {
           status: status,
           plan: plan,
           owner: owner,
           cadence: cadence,
           signals: signals.split(/[,，\n]+/u).map((item) => item.trim()).filter(Boolean),
-        })
+        }
+        setMonitorError("")
+        try {
+          if (metricsText.trim()) {
+            const metrics = JSON.parse(metricsText)
+            if (!Array.isArray(metrics)) throw new Error(lang === "en" ? "metrics must be a JSON array" : "metrics 必须是 JSON 数组")
+            payload.metrics = metrics
+          }
+          if (observationsText.trim()) {
+            const observations = JSON.parse(observationsText)
+            if (!Array.isArray(observations)) throw new Error(lang === "en" ? "observations must be a JSON array" : "observations 必须是 JSON 数组")
+            payload.observations = observations
+          }
+        } catch (error) {
+          setMonitorError(error.message || String(error))
+          return
+        }
+        p.onSaveMonitoring(payload)
       }
 
       const options = [
@@ -1546,7 +1603,7 @@ window.__ModuleLoader__.load({
                 h(
                   "select",
                   { className: "rsx-input", value: status, onChange: (event) => setStatus(event.target.value) },
-                  ["none", "planned", "active", "paused", "closed"].map((item) => h("option", { key: item, value: item }, item)),
+                  ["none", "planned", "active", "paused", "alert", "closed"].map((item) => h("option", { key: item, value: item }, item)),
                 ),
               ),
               h(Field, { label: t("monitorOwner") }, h("input", { className: "rsx-input", value: owner, onChange: (event) => setOwner(event.target.value) })),
@@ -1554,6 +1611,33 @@ window.__ModuleLoader__.load({
             ),
             h(Field, { label: t("monitorPlan") }, h("textarea", { className: "rsx-textarea", value: plan, onChange: (event) => setPlan(event.target.value) })),
             h(Field, { label: t("monitorSignals") }, h("input", { className: "rsx-input", value: signals, onChange: (event) => setSignals(event.target.value) })),
+            h(
+              "div",
+              { className: "rsx-row" },
+              h("span", { className: "rsx-note" }, `${lang === "en" ? "metrics" : "指标"} ${safeArray(monitoring.metrics).length}`),
+              h("span", { className: "rsx-note" }, `${lang === "en" ? "observations" : "观测"} ${safeArray(monitoring.observations).length}`),
+              safeArray(monitoring.metrics).length
+                ? h("span", { className: "rsx-note rsx-mono" }, safeArray(monitoring.metrics).map((item) => item.name).join(", "))
+                : null,
+            ),
+            h(Field, { label: lang === "en" ? "Add metrics (JSON array)" : "新增指标（JSON 数组）" },
+              h("textarea", {
+                className: "rsx-textarea rsx-mono",
+                value: metricsText,
+                placeholder: '[{"name":"accuracy","target":0.9,"tolerance":0.02,"direction":"higher"}]',
+                onChange: (event) => setMetricsText(event.target.value),
+              }),
+            ),
+            h(Field, { label: lang === "en" ? "Add observations (JSON array)" : "新增观测（JSON 数组）" },
+              h("textarea", {
+                className: "rsx-textarea rsx-mono",
+                value: observationsText,
+                placeholder: '[{"metric":"accuracy","value":0.95,"at":"2026-01-01T00:00:00Z"}]',
+                onChange: (event) => setObservationsText(event.target.value),
+              }),
+            ),
+            h("p", { className: "rsx-note" }, lang === "en" ? "Metrics replace by name; observations append. Leave a box empty to keep existing data." : "指标按 name 覆盖；观测追加。留空不改变已有数据。"),
+            monitorError ? h("p", { className: "rsx-error" }, monitorError) : null,
             h(
               "div",
               { className: "rsx-row" },
@@ -1822,6 +1906,18 @@ window.__ModuleLoader__.load({
           .finally(() => setBusy(false))
       }
 
+      const evaluateCampaign = (id) => {
+        setBusy(true)
+        apiPost("/api/campaign/" + id + "/evaluate", {})
+          .then((payload) => {
+            const evaluation = payload && payload.evaluation ? payload.evaluation : {}
+            notify((lang === "en" ? "Loop score " : "闭环成熟度 ") + (evaluation.score ?? "—") + "/100")
+            return loadDetail(id)
+          })
+          .catch((err) => notify(err.message || String(err), "bad"))
+          .finally(() => setBusy(false))
+      }
+
       const exportCampaign = (id) => {
         setBusy(true)
         apiPost("/api/export/" + id, {})
@@ -1928,6 +2024,7 @@ window.__ModuleLoader__.load({
                   onNew: (kind) => (kind === "template" ? setView("templates") : setModal({ type: "new" })),
                   onPrompt: openPrompt,
                   onExport: exportCampaign,
+                  onEvaluate: evaluateCampaign,
                   onArchive: archiveCampaign,
                 })
               : null,

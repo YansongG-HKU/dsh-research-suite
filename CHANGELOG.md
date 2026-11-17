@@ -2,6 +2,41 @@
 
 All notable changes to this project are documented here. Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); versioning follows [SemVer](https://semver.org/).
 
+## [0.5.0] - 2026-11-17
+
+Research-loop release: conditional applicability, monitoring with real observations/alerts, independent review envelopes, a 12-dimension closed-loop score and an RSI regression harness.
+
+### Added
+
+- **Conditional applicability (`lib/domains.js`)**: fields and standards accept `when: {field, in|notIn|equals|present|all|any}` plus `whenNote`. `fieldApplicability`/`fieldApplicable`/`standardApplicability` are exported; `domainMissing`, `domainCompleteness`, `domainChecks`, `domainGateSummary` and `renderDomainMarkdown` filter by the current state. Cross-field rules skip when either side is inapplicable. Medicine PRISMA/search/screening fields become conditional on systematic-review/meta-analysis; randomization/blinding on RCT; industrial DOE factors/levels/randomization on DOE designs; EU AI Act standard on limited/high risk.
+- **Monitoring judgment (`lib/monitor.js`)**: `normalizeMonitoring`, `normalizeMetric`, `normalizeObservation`, `evaluateMonitoring`, `monitoringAssessment`, `withMetrics`, `withObservations`. Metrics carry `target/tolerance/direction/min/max/unit`; observations are evaluated against the latest value. Out-of-tolerance values produce alerts; missing metrics/observations and orphan observations produce coverage gaps. Status includes `alert`.
+- **Monitor actions**: `rsx_campaign action:"monitor"` accepts `metrics`, `observations`, `reopen:true`, `reason`; alerts write `monitoring.alert`; reopening a released campaign moves it to `analyze` and writes `loop.reopened`. `REPORT.md` §18 and `DOMAIN.md` render metrics, observations, alerts and gaps.
+- **Independent review envelope**: new reviews are `schema:2` with `affiliation`, `conflict`, `independent`, `qualification`. Domain role checks require a non-anonymous reviewer with affiliation, COI and independence; the same person cannot cover two roles (`domain_<profile>_review_independence`). Legacy reviews remain compatible.
+- **12-dimension loop evaluation (`lib/loop.js`)**: `evaluateLoop` and `renderLoopMarkdown`; dimensions cover question, evidence survey, falsifiable hypothesis, pre-registration, execution, traceability, audit, independent review, domain applicability, monitoring, release declaration and ledger integrity. Score 0–100, grade, level (L0–L4), ranked gaps, next actions and RSI prerequisites. `rsx_campaign action:"evaluate"` persists `loopBaseline`, `loopEvaluation`, `loopEvaluations` (last 50), emits `loop.evaluated` and returns `previousScore`/`delta`; `rsx_write export` writes `LOOP.md` and `REPORT.md` §19; `BUNDLE.zip` includes it.
+- **RSI harness (`scripts/rsi-eval.mjs`, `npm run rsi`)**: deterministic full campaign through the service API (extraction, stdout artifact, two independent reviews, signed audit, monitoring with metric + observation), evaluates it and compares with `_artifacts/rsi-baseline.json`; a lower score exits 1. `--update-baseline` is explicit. Current baseline **100/100, L4, RSI prerequisites met**.
+- **Panel**: Overview shows the loop score/grade/level/delta/gaps with an evaluate button; `POST /api/campaign/:id/evaluate`; domain view keeps the monitoring form. Client bundle rebuilt.
+
+### Changed
+
+- Version is `0.5.0` in `package.json`, `lib/config.js` and the client bundle.
+- `REPORT.md` is now 19 sections; export file list includes `LOOP.md`; system prompt and tool descriptions mention conditional fields, review envelopes, monitoring metrics and `evaluate`.
+- Token overhead: **7,726 cl100k / 7,707 o200k** per request (14 schemas + prompt), +457/+459 from 0.4.
+- Tests: **80** (`loop.test.mjs` adds 6, domains adds 2, panel/tools add evaluate coverage). Real acceptance: `rs-ad07b91f` 93.2 → 95.8 (+2.6), remaining gaps stdout/extraction/monitoring coverage.
+
+### Fixed
+
+- Loop citation parsing no longer prefixes `S-` twice (the 0.5 pre-release check falsely reported every citation as unknown).
+- Monitoring no longer treats a plan/status record as a closed loop: metric coverage and observation freshness are part of the score, while release gates remain backward compatible.
+- Review role coverage is no longer satisfied by a bare role string; identity/COI/independence are checked for new reviews.
+
+### Known limits
+
+- Monitoring is operator-recorded, not an automatic telemetry/SPC/alerting integration; `reopen` moves state but does not stop a production line.
+- Review affiliation/COI/independence are declarations, not identity verification or a COI investigation.
+- The loop score checks engineering reviewability, not scientific/statistical/clinical/legal correctness.
+- RSI readiness is a threshold for comparing candidate changes, not autonomous self-modification; no code generation/merge automation.
+- Conditional applicability defaults to applicable when the controlling field is empty (fail-visible, not fail-open to skip checks).
+
 ## [0.4.0] - 2026-11-17
 
 Domain-aware research loop: four protocol profiles become stage-mapped blocking checks, role-separated reviews, post-release monitoring and a domain section in every export.
