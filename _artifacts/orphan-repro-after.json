@@ -1,0 +1,33 @@
+{
+  "ok": true,
+  "checks": [
+    {
+      "name": "normal control",
+      "expected": "none",
+      "ok": true,
+      "actual": []
+    },
+    {
+      "name": "orphan file is reported",
+      "expected": "orphan_file",
+      "ok": true,
+      "actual": [
+        {
+          "id": "orphan.txt",
+          "problem": "orphan_file"
+        }
+      ]
+    },
+    {
+      "name": "deleted state entry is reported",
+      "expected": "missing_entry",
+      "ok": true,
+      "actual": [
+        {
+          "id": "sha256:232674586ae02bc881cf484e55ebba86fe635a03130d214820a1f7d19ceb8e62",
+          "problem": "missing_entry"
+        }
+      ]
+    }
+  ]
+}

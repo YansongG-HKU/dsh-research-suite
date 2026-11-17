@@ -1,0 +1,188 @@
+{
+  "version": 1,
+  "source": "ClawsGO Science research taxonomy (re-written) + AI-science pipeline survey",
+  "templates": [
+    {
+      "id": "lit-review",
+      "kind": "task",
+      "title": { "zh": "文献综述", "en": "Literature review" },
+      "summary": { "zh": "筛出重要论文、逐篇精读，交付结构化综述与完整引用。", "en": "Shortlist the papers that matter, read them, deliver a structured review with full citations." },
+      "prompt": {
+        "zh": "围绕「{topic}」写一篇结构化文献综述：检索近三年的重要论文并筛选精读，按研究方向归类梳理脉络，产出代表工作对比表、开放问题清单与完整引用。先做一次反例检索，不要只找支持性证据。",
+        "en": "Write a structured literature review on \"{topic}\": find and closely read the important papers of the last three years, organise them by research direction, and deliver a comparison table, an open-questions list and a full bibliography. Run one disconfirming search first; do not only collect supporting evidence."
+      },
+      "tier": "M",
+      "stages": ["survey", "hypothesis", "write", "review", "release"],
+      "deliverables": ["综述稿", "代表工作对比表", "开放问题清单", "引用清单"],
+      "gateHints": { "survey": "至少 8 个来源，其中 2 个一手；每次引用可解析", "write": "稿件里的数字与引用必须来自台账" }
+    },
+    {
+      "id": "clinical-trials",
+      "kind": "task",
+      "title": { "zh": "临床试验对比", "en": "Compare clinical trials" },
+      "summary": { "zh": "检索注册库，把设计、终点与结果整理成一张对比表。", "en": "Search trial registries and put design, endpoints and results into one comparison table." },
+      "prompt": {
+        "zh": "在 ClinicalTrials.gov 检索近五年针对「{topic}」的 III 期临床试验，把设计、样本量、主要终点、结果与不良事件整理成结构化对比表，附一页概览摘要，并标注每条信息的注册号与检索日期。",
+        "en": "Search ClinicalTrials.gov for phase III trials on \"{topic}\" from the last five years, build a structured comparison table (design, sample size, primary endpoint, results, adverse events), add a one-page summary, and record the registry id and retrieval date for every row."
+      },
+      "tier": "M",
+      "stages": ["survey", "analyze", "write", "review", "release"],
+      "deliverables": ["对比表", "一页摘要", "注册号与检索日期"],
+      "gateHints": { "survey": "每个试验一条来源，带注册号", "analyze": "结果数字必须可追到注册记录" }
+    },
+    {
+      "id": "ml-pipeline",
+      "kind": "task",
+      "title": { "zh": "模型训练与对比", "en": "Train and compare models" },
+      "summary": { "zh": "从清洗到多模型对比与调参，交付可复现的评测报告。", "en": "From cleaning to multi-model comparison, deliver a reproducible evaluation report." },
+      "prompt": {
+        "zh": "在「{data}」上完成端到端建模：数据清洗与特征工程、至少三种算法的对比、调参与固定种子的交叉验证，产出模型对比表（含置信区间）、失败案例与一份面向非技术读者的结论报告。所有运行命令与指标写进台账。",
+        "en": "Build an end-to-end model on \"{data}\": cleaning and feature engineering, at least three algorithms, tuning and seed-fixed cross-validation. Deliver a comparison table with confidence intervals, failure cases and a non-technical summary. Record every run command and metric in the ledger."
+      },
+      "tier": "M",
+      "stages": ["design", "execute", "analyze", "write", "release"],
+      "deliverables": ["模型对比表", "失败案例分析", "复现命令", "结论报告"],
+      "gateHints": { "design": "先写预注册与负对照", "execute": "每个成功运行都有种子与指标" }
+    },
+    {
+      "id": "health-trends",
+      "kind": "task",
+      "title": { "zh": "健康数据分析", "en": "Global health data analysis" },
+      "summary": { "zh": "用公开数据做趋势、区域对比与统计检验。", "en": "Use public data for trends, regional comparison and statistical tests." },
+      "prompt": {
+        "zh": "用 WHO 与世界银行的公开数据，分析「{topic}」近 20 年的趋势：获取并清洗数据、做分区域对比与统计检验（说明检验前提）、绘制趋势图，最后写成一份带图表的分析报告。记录数据版本与下载日期。",
+        "en": "Using WHO and World Bank public data, analyse the last 20 years of \"{topic}\": acquire and clean the data, compare regions, run statistical tests (state their assumptions), draw trend figures, and write an analysis report with figures. Record the data version and download date."
+      },
+      "tier": "M",
+      "stages": ["survey", "design", "execute", "analyze", "write", "release"],
+      "deliverables": ["清洗后的数据", "趋势图", "统计检验", "分析报告"],
+      "gateHints": { "survey": "数据来源可追溯", "analyze": "检验前提与不确定性写清楚" }
+    },
+    {
+      "id": "paper-slides",
+      "kind": "task",
+      "title": { "zh": "论文转组会幻灯片", "en": "Paper to slides" },
+      "summary": { "zh": "精读论文，产出幻灯片与逐页讲稿。", "en": "Read the paper closely and deliver slides with speaker notes." },
+      "prompt": {
+        "zh": "把「{paper}」讲成一场 15 分钟的组会汇报：精读论文，产出结构清晰的幻灯片（研究问题、方法、关键实验、局限与后续工作），为每页配讲稿，用 LaTeX Beamer 制作，学术风格。引用原文页码，不要改写实验数字。",
+        "en": "Turn \"{paper}\" into a 15-minute group meeting talk: read it closely, produce clear slides (question, method, key experiments, limitations, follow-up) with speaker notes, built with LaTeX Beamer in an academic style. Cite page numbers; never rewrite the experimental numbers."
+      },
+      "tier": "S",
+      "stages": ["survey", "write", "review", "release"],
+      "deliverables": ["幻灯片源码", "PDF", "逐页讲稿"],
+      "gateHints": { "survey": "原文与补充材料都读", "write": "每个数字标注页码" }
+    },
+    {
+      "id": "interview-synthesis",
+      "kind": "task",
+      "title": { "zh": "访谈归纳", "en": "Interview synthesis" },
+      "summary": { "zh": "从多份访谈中提炼主题、证据片段与机会点。", "en": "Extract themes, evidence quotes and opportunities from interviews." },
+      "prompt": {
+        "zh": "围绕「{topic}」生成 8 份风格各异的模拟访谈记录（覆盖不同角色与场景），再做结构化归纳：提炼主题并聚类、为每个主题标注支撑原文片段、汇总成主题 × 证据 × 机会点的洞察报告，另出一页高管摘要。明确标注这是模拟数据。",
+        "en": "Generate eight varied simulated interviews about \"{topic}\" (different roles and scenarios), then synthesise: cluster themes, attach supporting quotes, deliver an insight report (theme × evidence × opportunity) plus a one-page executive summary. State clearly that the interviews are simulated."
+      },
+      "tier": "S",
+      "stages": ["scoping", "survey", "analyze", "write", "review", "release"],
+      "deliverables": ["访谈记录", "主题聚类", "洞察报告", "高管摘要"],
+      "gateHints": { "scoping": "先声明模拟数据边界", "analyze": "每个主题至少两条原文证据" }
+    },
+    {
+      "id": "oss-eval",
+      "kind": "task",
+      "title": { "zh": "开源库选型评测", "en": "Open-source library evaluation" },
+      "summary": { "zh": "同一数据集横向对比三个库，给出可复现的选型结论。", "en": "Benchmark three libraries on one dataset and give a reproducible recommendation." },
+      "prompt": {
+        "zh": "对「{libs}」做选型评测：在同一个数据集上各实现三种常用图表，编写基准脚本比较渲染性能与代码量，结合文档质量与社区生态，产出带示例图与数据支撑的评测报告。记录版本号、硬件与运行次数。",
+        "en": "Evaluate \"{libs}\": implement three common charts on one dataset with each library, benchmark rendering time and code size, assess documentation and community, and deliver a report with example figures and data. Record versions, hardware and repetitions."
+      },
+      "tier": "M",
+      "stages": ["design", "execute", "analyze", "write", "review", "release"],
+      "deliverables": ["基准脚本", "性能表", "示例图", "选型结论"],
+      "gateHints": { "execute": "固定版本与硬件", "analyze": "区分测量噪声与真实差异" }
+    },
+    {
+      "id": "quant-backtest",
+      "kind": "task",
+      "title": { "zh": "策略回测", "en": "Strategy backtest" },
+      "summary": { "zh": "实现回测框架，输出净值曲线与风险指标。", "en": "Build a backtest and report equity curve plus risk metrics." },
+      "prompt": {
+        "zh": "实现「{strategy}」的回测：写一个可复现的回测框架，用公开历史行情数据运行近十年回测，做参数敏感性分析，产出净值曲线图与风险指标（最大回撤、夏普、换手、交易成本）。明确声明不构成投资建议。",
+        "en": "Backtest \"{strategy}\": build a reproducible framework, run ten years of public market data, do a parameter sensitivity analysis, and report the equity curve and risk metrics (max drawdown, Sharpe, turnover, costs). State clearly that this is not investment advice."
+      },
+      "tier": "M",
+      "stages": ["design", "execute", "analyze", "write", "release"],
+      "deliverables": ["回测代码", "净值曲线", "风险指标", "敏感性分析"],
+      "gateHints": { "design": "先定样本外与停止规则", "analyze": "防止过拟合，报告样本外" }
+    },
+    {
+      "id": "academic-site",
+      "kind": "task",
+      "title": { "zh": "学术主页", "en": "Academic homepage" },
+      "summary": { "zh": "生成可预览的静态学术主页，先占位后替换。", "en": "Generate a previewable static academic homepage with placeholders first." },
+      "prompt": {
+        "zh": "为「{name}」搭建个人学术主页：静态站点，包含首页（研究方向简介）、论文列表页（按年份分组）与简历页；先用占位内容生成可预览的完整源码，说明替换点，确认样式后再换真实信息。",
+        "en": "Build an academic homepage for \"{name}\": a static site with a home page (research intro), a publications page grouped by year and a CV page. Generate complete previewable source with placeholders, document the replacement points, and only then swap in real information."
+      },
+      "tier": "S",
+      "stages": ["scoping", "design", "write", "review", "release"],
+      "deliverables": ["站点源码", "预览截图", "替换说明"],
+      "gateHints": { "scoping": "先确认信息边界", "write": "占位内容必须显式标注" }
+    },
+    {
+      "id": "due-diligence",
+      "kind": "task",
+      "title": { "zh": "公司尽调", "en": "Company due diligence" },
+      "summary": { "zh": "财报、竞争、新闻交叉验证，输出风险清单与估值框架。", "en": "Cross-check filings, competition and news; deliver risks and a valuation frame." },
+      "prompt": {
+        "zh": "对「{company}」做一次深度尽调：梳理最近四个季度财报要点、行业格局与主要竞品动态、近期重大新闻并交叉验证，产出一份投研报告，包含业务分析、风险清单与估值框架（DCF 思路即可，标注关键假设与数据日期）。",
+        "en": "Do due diligence on \"{company}\": cover the last four quarters of filings, industry structure and competitors, recent material news with cross-checking, and deliver an investment memo with business analysis, a risk list and a valuation frame (DCF outline is enough, with key assumptions and data dates)."
+      },
+      "tier": "L",
+      "stages": ["survey", "analyze", "write", "review", "release"],
+      "deliverables": ["投研报告", "风险清单", "估值框架", "数据日期"],
+      "gateHints": { "survey": "一手财报优先于二手新闻", "analyze": "关键数字给出处" }
+    },
+    {
+      "id": "replicate",
+      "kind": "method",
+      "title": { "zh": "论文复现", "en": "Paper replication" },
+      "summary": { "zh": "用 rubric 拆解目标论文，从零复现主结果并解释差异。", "en": "Decompose a target paper with a rubric, reproduce the main result and explain gaps." },
+      "prompt": {
+        "zh": "复现「{paper}」的主结果：先把论文拆成可评分的 rubric（环境、数据、方法、指标、容差），从零搭环境跑通，记录每个差异并判断是实现问题还是论文问题。不要用作者代码直接交差；如果用了，必须单独标注。",
+        "en": "Replicate the main result of \"{paper}\": first decompose the paper into a scoring rubric (environment, data, method, metric, tolerance), build the environment from scratch, record every discrepancy and judge whether it is an implementation or a paper issue. Do not pass off the authors' code as your own; if used, label it explicitly."
+      },
+      "tier": "L",
+      "stages": ["scoping", "survey", "design", "execute", "analyze", "write", "review", "release"],
+      "deliverables": ["rubric", "复现代码", "差异清单", "复现报告"],
+      "gateHints": { "design": "容差先定", "execute": "作者代码单独标注" }
+    },
+    {
+      "id": "ablation",
+      "kind": "method",
+      "title": { "zh": "消融与负对照", "en": "Ablation and negative controls" },
+      "summary": { "zh": "为一个已有结论设计消融组与负对照，检验它是否只是噪声。", "en": "Design ablations and negative controls for an existing claim to test whether it is noise." },
+      "prompt": {
+        "zh": "针对「{claim}」设计一组消融与负对照：列出每一个可能造成该结果的替代解释，为每个解释设计一个能证伪它的实验；至少包含一个标签置换/随机化负对照与一个空模型基线。先写预注册（指标、样本量、停止规则、种子），再跑。",
+        "en": "Design ablations and negative controls for \"{claim}\": list every alternative explanation, design an experiment that would falsify each, and include at least one label-permutation/randomisation control and one null baseline. Write the pre-registration (metric, n, stopping rule, seed) before running."
+      },
+      "tier": "M",
+      "stages": ["hypothesis", "design", "execute", "analyze", "write", "review", "release"],
+      "deliverables": ["替代解释清单", "预注册", "消融结果", "结论"],
+      "gateHints": { "design": "每个替代解释对应一个对照", "execute": "负对照必须真跑" }
+    },
+    {
+      "id": "review",
+      "kind": "method",
+      "title": { "zh": "对抗评审", "en": "Adversarial review" },
+      "summary": { "zh": "以红队视角找出能让结论不成立的最强反驳。", "en": "Red-team the work and find the strongest objection that would break the conclusion." },
+      "prompt": {
+        "zh": "对「{target}」做一次对抗评审：假设你是最挑剔的审稿人，找出能让核心结论不成立的最强反驳（统计、对照、数据泄漏、外部效度、引用错误），按阻断/重要/次要分级，并给出可执行的修复建议。不要客气，也不要为了反对而反对。",
+        "en": "Adversarially review \"{target}\": act as the harshest referee, find the strongest objections that would break the core conclusion (statistics, controls, leakage, external validity, citation errors), grade them blocking/major/minor, and give actionable fixes. Do not be polite for its own sake, and do not object for the sake of objecting."
+      },
+      "tier": "S",
+      "stages": ["review", "release"],
+      "deliverables": ["反驳清单", "分级", "修复建议"],
+      "gateHints": { "review": "至少一条阻断级反驳或明确说明没有" }
+    }
+  ]
+}

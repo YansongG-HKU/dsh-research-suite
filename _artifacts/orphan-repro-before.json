@@ -1,0 +1,23 @@
+{
+  "ok": false,
+  "checks": [
+    {
+      "name": "normal control",
+      "expected": "none",
+      "ok": true,
+      "actual": []
+    },
+    {
+      "name": "orphan file is reported",
+      "expected": "orphan_file",
+      "ok": false,
+      "actual": []
+    },
+    {
+      "name": "deleted state entry is reported",
+      "expected": "missing_entry",
+      "ok": false,
+      "actual": []
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+# dsh-research-suite bundle layer.
+#
+# One Host plugin row owning the campaign store, the rsx_* agent tools, the
+# nine gates, the research-package renderer and the loopback panel routes.
+# The Client half (dsh.client) renders the sidebar panel and calls the same Host
+# service — one source of truth.
+- insert:
+    - id: dsh-research-suite
+      name: dsh-research-suite
+      config:
+        defaultTier: M
+        language: zh

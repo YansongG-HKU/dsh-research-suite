@@ -1,0 +1,73 @@
+{
+  "name": "dsh-research-suite",
+  "version": "0.2.0",
+  "private": true,
+  "description": "科研套件（Research Suite）：把 DSH 变成可审计的科研项目工作台——模板起步、证据台账、九道闸门、自动化审查、BibTeX/证据矩阵/RO-Crate 研究包。",
+  "license": "MIT",
+  "author": "YansongG-HKU",
+  "type": "module",
+  "main": "index.js",
+  "exports": {
+    ".": "./index.js",
+    "./client": "./client.js",
+    "./icon": "./icon.svg",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "index.js",
+    "lib",
+    "assets",
+    "client.js",
+    "src",
+    "scripts",
+    "test",
+    "cordis.patch.yml",
+    "icon.svg",
+    "README.md",
+    "CHANGELOG.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build:client": "node scripts/build-client.mjs",
+    "check": "node --check index.js && node scripts/build-client.mjs --check && node --check client.js",
+    "test": "node --test test/unit/*.test.mjs",
+    "measure": "node scripts/measure-overhead.mjs && python scripts/measure_tokens.py --out _artifacts"
+  },
+  "keywords": [
+    "dsh",
+    "dsh-plugin",
+    "deepseek-harness",
+    "research",
+    "research-os",
+    "evidence-ledger",
+    "科研套件",
+    "科研"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/YansongG-HKU/dsh-research-suite.git"
+  },
+  "homepage": "https://github.com/YansongG-HKU/dsh-research-suite#readme",
+  "bugs": {
+    "url": "https://github.com/YansongG-HKU/dsh-research-suite/issues"
+  },
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "client": {
+      "platform": "web",
+      "immediately": true,
+      "inject": [
+        "@deepseek-ai/dsh-client-ui-renderer",
+        "@deepseek-ai/dsh-client-ui-layout",
+        "@deepseek-ai/dsh-client-ui-sidebar"
+      ],
+      "manifestVersion": 1
+    }
+  },
+  "engines": {
+    "node": ">=22",
+    "dsh": ">=0.2.2-rc.3"
+  }
+}

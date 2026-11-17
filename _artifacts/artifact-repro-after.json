@@ -1,0 +1,106 @@
+{
+  "ok": true,
+  "checks": [
+    {
+      "name": "oversized buffer",
+      "expected": "too_large",
+      "ok": true,
+      "actual": "too_large",
+      "message": "artifact exceeds 64 MB"
+    },
+    {
+      "name": "oversized file (size gate before read)",
+      "expected": "too_large",
+      "ok": true,
+      "actual": "too_large",
+      "message": "artifact exceeds 64 MB"
+    },
+    {
+      "name": "path traversal id",
+      "expected": "invalid_input",
+      "ok": true,
+      "actual": "invalid_input",
+      "message": "invalid artifact id: sha256:../../escape"
+    },
+    {
+      "name": "short id",
+      "expected": "invalid_input",
+      "ok": true,
+      "actual": "invalid_input",
+      "message": "invalid artifact id: sha256:abcd"
+    },
+    {
+      "name": "uppercase id",
+      "expected": "invalid_input",
+      "ok": true,
+      "actual": "invalid_input",
+      "message": "invalid artifact id: sha256:AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+    },
+    {
+      "name": "null id",
+      "expected": "invalid_input",
+      "ok": true,
+      "actual": "invalid_input",
+      "message": "invalid artifact id: null"
+    },
+    {
+      "name": "valid duplicate is not rewritten",
+      "expected": "ok",
+      "ok": true,
+      "actual": {
+        "sameId": true,
+        "entries": 1,
+        "mtimeStable": true
+      }
+    },
+    {
+      "name": "tampered duplicate is repaired without a new entry",
+      "expected": "ok",
+      "ok": true,
+      "actual": {
+        "content": "hello",
+        "entries": 1
+      }
+    },
+    {
+      "name": "legacy state without artifacts array",
+      "expected": "ok",
+      "ok": true,
+      "actual": "ok"
+    },
+    {
+      "name": "verify normal chain",
+      "expected": "ok",
+      "ok": true,
+      "actual": {
+        "campaign": "rs-b0c06037",
+        "chainOk": true,
+        "brokenSeq": null,
+        "events": 1,
+        "artifacts": 1,
+        "artifactProblems": [
+          {
+            "id": "sha256:c49fea7425fa7f8699897a97c159c6690267d9003bb78c53fafa8fc15c325d84",
+            "problem": "missing_entry"
+          }
+        ],
+        "problems": []
+      }
+    },
+    {
+      "name": "verify reports invalid artifact id instead of throwing",
+      "expected": "ok",
+      "ok": true,
+      "actual": [
+        {
+          "id": "sha256:not-a-hash",
+          "problem": "invalid_id"
+        },
+        {
+          "id": "sha256:c49fea7425fa7f8699897a97c159c6690267d9003bb78c53fafa8fc15c325d84",
+          "problem": "missing_entry"
+        }
+      ]
+    }
+  ]
+}
