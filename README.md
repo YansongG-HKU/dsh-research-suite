@@ -1,5 +1,7 @@
 # 科研套件 · dsh-research-suite
 
+[![CI](https://github.com/YansongG-HKU/dsh-research-suite/actions/workflows/ci.yml/badge.svg)](https://github.com/YansongG-HKU/dsh-research-suite/actions/workflows/ci.yml)
+
 把 DeepSeek Harness 变成一个**可审计的科研项目工作台**：模板起步、证据台账、九道机器可检的闸门、自动化审查、BibTeX/证据矩阵/RO-Crate 研究包。它不是另一个聊天窗口，而是给现有 agent 加了一层“项目状态 + 证据约束 + 交付格式”。
 
 - 九阶段流水线：`scoping → survey → hypothesis → design → execute → analyze → write → review → release`
