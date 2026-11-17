@@ -2,7 +2,7 @@
 
 All notable changes to this project are documented here. Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); versioning follows [SemVer](https://semver.org/).
 
-## [0.3.0] - 2026-11-18
+## [0.3.0] - 2026-11-17
 
 Hardening and interoperability release: standards-shaped provenance, signed audit decisions, a state digest anchored to the event tail, a cross-process write lock, and TOCTOU-safe artifact reads.
 

@@ -232,7 +232,7 @@ node scripts/repro-orphans.mjs
 - 发布闸门：`rsx_gate check stage:"release"` 的 `chain_integrity` 为 true，detail “hash chain, state.json and 1 artifacts verified”；其余上游/声明项按预期阻断。
 - 导出（`rs-79d63da4`）：`REPORT.md` 6,105 B、`provenance.json` 4,954 B、`ro-crate-metadata.json` 3,488 B、`BUNDLE.zip` 52,287 B / 11 条目；`provenance.json` 顶层键为 `activity,agent,entity,prefix,used,wasAssociatedWith,wasAttributedTo,wasDerivedFrom,wasGeneratedBy`，7 entity / 1 activity / 1 agent / 11 关系；RO-Crate 9 节点。
 - figure→source 边用带图的旧项目 `rs-b39d91d2` 重导出验证：`#figure-F-0001.about={"@id":"#source-S-0001"}`，`isBasedOn` 仍指 code/data 工件，`contentUrl` 指图像；`provenance.json` 17 entity / 1 activity / 1 agent / 28 关系、11,962 B，RO-Crate 19 节点、8,325 B。
-- 测试：61/61 通过（`npm test`，约 2.7 s）；`npm run check` 通过；跨进程锁测试真实启动子进程持锁，父进程在 40 ms 超时后得到 `locked`。
+- 测试：61/61 通过（`npm test`，约 2.8 s）；`npm run check` 通过；跨进程锁测试真实启动子进程持锁，父进程在 40 ms 超时后得到 `locked`。
 - CI：[run 44092844474](https://github.com/YansongG-HKU/dsh-research-suite/actions/runs/44092844474)，Node 22/24 均 success，`actions/checkout@v5` + `actions/setup-node@v5` 已落地。
 
 ---
