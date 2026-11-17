@@ -281,6 +281,7 @@ node scripts/repro-orphans.mjs
 - 面板：桌面侧边栏点击“科研套件”后，UI Automation 读到“领域 / 工业与工程研究 / 领域字段完成度 / 标准与清单 / ISO\/IEC 17025 / 领域审查角色 / 发布后监测”；截图见 [`_artifacts/v040-domain-panel-crop.png`](_artifacts/v040-domain-panel-crop.png)。
 - 独立 Web 进程（隔离 profile，57092）验证 `/dsh-research-suite/api/domains` 返回 4 个档案、`/api/campaign/rs-ad07b91f/domain` 返回 `domainId:"industrial"`；验证后已停止该进程并恢复 profile。
 - 测试：**72/72** 通过（`npm test`，约 3.2 s）；`npm run check` 通过；固定开销 7,269 cl100k / 7,248 o200k（14 schemas + prompt）。
+- 提交与 CI：`6e70e80` 已推送到 `main`；[run 44100644820](https://github.com/YansongG-HKU/dsh-research-suite/actions/runs/44100644820) 在 Node 22/24 均 success。
 - 口径：该 campaign 的焊接数据是**固定种子的合成 DOE 夹具**，用于验证“真实命令 → 运行记录 → 数字 trace → 审计 → 导出”的管线，不是焊接物理结论；红队评审已把这一点写入记录。
 
 ---
