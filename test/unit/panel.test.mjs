@@ -44,7 +44,7 @@ test('panel API: reads, refusal without the header, create and export', async ()
     assert.ok(state.body.data.dataDir.length > 0)
 
     const templates = await getJson(`${base}/api/templates`)
-    assert.equal(templates.body.data.templates.length, 13)
+    assert.equal(templates.body.data.templates.length, 14)
 
     const refused = await postJson(`${base}/api/campaign`, { action: 'create', question: 'x' }, { 'x-dsh-research-suite': '' })
     assert.equal(refused.status, 403)
@@ -68,6 +68,23 @@ test('panel API: reads, refusal without the header, create and export', async ()
     assert.equal(detail.body.data.gate.ok, false)
     assert.equal(detail.body.data.integrity.chainOk, true)
     assert.equal(detail.body.data.budget.tier, 'S')
+
+    const domainList = await getJson(`${base}/api/domains`)
+    assert.equal(domainList.body.data.domains.length, 4)
+    const domainBefore = await getJson(`${base}/api/campaign/${id}/domain`)
+    assert.equal(domainBefore.body.data.domainId, 'general')
+    const domainSet = await postJson(`${base}/api/campaign/${id}/domain`, { action: 'set', domain: 'ai' })
+    assert.equal(domainSet.body.data.domainId, 'ai')
+    assert.ok(domainSet.body.data.completeness.required > 0)
+    const monitored = await postJson(`${base}/api/campaign/${id}/monitor`, {
+      status: 'planned',
+      plan: '上线后每周检查漂移与安全事件，超过阈值回滚。',
+      owner: 'YG',
+      cadence: 'weekly',
+      signals: ['drift', 'incident'],
+    })
+    assert.equal(monitored.body.data.monitoring.status, 'planned')
+    assert.equal(monitored.body.data.monitoring.signals.length, 2)
 
     const declaration = await postJson(`${base}/api/declaration/${id}`, { model: 'test-model', humanReviewer: 'YG' })
     assert.equal(declaration.status, 200)

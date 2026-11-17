@@ -2,6 +2,37 @@
 
 All notable changes to this project are documented here. Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); versioning follows [SemVer](https://semver.org/).
 
+## [0.4.0] - 2026-11-17
+
+Domain-aware research loop: four protocol profiles become stage-mapped blocking checks, role-separated reviews, post-release monitoring and a domain section in every export.
+
+### Added
+
+- **Domain profiles (`lib/domains.js`)**: `finance` (24 fields), `ai` (26), `medicine` (35) and `industrial` (32), mapped to the nine stages. Fields, enums, numbers, dates, min/max, include-any and `N/A — reason` waivers are validated before storage. Cross-field rules: finance `in_sample_end < oos_start`; medicine `prisma_included <= prisma_identified`.
+- **Stage-mapped gates**: `domainChecks(state, stage)` emits `domain_<profile>_<field>` and `domain_<profile>_<rule>` blocking checks; `gates.finish()` merges them, so a selected profile cannot advance with missing protocol fields. No profile selected keeps the 0.3 behaviour.
+- **Role-separated reviews**: each profile declares two roles (`quant/risk`, `ml/safety`, `clinical/statistics`, `engineering/quality`); the review gate requires one `rsx_gate action:"review" role:"…"` per role.
+- **Post-release monitoring**: `rsx_campaign action:"monitor"` records `status/plan/owner/cadence/signals/notes/reviewedAt`; release checks the plan, `REPORT.md` gains section 18, and `DOMAIN.md` renders the monitoring table. A triggered signal can use `rsx_gate action:"back"` and re-audit/re-release; the gate history keeps the path.
+- **`rsx_domain` (14th tool)**: `list/get/check/set`; `create` accepts `domain`/`values`; `templateApply` propagates the template domain; the panel gets a domain tab, create-form selector, completeness, standards, role state and monitoring form.
+- **Audit integration**: domain profile/values enter `auditSubject` (so edits invalidate an audit); `checkDomain` re-checks fields/rules/roles/monitoring for the current and earlier stages. Missing roles must be added before the audit, otherwise the audit is stale.
+- **Export/provenance**: `DOMAIN.md` is written and bundled; `REPORT.md` gets domain section 1.1 and monitoring section 18; PROV-JSON campaign entity carries `dsh:domain`/monitoring attributes; RO-Crate campaign carries domain/monitoring keywords.
+- **Templates**: `industrial-doe` (14th template, 11th task preset); `clinical-trials`/`health-trends` map to medicine, `ml-pipeline` to ai, `quant-backtest`/`due-diligence` to finance.
+- **Tests**: 72 total. `test/unit/domains.test.mjs` covers the registry, validation/N/A/date normalisation, blocking fields, finance/medicine rules, review roles + monitoring, audit findings, `DOMAIN.md`/bundle/report/PROV export, template propagation, and a full AI nine-gate campaign with two role reviews and monitoring. Panel test covers `/api/domains`, profile switching and monitoring.
+
+### Changed
+
+- Version is `0.4.0` in `package.json`, `lib/config.js` and the client bundle (`client.js` rebuilt).
+- System prompt and tool descriptions describe the four profiles, role reviews, monitoring and 11 task presets; tool count is 14.
+- Token overhead: 7,269 cl100k / 7,248 o200k per request (14 schemas + prompt), up from 6,254/6,240 in 0.3.
+
+### Known limits
+
+- Every field is required unless explicitly waived with `N/A — reason`; there is no `when`-conditional field set yet.
+- Monitoring is a plan/state record, not a live detector: no metrics ingestion, no automatic drift/SPC/AE alerting or auto-reopen.
+- Reviewer roles are strings; identity, independence, COI and credentials are not verified.
+- Standards are alignment references, not an applicability engine or certification. `N/A` waivers are not independently approved by the tool.
+- The audit checks record consistency, not statistical/clinical/legal correctness.
+- Domain coverage is four profiles; AI+medicine etc. combinations need a future composite profile.
+
 ## [0.3.0] - 2026-11-17
 
 Hardening and interoperability release: standards-shaped provenance, signed audit decisions, a state digest anchored to the event tail, a cross-process write lock, and TOCTOU-safe artifact reads.

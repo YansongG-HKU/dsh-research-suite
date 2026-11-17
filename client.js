@@ -15,7 +15,7 @@ window.__ModuleLoader__.load({
     const NS = "dsh-research-suite"
     const API_BASE = "/dsh-research-suite"
     const REQ_HEADER = "x-dsh-research-suite"
-    const VERSION = "0.3.0"
+    const VERSION = "0.4.0"
     const LANG_KEY = "dsh-research-suite.lang"
 
     const STAGES = [
@@ -136,6 +136,25 @@ window.__ModuleLoader__.load({
         confirmArchive: "归档这个项目？归档后不在列表显示，数据保留。",
         deleteNever: "数据只增不删。",
         stage: "阶段",
+        domain: "领域",
+        domainHint: "领域档案把行业协议映射成阻断检查；这是对齐清单，不是认证。",
+        domainGeneral: "通用流程",
+        domainCompleteness: "领域字段完成度",
+        domainMissing: "待补必填字段",
+        domainStandards: "标准与清单",
+        domainRoles: "领域审查角色",
+        domainRoleMet: "已登记",
+        domainRoleMissing: "缺少评审",
+        domainNoProfile: "当前项目未选择领域档案。",
+        domainSelect: "选择领域档案",
+        monitoring: "发布后监测",
+        monitorHint: "发布闸门要求 planned/active 的监测计划、负责人和频率；每次变更写入事件链。",
+        monitorStatus: "状态",
+        monitorPlan: "监测计划",
+        monitorOwner: "负责人",
+        monitorCadence: "复查频率",
+        monitorSignals: "信号（逗号分隔）",
+        monitorSaved: "监测计划已保存",
         unknown: "—",
       },
       en: {
@@ -241,6 +260,25 @@ window.__ModuleLoader__.load({
         confirmArchive: "Archive this campaign? It disappears from the list; the data stays.",
         deleteNever: "Data is append-only.",
         stage: "Stage",
+        domain: "Domain",
+        domainHint: "A domain profile maps sector protocols to blocking checks; it is an alignment checklist, not a certification.",
+        domainGeneral: "General pipeline",
+        domainCompleteness: "Domain field completeness",
+        domainMissing: "Missing required fields",
+        domainStandards: "Standards and checklists",
+        domainRoles: "Domain review roles",
+        domainRoleMet: "recorded",
+        domainRoleMissing: "review missing",
+        domainNoProfile: "No domain profile is selected for this campaign.",
+        domainSelect: "Select a domain profile",
+        monitoring: "Post-release monitoring",
+        monitorHint: "The release gate needs a planned/active monitoring plan, an owner and a cadence; every change is appended to the event chain.",
+        monitorStatus: "Status",
+        monitorPlan: "Monitoring plan",
+        monitorOwner: "Owner",
+        monitorCadence: "Cadence",
+        monitorSignals: "Signals (comma separated)",
+        monitorSaved: "Monitoring plan saved",
         unknown: "—",
       },
     }
@@ -1349,6 +1387,184 @@ window.__ModuleLoader__.load({
       )
     }
 
+    function DomainView(props) {
+      const p = props || {}
+      const t = p.t
+      const lang = p.lang
+      const detail = p.detail
+      const state = detail && detail.state ? detail.state : null
+      const info = p.domainInfo || {}
+      const profile = info.domain || null
+      const completeness = info.completeness || { required: 0, filled: 0, missing: 0, missingFields: [] }
+      const monitoring = state && state.monitoring ? state.monitoring : {}
+      const [status, setStatus] = useState(monitoring.status || "planned")
+      const [plan, setPlan] = useState(monitoring.plan || "")
+      const [owner, setOwner] = useState(monitoring.owner || "")
+      const [cadence, setCadence] = useState(monitoring.cadence || "")
+      const [signals, setSignals] = useState(safeArray(monitoring.signals).join(", "))
+
+      useEffect(() => {
+        setStatus(monitoring.status || "planned")
+        setPlan(monitoring.plan || "")
+        setOwner(monitoring.owner || "")
+        setCadence(monitoring.cadence || "")
+        setSignals(safeArray(monitoring.signals).join(", "))
+      }, [state && state.id, monitoring.updatedAt])
+
+      if (!state) return h("div", { className: "rsx-loading" }, t("loading"))
+
+      const selected = state.domain || "general"
+      const reviews = safeArray(state.reviews)
+      const roles = safeArray(profile && profile.reviewRoles)
+      const missing = safeArray(completeness.missingFields)
+      const percent = completeness.required ? Math.round((completeness.filled / completeness.required) * 100) : 100
+
+      const save = () => {
+        p.onSaveMonitoring({
+          status: status,
+          plan: plan,
+          owner: owner,
+          cadence: cadence,
+          signals: signals.split(/[,，\n]+/u).map((item) => item.trim()).filter(Boolean),
+        })
+      }
+
+      const options = [
+        { id: "general", label: t("domainGeneral") },
+      ].concat(safeArray(p.domains).map((item) => ({ id: item.id, label: item.title[lang === "en" ? "en" : "zh"] })))
+
+      return h(
+        "div",
+        { style: { display: "flex", flexDirection: "column", gap: 14 } },
+        h(
+          "div",
+          { className: "rsx-card" },
+          h(
+            "div",
+            { className: "rsx-card-body", style: { display: "flex", flexDirection: "column", gap: 12 } },
+            h(
+              "div",
+              { className: "rsx-row", style: { alignItems: "flex-start" } },
+              h(
+                "div",
+                { style: { flex: 1, minWidth: 0 } },
+                h("h2", { className: "rsx-h1" }, profile ? profile.title[lang === "en" ? "en" : "zh"] : t("domain")),
+                h("p", { className: "rsx-sub" }, profile ? profile.summary[lang === "en" ? "en" : "zh"] : t("domainNoProfile")),
+              ),
+              h(
+                "select",
+                { className: "rsx-select", value: selected, disabled: p.busy, "aria-label": t("domainSelect"), onChange: (event) => p.onSetDomain(event.target.value) },
+                options.map((item) => h("option", { key: item.id, value: item.id }, item.label)),
+              ),
+            ),
+            h("p", { className: "rsx-note" }, t("domainHint")),
+            h(
+              "div",
+              { className: "rsx-row" },
+              h("span", { className: "rsx-note" }, t("domainCompleteness")),
+              h("b", null, `${completeness.filled}/${completeness.required}`),
+              h("div", { style: { flex: 1, height: 8, background: "var(--rsx-sunken)", borderRadius: 99, overflow: "hidden" } },
+                h("div", { style: { width: `${percent}%`, height: "100%", background: percent === 100 ? "var(--rsx-ok)" : "var(--rsx-ochre)" } }),
+              ),
+              h(Badge, { tone: completeness.missing ? "warn" : "ok", dot: true }, `${percent}%`),
+            ),
+          ),
+        ),
+        profile
+          ? h(
+              "div",
+              { className: "rsx-grid" },
+              h(
+                Card,
+                { title: t("domainStandards") },
+                h(
+                  "div",
+                  { style: { display: "flex", flexDirection: "column", gap: 7 } },
+                  safeArray(profile.standards).map((item) =>
+                    h(
+                      "a",
+                      { key: item.id, href: item.url, target: "_blank", rel: "noreferrer", className: "rsx-note" },
+                      `${item.title} · ${item.kind}`,
+                    ),
+                  ),
+                ),
+              ),
+              h(
+                Card,
+                { title: t("domainRoles") },
+                h(
+                  "div",
+                  { style: { display: "flex", flexDirection: "column", gap: 8 } },
+                  roles.length
+                    ? roles.map((role) => {
+                        const met = reviews.some((review) => review.role === role.id)
+                        return h(
+                          "div",
+                          { key: role.id, className: "rsx-row" },
+                          h("span", null, role.label[lang === "en" ? "en" : "zh"]),
+                          h(Badge, { tone: met ? "ok" : "warn", dot: true }, met ? t("domainRoleMet") : t("domainRoleMissing")),
+                        )
+                      })
+                    : h("p", { className: "rsx-note" }, t("unknown")),
+                ),
+              ),
+            )
+          : null,
+        profile && missing.length
+          ? h(
+              Card,
+              { title: `${t("domainMissing")} · ${missing.length}` },
+              h(
+                "div",
+                { className: "rsx-table-wrap" },
+                h(
+                  "table",
+                  { className: "rsx-table" },
+                  h("thead", null, h("tr", null, h("th", null, t("stage")), h("th", null, "ID"), h("th", null, lang === "en" ? "Issue" : "问题"))),
+                  h(
+                    "tbody",
+                    null,
+                    missing.slice(0, 30).map((item) =>
+                      h("tr", { key: item.id }, h("td", null, stageLabel(item.stage, lang)), h("td", { className: "rsx-mono" }, item.id), h("td", null, item.problem)),
+                    ),
+                  ),
+                ),
+              ),
+            )
+          : null,
+        h(
+          Card,
+          { title: t("monitoring") },
+          h(
+            "div",
+            { style: { display: "flex", flexDirection: "column", gap: 10 } },
+            h("p", { className: "rsx-note" }, t("monitorHint")),
+            h(
+              "div",
+              { className: "rsx-row" },
+              h(Field, { label: t("monitorStatus") },
+                h(
+                  "select",
+                  { className: "rsx-input", value: status, onChange: (event) => setStatus(event.target.value) },
+                  ["none", "planned", "active", "paused", "closed"].map((item) => h("option", { key: item, value: item }, item)),
+                ),
+              ),
+              h(Field, { label: t("monitorOwner") }, h("input", { className: "rsx-input", value: owner, onChange: (event) => setOwner(event.target.value) })),
+              h(Field, { label: t("monitorCadence") }, h("input", { className: "rsx-input", value: cadence, onChange: (event) => setCadence(event.target.value) })),
+            ),
+            h(Field, { label: t("monitorPlan") }, h("textarea", { className: "rsx-textarea", value: plan, onChange: (event) => setPlan(event.target.value) })),
+            h(Field, { label: t("monitorSignals") }, h("input", { className: "rsx-input", value: signals, onChange: (event) => setSignals(event.target.value) })),
+            h(
+              "div",
+              { className: "rsx-row" },
+              h("div", { className: "rsx-top-spacer" }),
+              h("button", { type: "button", className: "rsx-btn primary", onClick: save, disabled: p.busy }, p.busy ? t("saving") : t("save")),
+            ),
+          ),
+        ),
+      )
+    }
+
     function SettingsForm(props) {
       const p = props || {}
       const t = p.t
@@ -1430,13 +1646,15 @@ window.__ModuleLoader__.load({
       const [view, setView] = useState("overview")
       const [data, setData] = useState(null)
       const [templates, setTemplates] = useState([])
+      const [domains, setDomains] = useState([])
+      const [domainInfo, setDomainInfo] = useState(null)
       const [selected, setSelected] = useState("")
       const [detail, setDetail] = useState(null)
       const [error, setError] = useState("")
       const [busy, setBusy] = useState(false)
       const [toast, setToast] = useState(null)
       const [modal, setModal] = useState(null)
-      const [form, setForm] = useState({ title: "", question: "", scope: "", success: "", tier: "M" })
+      const [form, setForm] = useState({ title: "", question: "", scope: "", success: "", tier: "M", domain: "general" })
       const [applyTopic, setApplyTopic] = useState("")
       const [promptText, setPromptText] = useState("")
 
@@ -1460,6 +1678,7 @@ window.__ModuleLoader__.load({
       const loadDetail = useCallback((id) => {
         if (!id) {
           setDetail(null)
+          setDomainInfo(null)
           return Promise.resolve(null)
         }
         return apiGet("/api/campaign/" + id)
@@ -1469,6 +1688,22 @@ window.__ModuleLoader__.load({
           })
           .catch((err) => {
             setError(err.message || String(err))
+            return null
+          })
+      }, [])
+
+      const loadDomainInfo = useCallback((id) => {
+        if (!id) {
+          setDomainInfo(null)
+          return Promise.resolve(null)
+        }
+        return apiGet("/api/campaign/" + id + "/domain")
+          .then((payload) => {
+            setDomainInfo(payload)
+            return payload
+          })
+          .catch(() => {
+            setDomainInfo(null)
             return null
           })
       }, [])
@@ -1497,6 +1732,9 @@ window.__ModuleLoader__.load({
         apiGet("/api/templates")
           .then((payload) => setTemplates(safeArray(payload.templates)))
           .catch(() => setTemplates([]))
+        apiGet("/api/domains")
+          .then((payload) => setDomains(safeArray(payload.domains)))
+          .catch(() => setDomains([]))
       }, [])
 
       useEffect(() => {
@@ -1509,6 +1747,13 @@ window.__ModuleLoader__.load({
           .catch((err) => {
             if (!cancelled) setError(err.message || String(err))
           })
+        apiGet("/api/campaign/" + selected + "/domain")
+          .then((payload) => {
+            if (!cancelled) setDomainInfo(payload)
+          })
+          .catch(() => {
+            if (!cancelled) setDomainInfo(null)
+          })
         return () => {
           cancelled = true
         }
@@ -1516,6 +1761,7 @@ window.__ModuleLoader__.load({
 
       const selectCampaign = (id) => {
         setSelected(id)
+        setDomainInfo(null)
         setView("overview")
         apiPost("/api/campaign", { action: "select", campaign: id }).catch(() => {
           /* selection is a convenience; reading still works */
@@ -1528,12 +1774,36 @@ window.__ModuleLoader__.load({
           return
         }
         setBusy(true)
-        apiPost("/api/campaign", { action: "create", title: form.title, question: form.question, scope: form.scope, success: form.success, tier: form.tier })
+        apiPost("/api/campaign", { action: "create", title: form.title, question: form.question, scope: form.scope, success: form.success, tier: form.tier, domain: form.domain })
           .then((payload) => {
             setModal(null)
-            setForm({ title: "", question: "", scope: "", success: "", tier: "M" })
+            setForm({ title: "", question: "", scope: "", success: "", tier: "M", domain: "general" })
             setView("overview")
             return refresh(payload.campaign.id)
+          })
+          .catch((err) => notify(err.message || String(err), "bad"))
+          .finally(() => setBusy(false))
+      }
+
+      const setDomain = (domain) => {
+        if (!selected) return
+        setBusy(true)
+        apiPost("/api/campaign/" + selected + "/domain", { action: "set", domain: domain })
+          .then(() => {
+            notify(t("domain"))
+            return Promise.all([loadDetail(selected), loadDomainInfo(selected)])
+          })
+          .catch((err) => notify(err.message || String(err), "bad"))
+          .finally(() => setBusy(false))
+      }
+
+      const saveMonitoring = (patch) => {
+        if (!selected) return
+        setBusy(true)
+        apiPost("/api/campaign/" + selected + "/monitor", patch)
+          .then(() => {
+            notify(t("monitorSaved"))
+            return Promise.all([loadDetail(selected), loadDomainInfo(selected)])
           })
           .catch((err) => notify(err.message || String(err), "bad"))
           .finally(() => setBusy(false))
@@ -1625,6 +1895,7 @@ window.__ModuleLoader__.load({
           { className: "rsx-nav", role: "tablist" },
           [
             { id: "overview", label: t("overview"), icon: "flask" },
+            { id: "domain", label: t("domain"), icon: "shield", count: domainInfo && domainInfo.completeness ? domainInfo.completeness.missing : 0 },
             { id: "ledger", label: t("ledger"), icon: "list", count: navCount },
             { id: "audit", label: t("audit"), icon: "shield", count: auditCount },
             { id: "templates", label: t("templates"), icon: "template" },
@@ -1658,6 +1929,18 @@ window.__ModuleLoader__.load({
                   onPrompt: openPrompt,
                   onExport: exportCampaign,
                   onArchive: archiveCampaign,
+                })
+              : null,
+            data && view === "domain"
+              ? h(DomainView, {
+                  t: t,
+                  lang: lang,
+                  detail: detail,
+                  domainInfo: domainInfo,
+                  domains: domains,
+                  busy: busy,
+                  onSetDomain: setDomain,
+                  onSaveMonitoring: saveMonitoring,
                 })
               : null,
             data && view === "ledger" ? h(Ledger, { t: t, lang: lang, detail: detail }) : null,
@@ -1707,6 +1990,16 @@ window.__ModuleLoader__.load({
               h(Field, { label: t("tier") + " · " + t("tierHint") },
                 h("select", { className: "rsx-input", value: form.tier, onChange: (event) => setForm({ ...form, tier: event.target.value }) }, ["S", "M", "L", "XL"].map((item) => h("option", { key: item, value: item }, item))),
               ),
+              h(Field, { label: t("domain") },
+                h(
+                  "select",
+                  { className: "rsx-input", value: form.domain, onChange: (event) => setForm({ ...form, domain: event.target.value }) },
+                  [h("option", { key: "general", value: "general" }, t("domainGeneral"))].concat(
+                    safeArray(domains).map((item) => h("option", { key: item.id, value: item.id }, item.title[lang === "en" ? "en" : "zh"])),
+                  ),
+                ),
+              ),
+              h("p", { className: "rsx-note" }, t("domainHint")),
             )
           : null,
 

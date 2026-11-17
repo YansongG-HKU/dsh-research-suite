@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Measure the context the plugin adds, with a real tokenizer.
 
-Fixed cost (every request): the system-prompt section plus the nine tool
+Fixed cost (every request): the system-prompt section plus the fourteen tool
 schemas, snapshotted by `node scripts/measure-overhead.mjs`.
 
 Campaign cost (only when a tool or the panel reads a campaign): the exported
@@ -88,7 +88,7 @@ def main() -> None:
     if campaign:
         lines += [
             "",
-            "## 单项目读取开销（43 事件 / 11 工件）",
+            "## 单项目读取开销",
             "",
             "| 文件 | 字符 | cl100k | o200k |",
             "| --- | ---: | ---: | ---: |",
@@ -99,7 +99,7 @@ def main() -> None:
             )
     lines += [
         "",
-        "测法：`node scripts/measure-overhead.mjs` 快照提示词与 9 个工具 schema，",
+        "测法：`node scripts/measure-overhead.mjs` 快照提示词与 14 个工具 schema，",
         "`python scripts/measure_tokens.py --campaign <exports>` 分词；两者均可重跑。",
         "",
     ]

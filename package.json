@@ -1,8 +1,8 @@
 {
   "name": "dsh-research-suite",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "private": true,
-  "description": "科研套件（Research Suite）：把 DSH 变成可审计的科研项目工作台——模板起步、证据台账、九道闸门、自动化审查、BibTeX/证据矩阵/RO-Crate 研究包。",
+  "description": "科研套件（Research Suite）：把 DSH 变成可审计的科研项目工作台——模板起步、证据台账、九道闸门、领域协议档案、自动化审查、BibTeX/证据矩阵/RO-Crate 研究包。",
   "license": "MIT",
   "author": "YansongG-HKU",
   "type": "module",
@@ -21,6 +21,7 @@
     "src",
     "scripts",
     "test",
+    "docs",
     "cordis.patch.yml",
     "icon.svg",
     "README.md",
@@ -40,6 +41,9 @@
     "research",
     "research-os",
     "evidence-ledger",
+    "domain-profiles",
+    "research-workflow",
+    "reproducibility",
     "科研套件",
     "科研"
   ],

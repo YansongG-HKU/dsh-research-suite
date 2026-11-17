@@ -14,7 +14,7 @@ window.__ModuleLoader__.load({
     const NS = "dsh-research-suite"
     const API_BASE = "/dsh-research-suite"
     const REQ_HEADER = "x-dsh-research-suite"
-    const VERSION = "0.3.0"
+    const VERSION = "0.4.0"
     const LANG_KEY = "dsh-research-suite.lang"
 
     const STAGES = [
@@ -135,6 +135,25 @@ window.__ModuleLoader__.load({
         confirmArchive: "归档这个项目？归档后不在列表显示，数据保留。",
         deleteNever: "数据只增不删。",
         stage: "阶段",
+        domain: "领域",
+        domainHint: "领域档案把行业协议映射成阻断检查；这是对齐清单，不是认证。",
+        domainGeneral: "通用流程",
+        domainCompleteness: "领域字段完成度",
+        domainMissing: "待补必填字段",
+        domainStandards: "标准与清单",
+        domainRoles: "领域审查角色",
+        domainRoleMet: "已登记",
+        domainRoleMissing: "缺少评审",
+        domainNoProfile: "当前项目未选择领域档案。",
+        domainSelect: "选择领域档案",
+        monitoring: "发布后监测",
+        monitorHint: "发布闸门要求 planned/active 的监测计划、负责人和频率；每次变更写入事件链。",
+        monitorStatus: "状态",
+        monitorPlan: "监测计划",
+        monitorOwner: "负责人",
+        monitorCadence: "复查频率",
+        monitorSignals: "信号（逗号分隔）",
+        monitorSaved: "监测计划已保存",
         unknown: "—",
       },
       en: {
@@ -240,6 +259,25 @@ window.__ModuleLoader__.load({
         confirmArchive: "Archive this campaign? It disappears from the list; the data stays.",
         deleteNever: "Data is append-only.",
         stage: "Stage",
+        domain: "Domain",
+        domainHint: "A domain profile maps sector protocols to blocking checks; it is an alignment checklist, not a certification.",
+        domainGeneral: "General pipeline",
+        domainCompleteness: "Domain field completeness",
+        domainMissing: "Missing required fields",
+        domainStandards: "Standards and checklists",
+        domainRoles: "Domain review roles",
+        domainRoleMet: "recorded",
+        domainRoleMissing: "review missing",
+        domainNoProfile: "No domain profile is selected for this campaign.",
+        domainSelect: "Select a domain profile",
+        monitoring: "Post-release monitoring",
+        monitorHint: "The release gate needs a planned/active monitoring plan, an owner and a cadence; every change is appended to the event chain.",
+        monitorStatus: "Status",
+        monitorPlan: "Monitoring plan",
+        monitorOwner: "Owner",
+        monitorCadence: "Cadence",
+        monitorSignals: "Signals (comma separated)",
+        monitorSaved: "Monitoring plan saved",
         unknown: "—",
       },
     }

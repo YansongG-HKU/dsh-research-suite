@@ -567,6 +567,184 @@
       )
     }
 
+    function DomainView(props) {
+      const p = props || {}
+      const t = p.t
+      const lang = p.lang
+      const detail = p.detail
+      const state = detail && detail.state ? detail.state : null
+      const info = p.domainInfo || {}
+      const profile = info.domain || null
+      const completeness = info.completeness || { required: 0, filled: 0, missing: 0, missingFields: [] }
+      const monitoring = state && state.monitoring ? state.monitoring : {}
+      const [status, setStatus] = useState(monitoring.status || "planned")
+      const [plan, setPlan] = useState(monitoring.plan || "")
+      const [owner, setOwner] = useState(monitoring.owner || "")
+      const [cadence, setCadence] = useState(monitoring.cadence || "")
+      const [signals, setSignals] = useState(safeArray(monitoring.signals).join(", "))
+
+      useEffect(() => {
+        setStatus(monitoring.status || "planned")
+        setPlan(monitoring.plan || "")
+        setOwner(monitoring.owner || "")
+        setCadence(monitoring.cadence || "")
+        setSignals(safeArray(monitoring.signals).join(", "))
+      }, [state && state.id, monitoring.updatedAt])
+
+      if (!state) return h("div", { className: "rsx-loading" }, t("loading"))
+
+      const selected = state.domain || "general"
+      const reviews = safeArray(state.reviews)
+      const roles = safeArray(profile && profile.reviewRoles)
+      const missing = safeArray(completeness.missingFields)
+      const percent = completeness.required ? Math.round((completeness.filled / completeness.required) * 100) : 100
+
+      const save = () => {
+        p.onSaveMonitoring({
+          status: status,
+          plan: plan,
+          owner: owner,
+          cadence: cadence,
+          signals: signals.split(/[,，\n]+/u).map((item) => item.trim()).filter(Boolean),
+        })
+      }
+
+      const options = [
+        { id: "general", label: t("domainGeneral") },
+      ].concat(safeArray(p.domains).map((item) => ({ id: item.id, label: item.title[lang === "en" ? "en" : "zh"] })))
+
+      return h(
+        "div",
+        { style: { display: "flex", flexDirection: "column", gap: 14 } },
+        h(
+          "div",
+          { className: "rsx-card" },
+          h(
+            "div",
+            { className: "rsx-card-body", style: { display: "flex", flexDirection: "column", gap: 12 } },
+            h(
+              "div",
+              { className: "rsx-row", style: { alignItems: "flex-start" } },
+              h(
+                "div",
+                { style: { flex: 1, minWidth: 0 } },
+                h("h2", { className: "rsx-h1" }, profile ? profile.title[lang === "en" ? "en" : "zh"] : t("domain")),
+                h("p", { className: "rsx-sub" }, profile ? profile.summary[lang === "en" ? "en" : "zh"] : t("domainNoProfile")),
+              ),
+              h(
+                "select",
+                { className: "rsx-select", value: selected, disabled: p.busy, "aria-label": t("domainSelect"), onChange: (event) => p.onSetDomain(event.target.value) },
+                options.map((item) => h("option", { key: item.id, value: item.id }, item.label)),
+              ),
+            ),
+            h("p", { className: "rsx-note" }, t("domainHint")),
+            h(
+              "div",
+              { className: "rsx-row" },
+              h("span", { className: "rsx-note" }, t("domainCompleteness")),
+              h("b", null, `${completeness.filled}/${completeness.required}`),
+              h("div", { style: { flex: 1, height: 8, background: "var(--rsx-sunken)", borderRadius: 99, overflow: "hidden" } },
+                h("div", { style: { width: `${percent}%`, height: "100%", background: percent === 100 ? "var(--rsx-ok)" : "var(--rsx-ochre)" } }),
+              ),
+              h(Badge, { tone: completeness.missing ? "warn" : "ok", dot: true }, `${percent}%`),
+            ),
+          ),
+        ),
+        profile
+          ? h(
+              "div",
+              { className: "rsx-grid" },
+              h(
+                Card,
+                { title: t("domainStandards") },
+                h(
+                  "div",
+                  { style: { display: "flex", flexDirection: "column", gap: 7 } },
+                  safeArray(profile.standards).map((item) =>
+                    h(
+                      "a",
+                      { key: item.id, href: item.url, target: "_blank", rel: "noreferrer", className: "rsx-note" },
+                      `${item.title} · ${item.kind}`,
+                    ),
+                  ),
+                ),
+              ),
+              h(
+                Card,
+                { title: t("domainRoles") },
+                h(
+                  "div",
+                  { style: { display: "flex", flexDirection: "column", gap: 8 } },
+                  roles.length
+                    ? roles.map((role) => {
+                        const met = reviews.some((review) => review.role === role.id)
+                        return h(
+                          "div",
+                          { key: role.id, className: "rsx-row" },
+                          h("span", null, role.label[lang === "en" ? "en" : "zh"]),
+                          h(Badge, { tone: met ? "ok" : "warn", dot: true }, met ? t("domainRoleMet") : t("domainRoleMissing")),
+                        )
+                      })
+                    : h("p", { className: "rsx-note" }, t("unknown")),
+                ),
+              ),
+            )
+          : null,
+        profile && missing.length
+          ? h(
+              Card,
+              { title: `${t("domainMissing")} · ${missing.length}` },
+              h(
+                "div",
+                { className: "rsx-table-wrap" },
+                h(
+                  "table",
+                  { className: "rsx-table" },
+                  h("thead", null, h("tr", null, h("th", null, t("stage")), h("th", null, "ID"), h("th", null, lang === "en" ? "Issue" : "问题"))),
+                  h(
+                    "tbody",
+                    null,
+                    missing.slice(0, 30).map((item) =>
+                      h("tr", { key: item.id }, h("td", null, stageLabel(item.stage, lang)), h("td", { className: "rsx-mono" }, item.id), h("td", null, item.problem)),
+                    ),
+                  ),
+                ),
+              ),
+            )
+          : null,
+        h(
+          Card,
+          { title: t("monitoring") },
+          h(
+            "div",
+            { style: { display: "flex", flexDirection: "column", gap: 10 } },
+            h("p", { className: "rsx-note" }, t("monitorHint")),
+            h(
+              "div",
+              { className: "rsx-row" },
+              h(Field, { label: t("monitorStatus") },
+                h(
+                  "select",
+                  { className: "rsx-input", value: status, onChange: (event) => setStatus(event.target.value) },
+                  ["none", "planned", "active", "paused", "closed"].map((item) => h("option", { key: item, value: item }, item)),
+                ),
+              ),
+              h(Field, { label: t("monitorOwner") }, h("input", { className: "rsx-input", value: owner, onChange: (event) => setOwner(event.target.value) })),
+              h(Field, { label: t("monitorCadence") }, h("input", { className: "rsx-input", value: cadence, onChange: (event) => setCadence(event.target.value) })),
+            ),
+            h(Field, { label: t("monitorPlan") }, h("textarea", { className: "rsx-textarea", value: plan, onChange: (event) => setPlan(event.target.value) })),
+            h(Field, { label: t("monitorSignals") }, h("input", { className: "rsx-input", value: signals, onChange: (event) => setSignals(event.target.value) })),
+            h(
+              "div",
+              { className: "rsx-row" },
+              h("div", { className: "rsx-top-spacer" }),
+              h("button", { type: "button", className: "rsx-btn primary", onClick: save, disabled: p.busy }, p.busy ? t("saving") : t("save")),
+            ),
+          ),
+        ),
+      )
+    }
+
     function SettingsForm(props) {
       const p = props || {}
       const t = p.t

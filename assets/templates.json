@@ -19,6 +19,7 @@
     {
       "id": "clinical-trials",
       "kind": "task",
+      "domain": "medicine",
       "title": { "zh": "临床试验对比", "en": "Compare clinical trials" },
       "summary": { "zh": "检索注册库，把设计、终点与结果整理成一张对比表。", "en": "Search trial registries and put design, endpoints and results into one comparison table." },
       "prompt": {
@@ -33,6 +34,7 @@
     {
       "id": "ml-pipeline",
       "kind": "task",
+      "domain": "ai",
       "title": { "zh": "模型训练与对比", "en": "Train and compare models" },
       "summary": { "zh": "从清洗到多模型对比与调参，交付可复现的评测报告。", "en": "From cleaning to multi-model comparison, deliver a reproducible evaluation report." },
       "prompt": {
@@ -47,6 +49,7 @@
     {
       "id": "health-trends",
       "kind": "task",
+      "domain": "medicine",
       "title": { "zh": "健康数据分析", "en": "Global health data analysis" },
       "summary": { "zh": "用公开数据做趋势、区域对比与统计检验。", "en": "Use public data for trends, regional comparison and statistical tests." },
       "prompt": {
@@ -103,6 +106,7 @@
     {
       "id": "quant-backtest",
       "kind": "task",
+      "domain": "finance",
       "title": { "zh": "策略回测", "en": "Strategy backtest" },
       "summary": { "zh": "实现回测框架，输出净值曲线与风险指标。", "en": "Build a backtest and report equity curve plus risk metrics." },
       "prompt": {
@@ -131,6 +135,7 @@
     {
       "id": "due-diligence",
       "kind": "task",
+      "domain": "finance",
       "title": { "zh": "公司尽调", "en": "Company due diligence" },
       "summary": { "zh": "财报、竞争、新闻交叉验证，输出风险清单与估值框架。", "en": "Cross-check filings, competition and news; deliver risks and a valuation frame." },
       "prompt": {
@@ -141,6 +146,21 @@
       "stages": ["survey", "analyze", "write", "review", "release"],
       "deliverables": ["投研报告", "风险清单", "估值框架", "数据日期"],
       "gateHints": { "survey": "一手财报优先于二手新闻", "analyze": "关键数字给出处" }
+    },
+    {
+      "id": "industrial-doe",
+      "kind": "task",
+      "domain": "industrial",
+      "title": { "zh": "工业 DOE 与测量系统", "en": "Industrial DOE and measurement system" },
+      "summary": { "zh": "先证明测量系统可靠，再用 DOE 找因子与确认运行。", "en": "Validate the measurement system first, then use DOE for factors and a confirmation run." },
+      "prompt": {
+        "zh": "研究「{topic}」的工艺窗口：先写系统边界、运行工况与安全相关功能，完成量具 R&R / 偏倚 / 线性 / 稳定性与校准溯源；再做因子实验（因子、水平、重复、随机化、区组），预先写接受准则，分析主效应/交互与测量不确定度，最后在新批次上做确认运行并给出 Cp/Cpk、追溯链与生产监测计划。",
+        "en": "Study the process window for \"{topic}\": define the system boundary, operating context and safety-related functions; complete gauge R&R / bias / linearity / stability and calibration traceability; then run a factorial experiment (factors, levels, replicates, randomisation, blocking) with pre-specified acceptance criteria, analyse main effects/interactions and measurement uncertainty, and finish with a confirmation run on a new batch plus Cp/Cpk, traceability and a production monitoring plan."
+      },
+      "tier": "M",
+      "stages": ["scoping", "survey", "design", "execute", "analyze", "write", "review", "release"],
+      "deliverables": ["测量系统分析", "DOE 方案", "确认运行", "能力与追溯报告", "监测计划"],
+      "gateHints": { "survey": "MSA 先于工艺结论", "design": "接受准则与随机化先定", "analyze": "确认运行不能省" }
     },
     {
       "id": "replicate",

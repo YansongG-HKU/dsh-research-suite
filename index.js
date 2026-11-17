@@ -1,7 +1,7 @@
 /**
  * dsh-research-suite — Host plugin entry.
  *
- * Owns the campaign store under `<DSH_HOME>/research-suite`, the thirteen `rsx_*`
+ * Owns the campaign store under `<DSH_HOME>/research-suite`, the fourteen `rsx_*`
  * agent tools, one short system-prompt section and the loopback panel routes.
  * The Client half (declared through `dsh.client`) renders the 科研套件 panel and
  * calls the same Host service — one source of truth.
@@ -23,11 +23,12 @@ export const name = 'dsh-research-suite'
 
 const PROMPT_SECTION = [
   'Research Suite (科研套件) is the project container for multi-step research here. Use it whenever the task will outlive one answer: literature reviews, replications, data analyses, evaluations, due diligence, or anything the user calls a 研究/项目/综述/复现/尽调/评测.',
-  'A campaign has nine gates: scoping → survey → hypothesis → design → execute → analyze → write → review → release. Start with rsx_template action:"apply" (10 task presets + replication/ablation/adversarial-review protocols) or rsx_campaign action:"create". Record the question, scope and success criteria, then run rsx_gate action:"check" before advancing.',
+  'A campaign has nine gates: scoping → survey → hypothesis → design → execute → analyze → write → review → release. Start with rsx_template action:"apply" (11 task presets + replication/ablation/adversarial-review protocols) or rsx_campaign action:"create". Record the question, scope and success criteria, then run rsx_gate action:"check" before advancing.',
+  'For sector work select a domain profile with rsx_domain action:"set": finance, ai, medicine or industrial. A profile turns protocol fields into blocking checks at their stages (point-in-time/OOS dates, TRIPOD+AI, PRISMA counts, MSA/DOE, review roles, monitoring); it is an alignment checklist, not a certification claim. Use rsx_domain action:"check" to see the exact missing fields for the current stage.',
   'Log as you work, not at the end: rsx_source for what you read (action:"import" ingests Zotero/Scholar BibTeX), rsx_claim for what you assert, rsx_evidence to link claim↔source/run, rsx_run for a real command + seed + metrics, rsx_number for every number with trace run:R-xxxxxxxxxx#metric or source:S-0001, rsx_extract to build the source × dimension matrix, rsx_artifact for datasets/code/environments, rsx_figure for figure+code+data provenance. Numbers in the manuscript are written as {{N-0001}} and citations as [[src:S-0001]]; the write gate rejects orphan digits and unknown refs.',
-  'Before the review gate, run rsx_review action:"audit": it checks citations resolve, quotes occur in the captured text, numbers match the run that produced them, figures carry code+data, and the pre-registration still describes the analysis. Findings are blocking/major/minor/info; only blocking stops the gate, and any later edit makes the audit stale.',
-  'Never invent a ledger entry: run the command first, then record what actually happened. If a gate blocks, read detail.blocking and fix the checks instead of working around them. Before delivery call rsx_write action:"declaration" (AI + watermark + human reviewer) then action:"export", and give the user the REPORT.md path plus references.bib / AUDIT.md / provenance.json.',
-  'The sidebar panel shows the same state; the user can create campaigns, inspect the ledger, browse templates and read the report there. Continue an existing campaign by reading rsx_campaign action:"status" rather than starting over.',
+  'Before the review gate, run rsx_review action:"audit": it checks citations resolve, quotes occur in the captured text, numbers match the run that produced them, figures carry code+data, the pre-registration still describes the analysis, and domain fields/roles are present. Findings are blocking/major/minor/info; only blocking stops the gate, and any later edit makes the audit stale. For a domain campaign add one rsx_gate action:"review" per domain role, then audit after those reviews.',
+  'Never invent a ledger entry: run the command first, then record what actually happened. If a gate blocks, read detail.blocking and fix the checks instead of working around them. Before delivery call rsx_write action:"declaration" (AI + watermark + human reviewer), record rsx_campaign action:"monitor" (plan, owner, cadence), then action:"export", and give the user the REPORT.md path plus DOMAIN.md / references.bib / AUDIT.md / provenance.json.',
+  'The sidebar panel shows the same state; the user can create campaigns, inspect the ledger, browse templates, edit domain/monitoring state and read the report there. Continue an existing campaign by reading rsx_campaign action:"status" rather than starting over.',
 ].join(' ')
 
 function resolveDataDir(config) {

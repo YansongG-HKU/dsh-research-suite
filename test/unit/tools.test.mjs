@@ -10,10 +10,10 @@ function toolMap(service) {
   return { tools, map }
 }
 
-test('thirteen tools are registered with strict schemas and renderers', () => {
+test('fourteen tools are registered with strict schemas and renderers', () => {
   const { service } = makeService()
   const { tools, map } = toolMap(service)
-  assert.equal(tools.length, 13)
+  assert.equal(tools.length, 14)
   assert.deepEqual(tools.map((tool) => tool.name), [...TOOL_NAMES])
   for (const tool of tools) {
     assert.equal(typeof tool.description, 'string')
@@ -34,6 +34,10 @@ test('thirteen tools are registered with strict schemas and renderers', () => {
   assert.equal(map.get('rsx_extract').parameters.properties.action.enum.includes('matrix'), true)
   assert.equal(map.get('rsx_figure').parameters.properties.action.enum.includes('add'), true)
   assert.equal(map.get('rsx_artifact').parameters.properties.action.enum.includes('add'), true)
+  assert.equal(map.get('rsx_domain').parameters.properties.action.enum.includes('set'), true)
+  assert.equal(map.get('rsx_domain').parameters.properties.action.enum.includes('check'), true)
+  assert.equal(map.get('rsx_campaign').parameters.properties.action.enum.includes('monitor'), true)
+  assert.ok(map.get('rsx_gate').parameters.properties.role, 'review role must be exposed')
 })
 
 test('rsx_campaign creates, reports status and rejects unknown actions', async () => {

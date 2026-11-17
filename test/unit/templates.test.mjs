@@ -4,11 +4,15 @@ import test from 'node:test'
 import { budgetOverruns, budgetSummary, chargeBudget, initBudget } from '../../lib/budget.js'
 import { getTemplate, listTemplates, fillTemplate, placeholdersOf, TEMPLATES } from '../../lib/templates.js'
 
-test('template library: ten task presets and three method protocols', () => {
-  assert.equal(TEMPLATES.length, 13)
-  assert.equal(listTemplates({ kind: 'task' }).length, 10)
+test('template library: eleven task presets and three method protocols', () => {
+  assert.equal(TEMPLATES.length, 14)
+  assert.equal(listTemplates({ kind: 'task' }).length, 11)
   assert.equal(listTemplates({ kind: 'method' }).length, 3)
   assert.equal(listTemplates({ kind: 'nope' }).length, 0)
+  assert.equal(getTemplate('quant-backtest').domain, 'finance')
+  assert.equal(getTemplate('ml-pipeline').domain, 'ai')
+  assert.equal(getTemplate('clinical-trials').domain, 'medicine')
+  assert.equal(getTemplate('industrial-doe').domain, 'industrial')
   for (const template of TEMPLATES) {
     assert.match(template.id, /^[a-z0-9-]+$/u)
     assert.ok(template.title.zh && template.title.en)

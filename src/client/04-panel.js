@@ -11,13 +11,15 @@
       const [view, setView] = useState("overview")
       const [data, setData] = useState(null)
       const [templates, setTemplates] = useState([])
+      const [domains, setDomains] = useState([])
+      const [domainInfo, setDomainInfo] = useState(null)
       const [selected, setSelected] = useState("")
       const [detail, setDetail] = useState(null)
       const [error, setError] = useState("")
       const [busy, setBusy] = useState(false)
       const [toast, setToast] = useState(null)
       const [modal, setModal] = useState(null)
-      const [form, setForm] = useState({ title: "", question: "", scope: "", success: "", tier: "M" })
+      const [form, setForm] = useState({ title: "", question: "", scope: "", success: "", tier: "M", domain: "general" })
       const [applyTopic, setApplyTopic] = useState("")
       const [promptText, setPromptText] = useState("")
 
@@ -41,6 +43,7 @@
       const loadDetail = useCallback((id) => {
         if (!id) {
           setDetail(null)
+          setDomainInfo(null)
           return Promise.resolve(null)
         }
         return apiGet("/api/campaign/" + id)
@@ -50,6 +53,22 @@
           })
           .catch((err) => {
             setError(err.message || String(err))
+            return null
+          })
+      }, [])
+
+      const loadDomainInfo = useCallback((id) => {
+        if (!id) {
+          setDomainInfo(null)
+          return Promise.resolve(null)
+        }
+        return apiGet("/api/campaign/" + id + "/domain")
+          .then((payload) => {
+            setDomainInfo(payload)
+            return payload
+          })
+          .catch(() => {
+            setDomainInfo(null)
             return null
           })
       }, [])
@@ -78,6 +97,9 @@
         apiGet("/api/templates")
           .then((payload) => setTemplates(safeArray(payload.templates)))
           .catch(() => setTemplates([]))
+        apiGet("/api/domains")
+          .then((payload) => setDomains(safeArray(payload.domains)))
+          .catch(() => setDomains([]))
       }, [])
 
       useEffect(() => {
@@ -90,6 +112,13 @@
           .catch((err) => {
             if (!cancelled) setError(err.message || String(err))
           })
+        apiGet("/api/campaign/" + selected + "/domain")
+          .then((payload) => {
+            if (!cancelled) setDomainInfo(payload)
+          })
+          .catch(() => {
+            if (!cancelled) setDomainInfo(null)
+          })
         return () => {
           cancelled = true
         }
@@ -97,6 +126,7 @@
 
       const selectCampaign = (id) => {
         setSelected(id)
+        setDomainInfo(null)
         setView("overview")
         apiPost("/api/campaign", { action: "select", campaign: id }).catch(() => {
           /* selection is a convenience; reading still works */
@@ -109,12 +139,36 @@
           return
         }
         setBusy(true)
-        apiPost("/api/campaign", { action: "create", title: form.title, question: form.question, scope: form.scope, success: form.success, tier: form.tier })
+        apiPost("/api/campaign", { action: "create", title: form.title, question: form.question, scope: form.scope, success: form.success, tier: form.tier, domain: form.domain })
           .then((payload) => {
             setModal(null)
-            setForm({ title: "", question: "", scope: "", success: "", tier: "M" })
+            setForm({ title: "", question: "", scope: "", success: "", tier: "M", domain: "general" })
             setView("overview")
             return refresh(payload.campaign.id)
+          })
+          .catch((err) => notify(err.message || String(err), "bad"))
+          .finally(() => setBusy(false))
+      }
+
+      const setDomain = (domain) => {
+        if (!selected) return
+        setBusy(true)
+        apiPost("/api/campaign/" + selected + "/domain", { action: "set", domain: domain })
+          .then(() => {
+            notify(t("domain"))
+            return Promise.all([loadDetail(selected), loadDomainInfo(selected)])
+          })
+          .catch((err) => notify(err.message || String(err), "bad"))
+          .finally(() => setBusy(false))
+      }
+
+      const saveMonitoring = (patch) => {
+        if (!selected) return
+        setBusy(true)
+        apiPost("/api/campaign/" + selected + "/monitor", patch)
+          .then(() => {
+            notify(t("monitorSaved"))
+            return Promise.all([loadDetail(selected), loadDomainInfo(selected)])
           })
           .catch((err) => notify(err.message || String(err), "bad"))
           .finally(() => setBusy(false))
@@ -206,6 +260,7 @@
           { className: "rsx-nav", role: "tablist" },
           [
             { id: "overview", label: t("overview"), icon: "flask" },
+            { id: "domain", label: t("domain"), icon: "shield", count: domainInfo && domainInfo.completeness ? domainInfo.completeness.missing : 0 },
             { id: "ledger", label: t("ledger"), icon: "list", count: navCount },
             { id: "audit", label: t("audit"), icon: "shield", count: auditCount },
             { id: "templates", label: t("templates"), icon: "template" },
@@ -239,6 +294,18 @@
                   onPrompt: openPrompt,
                   onExport: exportCampaign,
                   onArchive: archiveCampaign,
+                })
+              : null,
+            data && view === "domain"
+              ? h(DomainView, {
+                  t: t,
+                  lang: lang,
+                  detail: detail,
+                  domainInfo: domainInfo,
+                  domains: domains,
+                  busy: busy,
+                  onSetDomain: setDomain,
+                  onSaveMonitoring: saveMonitoring,
                 })
               : null,
             data && view === "ledger" ? h(Ledger, { t: t, lang: lang, detail: detail }) : null,
@@ -288,6 +355,16 @@
               h(Field, { label: t("tier") + " · " + t("tierHint") },
                 h("select", { className: "rsx-input", value: form.tier, onChange: (event) => setForm({ ...form, tier: event.target.value }) }, ["S", "M", "L", "XL"].map((item) => h("option", { key: item, value: item }, item))),
               ),
+              h(Field, { label: t("domain") },
+                h(
+                  "select",
+                  { className: "rsx-input", value: form.domain, onChange: (event) => setForm({ ...form, domain: event.target.value }) },
+                  [h("option", { key: "general", value: "general" }, t("domainGeneral"))].concat(
+                    safeArray(domains).map((item) => h("option", { key: item.id, value: item.id }, item.title[lang === "en" ? "en" : "zh"])),
+                  ),
+                ),
+              ),
+              h("p", { className: "rsx-note" }, t("domainHint")),
             )
           : null,
 
