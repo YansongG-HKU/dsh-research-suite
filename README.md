@@ -7,12 +7,13 @@
 - 九阶段流水线：`scoping → survey → hypothesis → design → execute → analyze → write → review → release`
 - 每条断言必须挂证据，每个数字必须能追到一次真实运行或一条来源
 - 自动化审查：引用必须落在捕获正文里、引文必须能在正文中找到、图必须带代码与数据
-- 事件链 SHA-256 逐条哈希，工件按内容寻址，篡改会被 `integrity` 检出
+- 事件链 SHA-256 逐条哈希，工件按内容寻址；`state.json` 带整体 digest 并锚定事件尾，跨进程写锁 + 读时哈希校验
+- 审查记录用本地 HMAC-SHA256 签名；review 闸门验签，篡改 findings/verdict/对象哈希会被挡住
 - 预注册、负对照、环境锁定、AI 声明与人工复核都是闸门的一部分
 - 侧边栏面板：总览、台账（断言/来源/数字/运行/证据/图/工件）、审查、模板、报告
-- 集百家之长：Claude Science 式 reviewer、Elicit 式抽取矩阵、Zotero/BibTeX、RO-Crate 1.1、PROV 风格溯源、OSF 预注册、DVC/MLflow 溯源
+- 集百家之长：Claude Science 式 reviewer、Elicit 式抽取矩阵、Zotero/BibTeX、RO-Crate 1.1、W3C PROV-JSON、OSF 预注册、DVC/MLflow 溯源
 
-当前版本 **0.2.0**，53 个测试全绿，已在本机 DSH 安装并在真实会话中跑通新工具链路（见[验收](#验收)）。
+当前版本 **0.3.0**，61 个测试全绿，已在本机 DSH 安装并在真实会话中跑通新工具链路（见[验收](#验收)）。
 
 ---
 
@@ -40,7 +41,7 @@ pnpm add "link:F:\dsh插件创造\workspace\dsh-research-suite"
 }
 ```
 
-重启 DSH（或重新加载该 bundle）后，工具栏出现 **科研套件**，同时注册十三个 `rsx_*` 工具。若通过插件市场发布，名称同为 `dsh-research-suite`，版本 `0.2.0`。
+重启 DSH（或重新加载该 bundle）后，工具栏出现 **科研套件**，同时注册十三个 `rsx_*` 工具。若通过插件市场发布，名称同为 `dsh-research-suite`，版本 `0.3.0`。
 
 配置写在 profile 的 `cordis.patch.yml`，也可以完全不管，走面板设置：
 
@@ -69,8 +70,8 @@ pnpm add "link:F:\dsh插件创造\workspace\dsh-research-suite"
 | execute | ≥1 次成功运行、种子、指标、真实跑过的负对照、完整命令 |
 | analyze | 数字有 trace、trace 能解析、数值与运行指标一致（1e-6）、≥1 个不确定性、所有断言已定状态 |
 | write | 手稿 ≥200 字、至少一个 `{{N-0001}}`、至少一个 `[[src:S-0001]]`、无未知引用、无游离数字、图有工件+代码+数据 |
-| review | 两份评审、至少一份红队对抗评审、无 reject、无未解决阻断问题、断言均已定状态、**最近一次自动化审查通过且未过期** |
-| release | 上游闸门全过、AI 声明+水印+模型+人工复核人、`world.safety.dual_use = "pass"`、预算未超、无争议断言、事件链完整 |
+| review | 两份评审、至少一份红队对抗评审、无 reject、无未解决阻断问题、断言均已定状态、**最近一次自动化审查通过、未过期且 HMAC 验签通过** |
+| release | 上游闸门全过、AI 声明+水印+模型+人工复核人、`world.safety.dual_use = "pass"`、预算未超、无争议断言、事件链与 `stateHash` 完整 |
 
 设计要点：**闸门只挡状态，不评判文笔**。它检查的是“能不能被机器复核”，而不是“结论是否正确”——正确性由证据、负对照和评审人负责。
 
@@ -88,10 +89,10 @@ pnpm add "link:F:\dsh插件创造\workspace\dsh-research-suite"
 | `rsx_run` | 记录真实命令、退出码、种子、指标、stdout 工件、负对照（**只记录，不代跑**） |
 | `rsx_number` | 数字登记与 trace 校验；写入时即校验与运行指标一致，返回 `{{N-0001}}` |
 | `rsx_extract` | Elicit 式抽取矩阵：source × dimension，带 value/quote/locator/confidence，输出 `MATRIX.md` / `matrix.csv` |
-| `rsx_review` | 自动化审查：引用、引文、数字、图、预注册、负对照、抽取覆盖；记录 `subjectHash` 与 findings |
+| `rsx_review` | 自动化审查：引用、引文、数字、图、预注册、负对照、抽取覆盖；记录 `subjectHash`、findings 与 HMAC 签名 |
 | `rsx_artifact` | 登记数据集/代码/环境/补充材料为内容寻址工件，带 role 与 description |
 | `rsx_figure` | 图 + 代码 + 数据 + 环境/运行/描述作为一个溯源单元；缺代码或数据会挡写作闸门 |
-| `rsx_gate` | check / advance / back / history / review，闸门历史只追加；review 闸门要求新鲜且通过的审查 |
+| `rsx_gate` | check / advance / back / history / review，闸门历史只追加；review 闸门要求新鲜、通过且验签成功的审查 |
 | `rsx_write` | 手稿、AI 声明、渲染、导出（REPORT.md、references.bib、MATRIX.md、AUDIT.md、provenance.json、ro-crate-metadata.json、BUNDLE.zip） |
 
 工具输出统一 `{ok:true, …}` 或 `{ok:false, code, error, repair, detail}`；`repair` 是给 agent 的下一步动作，不是给人看的错误页。
@@ -138,20 +139,26 @@ pnpm add "link:F:\dsh插件创造\workspace\dsh-research-suite"
 $DSH_HOME/research-suite/
   index.json                     # 项目索引
   settings.json                  # 面板设置
+  signing-key.json               # 本机审查签名密钥（0600，永不导出）
   campaigns/rs-c537de08/
-    state.json                   # 项目状态（断言/来源/运行/数字/评审/闸门历史）
+    state.json                   # 项目状态（断言/来源/运行/数字/评审/闸门历史 + stateHash）
+    .write.lock                  # 跨进程写锁（短生命周期）
     events.jsonl                 # JSONL: seq, ts, kind, actor, payload, prev, hash
     artifacts/<64hex>            # 内容寻址（id 为 sha256:<64hex>）
     exports/REPORT.md campaign.json ledger.jsonl declaration.md references.bib MATRIX.md matrix.csv AUDIT.md provenance.json ro-crate-metadata.json BUNDLE.zip
 ```
 
 - 事件哈希：`sha256(prev | ts | kind | actor | canon(payload))`，genesis 固定，重启后继续链
+- 状态哈希：`stateHash = sha256(canon(state 去掉 stateHash/stateHashVersion))`，包含 `seq`/`lastHash`，所以直接改 `state.json` 而不追加事件会在 `integrity.stateOk=false` 暴露；旧状态没有该字段时返回 `stateOk:null` 并退回链校验
+- 审查签名：HMAC-SHA256 覆盖 `id/ok/verdict/findings/counts/blocking/subjectHash/stateHash/ts`；密钥在数据目录的 `signing-key.json`（不在 campaign 内，不进导出），审查记录带 `keyId`/`signatureVersion`；review 闸门验签，未签名、密钥不匹配或 findings 被改都会阻断
+- 写锁：`.write.lock` 用 `open(..., "wx")` 原子创建，写 `save`/`emit` 前检查磁盘 `seq`/`lastHash`/`stateHash` 是否仍是内存链的前缀；30s 未释放视为陈旧锁，5s 拿不到抛 `locked`。另一个进程推进过项目时抛 `stale_state`，不静默覆盖
 - 工件 id 即内容哈希；合法重复不重写、不追加，地址被篡改时重新写回正确内容；总量上限 64 MB（超限按文件大小先拒绝，不先读入内存）
+- 工件读取走单 fd：打开后先 `fstat` 限长，读完再 `fstat` 对 inode/size，并对内容重算 SHA-256；读取期间被原地改内容报 `hash_mismatch`，路径被替换/消失报 `changed_during_read`，不会把变化后的字节当原工件返回
 - 非法工件 id（穿越、短哈希、大写、非字符串）抛 `invalid_input`；`integrity` 对缺失/哈希不符/长度不符/非法 id/不可读分别报 `missing/hash_mismatch/size_mismatch/invalid_id/unreadable`
 - `integrity` 同时枚举 `artifacts/` 与 `state.artifacts` 双向对账：未登记且文件名不是合法内容地址（临时文件/目录）报 `orphan_file`；未登记但文件名是合法 64 位地址（条目被删）报 `missing_entry`；已登记但文件不存在仍是 `missing`
 - 事件链校验同时锚定 `state.seq`/`state.lastHash`：删尾或追加合法尾部会报断裂，不只是改中间事件
 - `rsx_write export` 复制 ≤2 MB 工件进 `BUNDLE.zip`（store-only，无压缩依赖），跳过项会列在 `skippedArtifacts`
-- `references.bib` 由来源台账生成；`provenance.json` 是 PROV 风格活动图；`ro-crate-metadata.json` 是 RO-Crate 1.1 JSON-LD；三者都由同一份 state + `verify()` 渲染，不另读事件日志
+- `references.bib` 由来源台账生成；`provenance.json` 是 **W3C PROV-JSON**（`prefix/entity/activity/agent` + `wasGeneratedBy/used/wasDerivedFrom/wasAttributedTo/wasAssociatedWith`，QName 与 `dsh:` 扩展属性，关系目标都可解析）；`ro-crate-metadata.json` 是 RO-Crate 1.1 JSON-LD，figure 通过 `about` 独立指向 source；三者都由同一份 state + `verify()` 渲染，不另读事件日志
 - 所有时间戳 UTC ISO-8601
 
 ---
@@ -166,7 +173,7 @@ $DSH_HOME/research-suite/
 | 13 个工具 schema | 5,751 | 5,748 |
 | **每次请求固定开销** | **6,254** | **6,240** |
 
-单项目读取开销（旧验收项目，51 事件、11 工件、已发布）：`REPORT.md` 2,715 / `campaign.json` 11,379 / `ledger.jsonl` 8,413 tokens。0.2 的 `REPORT.md` 增加了审查、矩阵与溯源清单，实际长度以项目为准。
+单项目读取开销（旧验收项目，51 事件、11 工件、已发布）：`REPORT.md` 2,715 / `campaign.json` 11,379 / `ledger.jsonl` 8,413 tokens。0.3 的 `REPORT.md` 增加审查签名与状态完整性行，实际长度以项目为准。
 
 复现：
 
@@ -183,10 +190,10 @@ python scripts/measure_tokens.py --campaign "$env:DSH_HOME\research-suite\campai
 
 ```powershell
 npm run check        # 语法 + client 构建新鲜度
-npm test             # 53 个测试
+npm test             # 61 个测试
 ```
 
-覆盖：事件链与篡改/截断检测、路径穿越、工件 64 MB 上限、非法 id、去重不重写、篡改修复、旧状态无 artifacts 数组、artifacts 目录双向对账（orphan_file / missing_entry）、九道闸门逐项阻断、完整九阶段流程、模板占位符、十三个工具 schema 与错误包装、自动化审查（引用/撤稿/引文失配/新鲜度/正文工件缺失/证据工件引用）、BibTeX 解析与往返（重复 key、kind 往返、100 条上限）、工件去重、图溯源、抽取矩阵/CSV（公式注入、表头特殊字符、空单元格）、provenance/RO-Crate（claims/evidence/extraction 节点、动态版本）、面板 HTTP、客户端纯函数。
+覆盖：事件链与篡改/截断检测、状态 digest、跨实例与跨进程写锁、stale state、路径穿越、工件 64 MB 上限、非法 id、去重不重写、篡改修复、旧状态无 artifacts 数组、artifacts 目录双向对账（orphan_file / missing_entry）、读时 TOCTOU（同 fd 校验 + 内容哈希）、审查 HMAC 签名与验签失败阻断、损坏密钥 fail-closed、九道闸门逐项阻断、完整九阶段流程、模板占位符、十三个工具 schema 与错误包装、自动化审查（引用/撤稿/引文失配/新鲜度/正文工件缺失/证据工件引用）、BibTeX 解析与往返（重复 key、kind 往返、100 条上限）、工件去重、图溯源、抽取矩阵/CSV（公式注入、表头特殊字符、空单元格）、PROV-JSON 关系解析与 RO-Crate figure→source 边、面板 HTTP、客户端纯函数。
 
 工件边界与对账探针（不依赖测试框架，失败时退出码 1）：
 
@@ -217,6 +224,16 @@ node scripts/repro-orphans.mjs
 - 导出：`REPORT.md` 6,665 B、`BUNDLE.zip` 52,581 B / 17 条目（7 个 artifacts + 10 个导出文件）；`provenance.json` 含 7 artifacts / 4 sources / 1 claim / 1 evidence / 1 extraction；RO-Crate `@graph` 19 节点，含 `Assertion`、`CreativeWork` 证据与 `PropertyValue` 抽取节点。
 - 链校验：`chainOk:true`、`brokenSeq:null`、`artifactProblems:[]`；审查 A-0001 在新增来源后 `fresh:false`，A-0002 fresh。
 
+### 0.3.0 加固核验（真实会话）
+
+- 新项目 `rs-79d63da4`《v0.3.0 加固核验：签名、状态哈希与 PROV》：1 条捕获来源、1 条 supported 断言、1 条证据、1 行抽取、2 份评审（含红队）、21 事件、1 工件；插件从 0.2 热切换到 0.3 后产生的 `A-0001` 未签名，用于验证迁移期行为，最新审查均有签名。
+- 审查签名：`A-0003` 起 `signature=014ab5…`、`keyId=2bf5ca36…`、`signatureVersion=hmac-sha256-v1`，`signature.ok=true`；review 闸门 `automated_audit` 显示 “audit A-0006 passed”，最终 **6/6** 通过。
+- 状态哈希：`integrity.stateHash=968491c1…`、`stateOk=true`；直接改 `state.json` 标题但保留旧 `stateHash` 后重启，`integrity.stateOk=false`（`state_hash_mismatch`），随后 `rsx_review audit` 记录 **A-0005**：`ok:false / blocking:["state_tampered"]`。修复标题后重审 **A-0006** 恢复 `ok:true`。
+- 发布闸门：`rsx_gate check stage:"release"` 的 `chain_integrity` 为 true，detail “hash chain, state.json and 1 artifacts verified”；其余上游/声明项按预期阻断。
+- 导出（`rs-79d63da4`）：`REPORT.md` 6,105 B、`provenance.json` 4,954 B、`ro-crate-metadata.json` 3,488 B、`BUNDLE.zip` 52,287 B / 11 条目；`provenance.json` 顶层键为 `activity,agent,entity,prefix,used,wasAssociatedWith,wasAttributedTo,wasDerivedFrom,wasGeneratedBy`，7 entity / 1 activity / 1 agent / 11 关系；RO-Crate 9 节点。
+- figure→source 边用带图的旧项目 `rs-b39d91d2` 重导出验证：`#figure-F-0001.about={"@id":"#source-S-0001"}`，`isBasedOn` 仍指 code/data 工件，`contentUrl` 指图像；`provenance.json` 17 entity / 1 activity / 1 agent / 28 关系、11,962 B，RO-Crate 19 节点、8,325 B。
+- 测试：61/61 通过（`npm test`，约 2.7 s）；`npm run check` 通过；跨进程锁测试真实启动子进程持锁，父进程在 40 ms 超时后得到 `locked`。
+
 ---
 
 ## 边界与不做的事
@@ -224,7 +241,12 @@ node scripts/repro-orphans.mjs
 - `rsx_run` **不执行命令**，只记录；agent 必须先用 shell/notebook 真跑，再登记真实输出。这是刻意设计：执行留在用户可审计的终端里。
 - 不内置文献检索/PDF 解析；检索由 agent 与现有工具完成，套件负责登记、哈希与引用一致性。
 - 不做统计推断；它检查“数字能否追到运行”，不检查“统计方法是否正确”（后者交给评审闸门与红队）。
-- `provenance.json` 是 **PROV 风格**（entity/activity/agent 的紧凑视图），不是完整 W3C PROV-O/PROV-JSON；需要严格互操作时以 `ro-crate-metadata.json` 的 RO-Crate 1.1 图为准。RO-Crate 图包含 claims/evidence/extraction，但 figure 的 source 关系目前不单独成边。
+- `provenance.json` 现在是 **W3C PROV-JSON** 最小完整视图（entity/activity/agent + 五类关系）；它不声称覆盖 PROV-O 的全部约束（如 `prov:wasInformedBy`、角色限定），严格约束校验请用 PROV 工具链再做一层。
+- RO-Crate 的 figure→source 边用 `about` 表达“图解释该来源”；`isBasedOn` 仍指代码/数据工件，两者语义分开。
+- 审查签名是**本机 HMAC**，密钥在同机数据目录：能挡住改 `state.json`/findings 后重算哈希，但挡不住拥有数据目录与密钥的本地攻击者；要更强 trust root 需外部 KMS/时间戳/透明日志。
+- `stateHash` 是未加盐 SHA-256，能发现意外修改与不一致，但不是抗本地重算的签名；它与事件尾锚定，真正的不可否认性由审查签名提供。
+- 写锁是本地文件锁，假设单个共享数据目录；跨主机共享盘（NFS/SMB）上的语义取决于文件系统，不声称分布式一致性。
+- 工件读取已消除 `stat`→`read` 的常见 TOCTOU（单 fd + 读后校验），但无法阻止内核/文件系统层在两次 `fstat` 之间篡改同一 inode 的极端场景；内容哈希是最终判据。
 - 演示项目的数据是**固定种子的合成队列**，用于验收管线，不是睡眠科学结论。
 
 ---

@@ -2,6 +2,42 @@
 
 All notable changes to this project are documented here. Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); versioning follows [SemVer](https://semver.org/).
 
+## [0.3.0] - 2026-11-18
+
+Hardening and interoperability release: standards-shaped provenance, signed audit decisions, a state digest anchored to the event tail, a cross-process write lock, and TOCTOU-safe artifact reads.
+
+### Added
+
+- **W3C PROV-JSON export**: `provenance.json` now uses only the PROV-JSON top-level keys (`prefix`, `entity`, `activity`, `agent`, `wasGeneratedBy`, `used`, `wasDerivedFrom`, `wasAttributedTo`, `wasAssociatedWith`). IDs are QNames (`dsh:source-S-0001`, `dsh:artifact-<hex>`, …) with `prov:` types and `dsh:` extension attributes; every relation target resolves to a declared entity, activity or agent. The previous compact "PROV-inspired" graph is now internal only.
+- **RO-Crate figure→source edge**: `#figure-F-0001` carries an independent `about: { "@id": "#source-S-0001" }` edge, separate from `isBasedOn` (code/data) and `contentUrl` (image). Root `hasPart` includes figures, numbers and the manuscript; sources carry `contentUrl` when captured.
+- **Audit signing (`lib/signing.js`)**: HMAC-SHA256 over `id/ok/verdict/findings/counts/blocking/subjectHash/stateHash/ts`, with a per-installation key at `signing-key.json` (created atomically, mode 0600, never exported), `keyId`, and `signatureVersion`. The review gate verifies the signature; unsigned, key-mismatched or edited audits are blocking. A corrupt key fails closed (`signing_key_corrupt`) instead of silently rotating and invalidating history.
+- **State digest**: `stateHash` in `state.json` covers the materialised state including `seq`/`lastHash`, excluding `stateHash`/`stateHashVersion`. `integrity` reports `stateHash`, `stateOk` and `stateProblems`; a mismatch adds a blocking `state_tampered` audit finding. Legacy states without the field return `stateOk: null`.
+- **Cross-process write lock**: `.write.lock` created with `open(..., "wx")`, released in `finally`, stale after 30s, `locked` after a 5s timeout. Before `save`/`emit` the store verifies the disk state is still a prefix of the in-memory event chain and rejects a newer writer with `stale_state`; sequential emit-then-save in one process remains supported.
+- **TOCTOU-safe artifact reads**: both artifact ingestion and `readArtifactBytes()` use a single fd (`open` → `fstat` size cap → read → post-`fstat`), verify the content hash, and compare the path's inode/size after reading. In-place changes report `hash_mismatch`; replacement/disappearance reports `changed_during_read`; `verify()` maps these distinctly.
+- **CI**: `actions/checkout@v5` and `actions/setup-node@v5` (Node 20 deprecation removed); matrix stays Node 22/24.
+- **Tests**: 61 total. New `test/unit/provenance.test.mjs` checks PROV-JSON key set, QName/type/attribute shape, relation-target resolution, `wasGeneratedBy`/`wasDerivedFrom` edges and the RO-Crate figure→source edge. New `test/unit/security.test.mjs` checks signature verification and tamper blocking, state digest tamper, two-store and real child-process lock contention, stale-state rejection, corrupt-key fail-closed, and a read-handle content race.
+
+### Changed
+
+- Version is `0.3.0` in `package.json`, `lib/config.js` and the client bundle (`client.js` rebuilt).
+- `audit().stateHash` records the pre-audit state digest as the audit anchor; the audit event itself advances the state digest. `auditList`/`auditView` expose per-audit `signature` verification; `renderAuditMarkdown` prints `HMAC-SHA256 / <keyId>` or `未签名`.
+- `provenance.json` format string is now `dsh-research-suite/prov-json/1` (was `dsh-research-suite/provenance/1`); consumers of the old compact arrays must migrate to PROV-JSON.
+- `gateRelease.chain_integrity` now also requires `stateOk !== false`; `renderReport` receives the same audit verifier so report gate summaries cannot show an unsigned audit as passing.
+
+### Fixed
+
+- `readArtifactBytes()` no longer stats a path and then reads it separately; the old sequence could return content that had changed between check and read.
+- `verify()` distinguishes invalid artifact ids (`invalid_id`) from I/O failures (`unreadable`) and read races (`changed_during_read`).
+- Legacy states without `seq`/`lastHash` still save and verify chain-only rather than being rejected by the new lock checks.
+
+### Known limits
+
+- The audit key is local HMAC, not a hardware/KMS or transparency-log root: it stops state/finding edits followed by hash recomputation, not an attacker who owns the data directory and key.
+- `stateHash` is an unkeyed digest anchored to the event tail; it detects inconsistency, while non-repudiation comes from the audit signature.
+- The write lock assumes one shared local data directory; NFS/SMB semantics are not claimed.
+- The single-fd read closes the common `stat`→`read` window but cannot defeat a kernel/filesystem attacker racing inode contents between `fstat` calls; the content hash remains the final check.
+- `rsx_run` still records, never executes; no literature search/PDF extraction.
+
 ## [0.2.0] - 2026-11-17
 
 "集百家之长" release: an automated reviewer, a literature extraction matrix, BibTeX interoperability, figure/data/code provenance, and FAIR export, all wired into the same ledger and gates.

@@ -225,11 +225,15 @@ test('export includes BibTeX, matrix, audit, provenance and RO-Crate', () => {
     assert.match(special, /\| — \|/u)
 
     const provenance = service.provenance(id)
-    assert.equal(provenance.provenance.format, 'dsh-research-suite/provenance/1')
-    assert.ok(provenance.provenance.artifacts.length >= 1)
-    assert.equal(provenance.provenance.claims.length, 1)
-    assert.equal(provenance.provenance.evidence.length, 1)
-    assert.equal(provenance.provenance.extraction.length, 2)
+    assert.equal(provenance.provenance.prefix.prov, 'http://www.w3.org/ns/prov#')
+    assert.equal(provenance.provenance.entity['dsh:document']['dsh:format'], 'dsh-research-suite/prov-json/1')
+    assert.ok(Object.keys(provenance.provenance.entity).some((key) => key.startsWith('dsh:artifact-')))
+    assert.equal(provenance.provenance.entity['dsh:claim-C-0001']['dsh:status'], 'supported')
+    assert.equal(provenance.provenance.entity['dsh:evidence-E-0001']['dsh:ref'], 'S-0001')
+    assert.equal(provenance.provenance.entity['dsh:extraction-X-0001']['dsh:dimension'], 'sample_size')
+    assert.equal(provenance.provenance.entity['dsh:extraction-X-0002']['dsh:value'], '=SUM(A1:A2)')
+    assert.equal(provenance.provenance.agent['dsh:software']['prov:type'], 'prov:SoftwareAgent')
+    assert.ok(Object.values(provenance.provenance.wasDerivedFrom).some((row) => row['prov:generatedEntity'] === 'dsh:evidence-E-0001'))
     assert.equal(provenance.roCrate['@context'], 'https://w3id.org/ro/crate/1.1/context')
     const graph = provenance.roCrate['@graph']
     assert.ok(graph.some((node) => node['@type'] === 'Dataset'))
@@ -237,7 +241,7 @@ test('export includes BibTeX, matrix, audit, provenance and RO-Crate', () => {
     assert.ok(graph.some((node) => node['@type'] === 'CreativeWork' && node.citation && String(node.citation['@id']).startsWith('#source-')))
     assert.ok(graph.some((node) => node['@type'] === 'PropertyValue' && node.name === 'sample_size'))
     assert.ok(graph.some((node) => node['@type'] === 'PropertyValue' && node.value === '=SUM(A1:A2)'))
-    const software = graph.find((node) => node['@id'] === 'software:dsh-research-suite')
+    const software = graph.find((node) => node['@id'] === 'dsh:software')
     assert.equal(software.version, VERSION)
     const root = graph.find((node) => node['@id'] === './')
     assert.ok(root.hasPart.some((item) => String(item['@id']).startsWith('artifacts/')))
@@ -249,7 +253,7 @@ test('export includes BibTeX, matrix, audit, provenance and RO-Crate', () => {
     // Direct builder call (no service version argument) must still use the
     // package version rather than a frozen literal.
     const direct = buildRoCrate(service.store.get(id))
-    assert.equal(direct['@graph'].find((node) => node['@id'] === 'software:dsh-research-suite').version, VERSION)
+    assert.equal(direct['@graph'].find((node) => node['@id'] === 'dsh:software').version, VERSION)
 
     const written = service.write(id, { action: 'export' })
     for (const key of ['bibtex', 'matrix', 'matrixCsv', 'audit', 'provenance', 'roCrate']) {

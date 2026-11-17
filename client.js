@@ -15,7 +15,7 @@ window.__ModuleLoader__.load({
     const NS = "dsh-research-suite"
     const API_BASE = "/dsh-research-suite"
     const REQ_HEADER = "x-dsh-research-suite"
-    const VERSION = "0.2.0"
+    const VERSION = "0.3.0"
     const LANG_KEY = "dsh-research-suite.lang"
 
     const STAGES = [

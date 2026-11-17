@@ -1,6 +1,6 @@
 {
   "name": "dsh-research-suite",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "private": true,
   "description": "科研套件（Research Suite）：把 DSH 变成可审计的科研项目工作台——模板起步、证据台账、九道闸门、自动化审查、BibTeX/证据矩阵/RO-Crate 研究包。",
   "license": "MIT",

@@ -4,7 +4,7 @@
  * Run: node scripts/repro-artifacts.mjs
  * Exits 1 when any check fails; prints a JSON report with codes and details.
  */
-import { mkdtempSync, readFileSync, rmSync, statSync, truncateSync, utimesSync, writeFileSync } from 'node:fs'
+import { mkdtempSync, readFileSync, rmSync, statSync, truncateSync, unlinkSync, utimesSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 
@@ -60,13 +60,29 @@ checks.push({
 })
 
 const legacy = { ...state, artifacts: undefined }
+let legacyArtifact = null
 record('legacy state without artifacts array', 'ok', () => {
-  store.addArtifact(legacy, Buffer.from('legacy'), 'stdout')
+  const added = store.addArtifact(legacy, Buffer.from('legacy'), 'stdout')
+  legacyArtifact = added.id
   return Array.isArray(legacy.artifacts) && legacy.artifacts.length === 1 ? 'ok' : 'missing-array'
 })
+// The legacy copy is a probe artifact, not a registered row in `state`; remove
+// its file before verifying the normal state so it is not an orphan.
+if (legacyArtifact) unlinkSync(store.artifactPath(state.id, legacyArtifact))
+store.save(state)
 
 const normal = store.verify(state.id)
-checks.push({ name: 'verify normal chain', expected: 'ok', ok: normal.chainOk === true && normal.events === state.seq, actual: normal })
+checks.push({
+  name: 'verify normal chain',
+  expected: 'ok',
+  ok:
+    normal.chainOk === true &&
+    normal.stateOk === true &&
+    normal.events === state.seq &&
+    normal.artifacts === state.artifacts.length &&
+    normal.artifactProblems.length === 0,
+  actual: normal,
+})
 
 state.artifacts.push({ id: 'sha256:not-a-hash', bytes: 1, role: 'source' })
 let invalid = null
