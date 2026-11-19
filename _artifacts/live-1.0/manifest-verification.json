@@ -1,0 +1,11 @@
+{
+  "ok": true,
+  "files": 25,
+  "failed": 0,
+  "manifestFiles": 25,
+  "format": "dsh-research-suite/export-manifest/1",
+  "schema": 5,
+  "gateOk": true,
+  "gatePassed": 13,
+  "gateTotal": 13
+}

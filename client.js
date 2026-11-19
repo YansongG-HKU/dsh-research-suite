@@ -15,7 +15,7 @@ window.__ModuleLoader__.load({
     const NS = "dsh-research-suite"
     const API_BASE = "/dsh-research-suite"
     const REQ_HEADER = "x-dsh-research-suite"
-    const VERSION = "0.5.0"
+    const VERSION = "1.1.0"
     const LANG_KEY = "dsh-research-suite.lang"
 
     const STAGES = [
@@ -36,6 +36,37 @@ window.__ModuleLoader__.load({
       zh: {
         panel: "科研套件",
         overview: "总览",
+        flywheel: "研究飞轮",
+        flywheelHint: "每一圈都从当前闸门的阻断项开始；把动作与观察写回台账，再决定下一圈。",
+        roundN: "第 {n} 圈",
+        preflight: "预备",
+        loopStatus: "循环状态",
+        loopIdle: "未启动",
+        loopRunning: "运行中",
+        loopPaused: "已暂停",
+        loopReady: "可交付",
+        loopStopped: "已停止",
+        loopLastCheck: "上次检查",
+        stageDone: "已完成 {done}/{total} 阶段",
+        stageProgress: "阶段",
+        gateProgress: "闸门",
+        iterationTrail: "迭代轨迹",
+        iterationEmptyTitle: "还没有循环记录",
+        iterationEmpty: "在对话里用 rsx_campaign action:\"cycle\" 把这一圈的目标、观察与决策写回台账；飞轮会从真实轮次里长出来。",
+        nextAction: "下一步动作",
+        noNext: "当前状态没有可执行建议。",
+        readyExport: "全部闸门通过，可导出研究包。",
+        openPause: "待处理暂停",
+        pauseHuman: "等待人工批准",
+        pauseInput: "等待输入",
+        pauseUnmapped: "需要人工判断",
+        pauseMissing: "循环已暂停，但没有找到开放的暂停记录。",
+        pauseHint: "处理完再在对话里调用 rsx_campaign action:\"loop\" resume:true；未变化的阻断会被拒绝。",
+        viewLedger: "查看台账",
+        viewAudit: "查看审查",
+        viewReport: "查看报告",
+        events: "事件",
+        humanCheckpoint: "人工检查点",
         ledger: "台账",
         templates: "模板",
         report: "报告",
@@ -53,7 +84,37 @@ window.__ModuleLoader__.load({
         auditMajor: "主要",
         auditMinor: "次要",
         downloadBibtex: "下载 references.bib",
+        downloadCsl: "下载 CSL-JSON",
+        downloadRis: "下载 RIS",
+        downloadPrisma: "下载 PRISMA",
+        portfolio: "组合",
+        score: "评分",
+        alerts: "告警",
+        portfolioHint: "跨项目总览：先处理完整性、过期审计、监控告警与待迁移，再进入项目。",
+        attention: "需关注",
+        needsAttention: "需关注",
+        released: "已发布",
+        activeCampaigns: "进行中",
+        openCampaign: "打开",
+        openPortfolio: "查看组合",
+        attentionEmpty: "没有需要关注的项目。",
+        noMatches: "没有匹配的项目。",
+        searchCampaigns: "搜索标题、ID 或领域",
+        lastSync: "同步于",
+        updated: "更新",
+        archivedProjects: "归档项目",
+        archivedEmpty: "还没有归档项目。",
+        archiveHint: "归档保留完整台账，可随时恢复。",
+        restore: "恢复",
+        restoreDone: "已恢复",
+        reasonStaleAudit: "审计过期",
+        reasonAuditBlocking: "审计阻断",
+        reasonMonitoringAlert: "监控告警",
+        reasonIntegrity: "完整性异常",
+        reasonSchema: "待迁移",
         bibtexDone: "BibTeX 已生成",
+        referencesDone: "参考文献已生成",
+        prismaDone: "PRISMA 流程图数据已生成",
         artifacts: "工件",
         matrixEmpty: "还没有抽取行。用 rsx_extract 把论文按维度抽成矩阵。",
         provenance: "溯源",
@@ -79,6 +140,9 @@ window.__ModuleLoader__.load({
         passed: "已通过",
         notRun: "未运行",
         sources: "来源",
+        searches: "检索",
+        sensitivities: "敏感性",
+        program: "研究程序",
         claims: "断言",
         evidence: "证据",
         numbers: "数字",
@@ -91,6 +155,13 @@ window.__ModuleLoader__.load({
         chainBroken: "事件链断裂",
         export: "导出研究包",
         exportDone: "研究包已生成",
+        actions: "研究动作",
+        actionsHint: "台账、审查随时可查；报告从写作阶段开放；导出需发布闸门通过且无暂停；归档是随时可恢复的收尾动作。",
+        working: "处理中…",
+        actionNeedRelease: "发布闸门通过后才能导出",
+        actionPaused: "先处理当前暂停",
+        actionNeedWrite: "写作阶段后可查看报告",
+        actionArchived: "项目已归档",
         continue: "继续研究",
         copied: "已复制到剪贴板",
         copyPrompt: "复制启动提示词",
@@ -124,6 +195,34 @@ window.__ModuleLoader__.load({
         language: "语言",
         dataDir: "数据目录",
         checkIntegrity: "校验事件链",
+        health: "健康",
+        healthHint: "体检只读：检查事件链、state 哈希、工件、索引、写锁、审计与 schema；修复动作需要单独点击。",
+        runHealth: "运行体检",
+        healthRunning: "体检中…",
+        healthOk: "全部通过",
+        healthErrors: "{n} 个错误",
+        healthWarnings: "{n} 个提醒",
+        healthIndex: "索引",
+        healthIndexOk: "索引一致",
+        healthIndexBad: "索引需重建",
+        healthUnmigrated: "待迁移",
+        healthSchema: "schema",
+        healthChain: "事件链",
+        healthArtifacts: "工件",
+        healthAudit: "审计",
+        healthStewardship: "治理",
+        healthLock: "写锁",
+        healthCampaign: "项目",
+        healthNoCampaigns: "还没有项目。",
+        reindex: "重建索引",
+        reindexDone: "索引已重建",
+        migrate: "迁移到 schema 5",
+        migrateConfirm: "显式迁移会先创建 state+ledger 备份，再改变项目契约。继续？",
+        migrateDone: "已迁移，请补齐治理字段",
+        alreadyCurrent: "已是当前 schema",
+        backup: "备份",
+        doctorChecks: "全局检查",
+        healthPaused: "体检失败",
         tierHint: "S 60k · M 400k · L 2M · XL 12M tokens",
         noGate: "尚未运行",
         gateAdvice: "在对话里调用 rsx_gate action:\"advance\"，通过后阶段才会前进。",
@@ -160,6 +259,37 @@ window.__ModuleLoader__.load({
       en: {
         panel: "Research Suite",
         overview: "Overview",
+        flywheel: "Research flywheel",
+        flywheelHint: "Each round starts from the current gate's blocker; write the action and observation back to the ledger before deciding the next round.",
+        roundN: "Round {n}",
+        preflight: "Preflight",
+        loopStatus: "Loop status",
+        loopIdle: "Not started",
+        loopRunning: "Running",
+        loopPaused: "Paused",
+        loopReady: "Ready",
+        loopStopped: "Stopped",
+        loopLastCheck: "Last check",
+        stageDone: "{done}/{total} stages done",
+        stageProgress: "stages",
+        gateProgress: "gate",
+        iterationTrail: "Iteration trail",
+        iterationEmptyTitle: "No cycle recorded yet",
+        iterationEmpty: "Use rsx_campaign action:\"cycle\" in the conversation to write this round's goal, observation and decision back to the ledger; the flywheel is built from real rounds, not estimates.",
+        nextAction: "Next action",
+        noNext: "No recommendation for this state.",
+        readyExport: "Every gate passed — export the research bundle.",
+        openPause: "Open pause",
+        pauseHuman: "Waiting for a human approval",
+        pauseInput: "Waiting for input",
+        pauseUnmapped: "Needs a human decision",
+        pauseMissing: "The loop is paused but no open pause record was found.",
+        pauseHint: "Resolve it, then call rsx_campaign action:\"loop\" resume:true in the conversation; an unchanged blocker is rejected.",
+        viewLedger: "Open ledger",
+        viewAudit: "Open review",
+        viewReport: "Open report",
+        events: "Events",
+        humanCheckpoint: "Human checkpoint",
         ledger: "Ledger",
         templates: "Templates",
         report: "Report",
@@ -177,7 +307,37 @@ window.__ModuleLoader__.load({
         auditMajor: "Major",
         auditMinor: "Minor",
         downloadBibtex: "Download references.bib",
+        downloadCsl: "Download CSL-JSON",
+        downloadRis: "Download RIS",
+        downloadPrisma: "Download PRISMA",
+        portfolio: "Portfolio",
+        score: "Score",
+        alerts: "Alerts",
+        portfolioHint: "Cross-campaign control room: clear integrity, stale audit, monitoring alerts and migrations before entering a campaign.",
+        attention: "Needs attention",
+        needsAttention: "Needs attention",
+        released: "Released",
+        activeCampaigns: "Active",
+        openCampaign: "Open",
+        openPortfolio: "Open portfolio",
+        attentionEmpty: "Nothing needs attention.",
+        noMatches: "No matching campaigns.",
+        searchCampaigns: "Search title, ID or domain",
+        lastSync: "Synced",
+        updated: "Updated",
+        archivedProjects: "Archived campaigns",
+        archivedEmpty: "No archived campaigns yet.",
+        archiveHint: "Archiving keeps the full ledger and can be restored at any time.",
+        restore: "Restore",
+        restoreDone: "Restored",
+        reasonStaleAudit: "stale audit",
+        reasonAuditBlocking: "audit blocking",
+        reasonMonitoringAlert: "monitoring alert",
+        reasonIntegrity: "integrity",
+        reasonSchema: "migration",
         bibtexDone: "BibTeX ready",
+        referencesDone: "References ready",
+        prismaDone: "PRISMA flow data ready",
         artifacts: "Artifacts",
         matrixEmpty: "No extraction rows yet. Use rsx_extract to build the matrix.",
         provenance: "Provenance",
@@ -203,6 +363,9 @@ window.__ModuleLoader__.load({
         passed: "passed",
         notRun: "not run",
         sources: "Sources",
+        searches: "Searches",
+        sensitivities: "Sensitivity",
+        program: "Program",
         claims: "Claims",
         evidence: "Evidence",
         numbers: "Numbers",
@@ -215,6 +378,13 @@ window.__ModuleLoader__.load({
         chainBroken: "event chain broken",
         export: "Export package",
         exportDone: "Research package written",
+        actions: "Research actions",
+        actionsHint: "Ledger and review are always available; report opens at the write stage; export needs a passed release gate and no open pause; archive is reversible and always available.",
+        working: "Working…",
+        actionNeedRelease: "Export opens after the release gate passes",
+        actionPaused: "Resolve the open pause first",
+        actionNeedWrite: "Report opens at the write stage",
+        actionArchived: "Campaign archived",
         continue: "Continue research",
         copied: "Copied",
         copyPrompt: "Copy launch prompt",
@@ -248,6 +418,34 @@ window.__ModuleLoader__.load({
         language: "Language",
         dataDir: "Data directory",
         checkIntegrity: "Verify event chain",
+        health: "Health",
+        healthHint: "The scan is read-only: chain, state hash, artifacts, index, write locks, audits and schema; repairs are separate clicks.",
+        runHealth: "Run health scan",
+        healthRunning: "Scanning…",
+        healthOk: "All clear",
+        healthErrors: "{n} error(s)",
+        healthWarnings: "{n} warning(s)",
+        healthIndex: "Index",
+        healthIndexOk: "index is consistent",
+        healthIndexBad: "index needs rebuilding",
+        healthUnmigrated: "unmigrated",
+        healthSchema: "schema",
+        healthChain: "Chain",
+        healthArtifacts: "Artifacts",
+        healthAudit: "Audit",
+        healthStewardship: "Stewardship",
+        healthLock: "Write lock",
+        healthCampaign: "Campaign",
+        healthNoCampaigns: "No campaigns yet.",
+        reindex: "Reindex",
+        reindexDone: "Index rebuilt",
+        migrate: "Migrate to schema 5",
+        migrateConfirm: "An explicit migration writes a state+ledger backup first, then changes the campaign contract. Continue?",
+        migrateDone: "Migrated — complete the stewardship fields",
+        alreadyCurrent: "Already current",
+        backup: "Backup",
+        doctorChecks: "Global checks",
+        healthPaused: "Health scan failed",
         tierHint: "S 60k · M 400k · L 2M · XL 12M tokens",
         noGate: "not run yet",
         gateAdvice: "Call rsx_gate action:\"advance\" in the conversation; the stage only moves on a pass.",
@@ -370,13 +568,25 @@ window.__ModuleLoader__.load({
       }
     }
 
+    function apiFailure(response, payload) {
+      const error = new Error(payload && payload.error ? payload.error : `HTTP ${response.status}`)
+      if (payload && payload.code) error.code = payload.code
+      if (payload && payload.detail) error.detail = payload.detail
+      error.status = response.status
+      return error
+    }
+
+    /** Keep the machine code visible so an operator can act on a refusal. */
+    function errorText(error, lang) {
+      if (!error) return ""
+      const message = error.message || String(error)
+      return error.code ? `[${error.code}] ${message}` : message
+    }
+
     async function apiGet(path) {
       const response = await fetch(API_BASE + path, { headers: { accept: "application/json" } })
       const payload = await response.json().catch(() => null)
-      if (!response.ok || !payload || payload.ok !== true) {
-        const message = payload && payload.error ? payload.error : `HTTP ${response.status}`
-        throw new Error(message)
-      }
+      if (!response.ok || !payload || payload.ok !== true) throw apiFailure(response, payload)
       return payload.data
     }
 
@@ -387,12 +597,7 @@ window.__ModuleLoader__.load({
         body: JSON.stringify(body || {}),
       })
       const payload = await response.json().catch(() => null)
-      if (!response.ok || !payload || payload.ok !== true) {
-        const message = payload && payload.error ? payload.error : `HTTP ${response.status}`
-        const error = new Error(message)
-        if (payload && payload.detail) error.detail = payload.detail
-        throw error
-      }
+      if (!response.ok || !payload || payload.ok !== true) throw apiFailure(response, payload)
       return payload.data
     }
 
@@ -412,6 +617,69 @@ window.__ModuleLoader__.load({
       if (index < currentIndex) return "ok"
       if (index === currentIndex) return gate && gate.ok ? "ok" : "current"
       return "idle"
+    }
+
+    /**
+     * The flywheel is a view over real ledger state, never a separate score.
+     * A stage is:
+     *   blocked — its latest gate check failed (only up to the current stage),
+     *   done    — it is behind the current stage, or its current gate passed,
+     *   current — the campaign is sitting on it with no passing gate,
+     *   pending — not reached yet.
+     */
+    function flywheelModel(state, gate) {
+      const currentRaw = STAGES.findIndex((item) => item.id === (state && state.stage))
+      const currentIndex = currentRaw < 0 ? 0 : currentRaw
+      const gates = latestGates(state)
+      const liveGate = gate && STAGES[currentIndex] && gate.stage === STAGES[currentIndex].id ? gate : null
+      const nodes = STAGES.map((stage, index) => {
+        const stageGate = gates[stage.id]
+        const gateOk = stageGate ? stageGate.ok === true : index === currentIndex && liveGate ? liveGate.ok === true : null
+        let status = "pending"
+        if (index <= currentIndex && gateOk === false) status = "blocked"
+        else if (index < currentIndex) status = "done"
+        else if (index === currentIndex) status = gateOk === true ? "done" : "current"
+        return { id: stage.id, index: index, status: status, gateOk: gateOk }
+      })
+      const done = nodes.filter((node) => node.status === "done").length
+      const blocked = nodes.filter((node) => node.status === "blocked")
+      const cycles = safeArray(state && state.cycles)
+      return {
+        nodes: nodes,
+        currentIndex: currentIndex,
+        done: done,
+        total: STAGES.length,
+        progress: STAGES.length ? done / STAGES.length : 0,
+        blocked: blocked,
+        round: cycles.length,
+        hasCycles: cycles.length > 0,
+        gatePassed: gate && Number.isFinite(Number(gate.passed)) ? Number(gate.passed) : 0,
+        gateTotal: gate && Number.isFinite(Number(gate.total)) ? Number(gate.total) : 0,
+        gateOk: gate ? gate.ok === true : null,
+      }
+    }
+
+    function flywheelActionAvailability(state, gate, options) {
+      const opts = options || {}
+      const model = flywheelModel(state, gate)
+      const releaseNode = model.nodes[model.nodes.length - 1] || null
+      const releasePassed = Boolean(releaseNode && releaseNode.gateOk === true)
+      const archived = Boolean(state && state.archived === true)
+      const paused = opts.paused === true
+      const busy = opts.busy === true
+      const writeIndex = STAGES.findIndex((item) => item.id === "write")
+      const reportReady = writeIndex >= 0 && model.currentIndex >= writeIndex
+      // Export is a delivery action and follows the release gate. Archive is a
+      // reversible lifecycle action: blocked or paused work can be shelved.
+      const exportReason = paused ? "paused" : archived ? "archived" : !releasePassed ? "release" : busy ? "busy" : null
+      const archiveReason = archived ? "archived" : busy ? "busy" : null
+      return {
+        export: { enabled: exportReason === null, reason: exportReason },
+        ledger: { enabled: true, reason: null },
+        audit: { enabled: true, reason: null },
+        report: { enabled: reportReady, reason: reportReady ? null : "write" },
+        archive: { enabled: archiveReason === null, reason: archiveReason },
+      }
     }
 
     function campaignPrompt(campaign, lang) {
@@ -445,8 +713,8 @@ window.__ModuleLoader__.load({
 .rsx-icon-btn{background:transparent;border:1px solid transparent;border-radius:7px;padding:5px 7px;cursor:pointer;color:var(--rsx-muted);display:inline-flex;align-items:center;gap:5px}
 .rsx-icon-btn:hover{background:var(--rsx-sunken);color:var(--rsx-ink)}
 .rsx-icon-btn[aria-pressed="true"]{background:var(--rsx-accent-soft);color:var(--rsx-accent)}
-.rsx-nav{display:flex;gap:2px;padding:8px 14px 0;background:var(--rsx-surface);border-bottom:1px solid var(--rsx-line)}
-.rsx-tab{background:transparent;border:0;border-bottom:2px solid transparent;padding:7px 11px 8px;cursor:pointer;color:var(--rsx-muted);font-weight:550;display:inline-flex;align-items:center;gap:6px}
+.rsx-nav{display:flex;gap:2px;padding:8px 14px 0;background:var(--rsx-surface);border-bottom:1px solid var(--rsx-line);flex-wrap:nowrap;overflow-x:auto;scrollbar-width:thin}
+.rsx-tab{background:transparent;border:0;border-bottom:2px solid transparent;padding:7px 11px 8px;cursor:pointer;color:var(--rsx-muted);font-weight:550;display:inline-flex;align-items:center;gap:6px;flex:none}
 .rsx-tab:hover{color:var(--rsx-ink)}
 .rsx-tab[aria-selected="true"]{color:var(--rsx-accent);border-bottom-color:var(--rsx-accent)}
 .rsx-count{font-size:10px;background:var(--rsx-sunken);border-radius:99px;padding:0 6px;color:var(--rsx-muted)}
@@ -520,13 +788,33 @@ window.__ModuleLoader__.load({
 .rsx-btn.ghost:hover{background:var(--rsx-sunken);color:var(--rsx-ink)}
 .rsx-btn.danger{color:var(--rsx-bad);border-color:var(--rsx-line)}
 .rsx-btn:disabled{opacity:.5;cursor:not-allowed}
+.rsx-root button:focus-visible,.rsx-root input:focus-visible,.rsx-root select:focus-visible,.rsx-root textarea:focus-visible,.rsx-root [tabindex]:focus-visible{outline:2px solid var(--rsx-accent);outline-offset:2px}
+@media (prefers-reduced-motion:reduce){.rsx-root *,.rsx-icon-btn.is-spinning svg{animation-duration:.001ms !important;animation-iteration-count:1 !important;transition:none !important}}
+@media (max-width:700px){.rsx-top{padding:10px 12px;gap:8px}.rsx-select{max-width:100%;flex:1 1 160px}.rsx-brand .rsx-title{font-size:13px}.rsx-body{padding:12px 12px 28px}}
 .rsx-tpl-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:11px}
 .rsx-tpl{display:flex;flex-direction:column;gap:7px;background:var(--rsx-surface);border:1px solid var(--rsx-line);border-radius:11px;padding:12px;box-shadow:var(--rsx-shadow)}
 .rsx-tpl:hover{border-color:var(--rsx-accent)}
 .rsx-tpl-title{font-weight:650;font-size:13px;display:flex;align-items:center;gap:7px}
 .rsx-tpl-sum{font-size:11.5px;color:var(--rsx-muted);min-height:34px}
 .rsx-chips{display:flex;flex-wrap:wrap;gap:4px}
-.rsx-chip{font-size:10px;background:var(--rsx-sunken);border-radius:5px;padding:1px 6px;color:var(--rsx-muted)}
+.rsx-chip{font-size:10px;background:var(--rsx-sunken);border:1px solid transparent;border-radius:99px;padding:2px 8px;color:var(--rsx-muted)}
+button.rsx-chip{cursor:pointer;font:inherit;font-size:10.5px;display:inline-flex;align-items:center;gap:5px}
+button.rsx-chip:hover{color:var(--rsx-ink);border-color:var(--rsx-line)}
+button.rsx-chip.on{background:var(--rsx-accent-soft);color:var(--rsx-accent);border-color:var(--rsx-accent)}
+.rsx-toolbar{gap:8px;align-items:center}
+.rsx-arch-list{display:flex;flex-direction:column;gap:7px}
+.rsx-arch-row{display:flex;align-items:center;gap:10px;padding:9px 10px;background:var(--rsx-sunken);border:1px solid var(--rsx-line);border-radius:9px;min-width:0}
+.rsx-issues summary{cursor:pointer;color:var(--rsx-muted);font-size:10.5px;white-space:nowrap}
+.rsx-issues summary:hover{color:var(--rsx-ink)}
+.rsx-issue-count{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-weight:650}
+.rsx-issues ul{margin:6px 0 0;padding-left:14px;display:flex;flex-direction:column;gap:3px;min-width:180px;max-width:320px}
+.rsx-issues li{font-size:10.5px;color:var(--rsx-muted);overflow-wrap:anywhere}
+.rsx-issues code{font-size:9.5px;border-radius:4px;padding:0 3px;background:var(--rsx-sunken);text-transform:uppercase}
+.rsx-issue-error{color:var(--rsx-bad)}
+.rsx-issue-warning{color:var(--rsx-warn)}
+.rsx-issue-info{color:var(--rsx-muted)}
+.rsx-icon-btn.is-spinning svg{animation:rsx-spin .9s linear infinite}
+@keyframes rsx-spin{to{transform:rotate(360deg)}}
 .rsx-tpl-foot{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:auto;padding-top:4px}
 .rsx-md{margin:0;white-space:pre-wrap;word-break:break-word;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:11.5px;line-height:1.65;background:var(--rsx-sunken);border:1px solid var(--rsx-line);border-radius:10px;padding:14px;max-height:calc(100vh - 300px);overflow:auto}
 .rsx-modal-ov{position:fixed;inset:0;background:rgba(20,26,24,.42);display:flex;align-items:center;justify-content:center;z-index:50;padding:18px}
@@ -554,6 +842,65 @@ window.__ModuleLoader__.load({
 .rsx-stage-banner.bad{background:var(--rsx-bad-soft);border-color:var(--rsx-bad)}
 .rsx-stage-banner .rsx-stage-name{font-size:16px;font-weight:700}
 .rsx-stage-banner .rsx-stage-sub{font-size:11.5px;color:var(--rsx-muted)}
+.rsx-project-head{display:flex;align-items:flex-start;gap:14px;flex-wrap:wrap;padding:2px 2px 0}
+.rsx-project-head .rsx-h1{font-size:20px}
+.rsx-project-meta{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-top:7px}
+.rsx-flywheel{display:grid;grid-template-columns:minmax(300px,360px) minmax(0,1fr);background:var(--rsx-surface);border:1px solid var(--rsx-line);border-radius:16px;box-shadow:var(--rsx-shadow);overflow:hidden}
+.rsx-fly-visual{position:relative;display:flex;align-items:center;justify-content:center;min-height:360px;padding:18px;background:radial-gradient(circle at 50% 50%,var(--rsx-accent-soft),transparent 68%),var(--rsx-bg);border-right:1px solid var(--rsx-line)}
+.rsx-fly-visual svg{width:100%;max-width:330px;height:auto;display:block}
+.rsx-fly-center{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:112px;height:112px;border-radius:50%;background:var(--rsx-surface);border:1px solid var(--rsx-line);box-shadow:var(--rsx-shadow);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;pointer-events:none;gap:1px}
+.rsx-fly-round{font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--rsx-faint)}
+.rsx-fly-center b{font-size:17px;line-height:1.15;letter-spacing:-.02em}
+.rsx-fly-done{font-size:11px;font-weight:700;color:var(--rsx-accent);line-height:1.2}
+.rsx-fly-done-label{font-size:9px;color:var(--rsx-muted)}
+.rsx-fly-label{fill:var(--rsx-muted);font-size:9.5px;font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;font-weight:550;letter-spacing:.02em}
+.rsx-fly-label.current{fill:var(--rsx-accent);font-weight:750}
+.rsx-fly-main{padding:18px 20px;display:flex;flex-direction:column;gap:11px;min-width:0}
+.rsx-eyebrow{font-size:9.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--rsx-faint)}
+.rsx-fly-headline{display:flex;flex-direction:column;gap:4px}
+.rsx-fly-current{font-size:17px;font-weight:700;display:block;letter-spacing:-.01em}
+.rsx-fly-gate-line{font-size:11.5px;color:var(--rsx-muted);overflow-wrap:anywhere}
+.rsx-fly-kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}
+.rsx-fly-kpi{background:var(--rsx-sunken);border-radius:8px;padding:6px 8px;min-width:0}
+.rsx-fly-kpi b{display:block;font-size:15px;font-weight:680;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rsx-fly-kpi span{font-size:9.5px;color:var(--rsx-muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:block}
+.rsx-fly-pause{display:flex;gap:8px;padding:8px 10px;border:1px solid var(--rsx-warn);background:var(--rsx-warn-soft);border-radius:9px;color:var(--rsx-ink);font-size:11px;align-items:flex-start}
+.rsx-fly-pause-ico{width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:var(--rsx-surface);color:var(--rsx-warn);flex:none;margin-top:1px}
+.rsx-next-card{border:1px solid var(--rsx-line);background:var(--rsx-bg);border-left:3px solid var(--rsx-accent);border-radius:9px;padding:10px 11px;display:flex;flex-direction:column;gap:7px}
+.rsx-next-card.bad{border-left-color:var(--rsx-bad)}
+.rsx-next-card.ready{border-left-color:var(--rsx-ok)}
+.rsx-next-title{font-size:13px;font-weight:650;line-height:1.4;overflow-wrap:anywhere}
+.rsx-next-code{display:block;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:10px;line-height:1.55;background:var(--rsx-sunken);border:1px solid var(--rsx-line);padding:4px 6px;border-radius:4px;color:var(--rsx-muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:100%}
+.rsx-fly-foot{display:flex;align-items:center;gap:10px;flex-wrap:wrap;border-top:1px dashed var(--rsx-line);padding-top:8px;font-size:11px;color:var(--rsx-muted)}
+.rsx-fly-actions-wrap{display:flex;flex-direction:column;gap:6px;border-top:1px dashed var(--rsx-line);padding-top:9px}
+.rsx-fly-actions-head{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
+.rsx-fly-actions{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px}
+.rsx-fly-action{display:inline-flex;align-items:center;justify-content:center;gap:5px;min-width:0;padding:7px 6px;border:1px solid var(--rsx-line);border-radius:7px;background:var(--rsx-surface);color:var(--rsx-ink);font-size:11px;font-weight:600;line-height:1.2;font-family:inherit;white-space:nowrap;cursor:pointer}
+.rsx-fly-action span{min-width:0;overflow:hidden;text-overflow:ellipsis}
+.rsx-fly-action:hover:not(:disabled){border-color:var(--rsx-accent);background:var(--rsx-accent-soft);color:var(--rsx-accent)}
+.rsx-fly-action:active:not(:disabled){transform:translateY(1px)}
+.rsx-fly-action.primary{border-color:var(--rsx-accent);background:var(--rsx-accent);color:#fff}
+.rsx-fly-action.primary:hover:not(:disabled){filter:brightness(.96);background:var(--rsx-accent);color:#fff}
+.rsx-fly-action:focus-visible{outline:2px solid var(--rsx-accent);outline-offset:2px}
+.rsx-fly-action:disabled{opacity:.42;cursor:not-allowed;background:var(--rsx-sunken);border-color:var(--rsx-line);color:var(--rsx-muted);box-shadow:none;transform:none}
+.rsx-action-hint{font-size:10px;line-height:1.45;color:var(--rsx-muted);overflow-wrap:anywhere}
+.rsx-trail{display:flex;flex-direction:column}
+.rsx-trail-row{display:flex;gap:9px;padding:9px 0;border-bottom:1px dashed var(--rsx-line)}
+.rsx-trail-row:first-child{padding-top:0}
+.rsx-trail-row:last-child{border-bottom:0;padding-bottom:0}
+.rsx-trail-dot{width:8px;height:8px;border-radius:50%;background:var(--rsx-muted);margin-top:5px;flex:none;box-shadow:0 0 0 3px var(--rsx-sunken)}
+.rsx-trail-dot.ok{background:var(--rsx-ok)}
+.rsx-trail-dot.bad{background:var(--rsx-bad)}
+.rsx-trail-dot.warn{background:var(--rsx-warn)}
+.rsx-trail-main{min-width:0;flex:1;display:flex;flex-direction:column;gap:3px}
+.rsx-trail-title{display:flex;align-items:center;gap:7px;flex-wrap:wrap}
+.rsx-trail-title code{font-size:10px;font-weight:700;color:var(--rsx-ink);background:var(--rsx-sunken);padding:1px 5px;border-radius:4px}
+.rsx-trail-goal{font-size:12px;font-weight:600;line-height:1.4;overflow-wrap:anywhere}
+.rsx-trail-obs{font-size:11px;color:var(--rsx-muted);line-height:1.45;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;overflow-wrap:anywhere}
+.rsx-trail-empty{display:flex;gap:9px;align-items:flex-start;padding:12px;background:var(--rsx-sunken);border-radius:9px;color:var(--rsx-muted);font-size:11.5px}
+.rsx-trail-empty b{color:var(--rsx-ink);display:block;margin-bottom:2px}
+@media (max-width:980px){.rsx-flywheel{grid-template-columns:1fr}.rsx-fly-visual{border-right:0;border-bottom:1px solid var(--rsx-line);min-height:310px;padding:10px}.rsx-fly-visual svg{max-width:300px}.rsx-fly-main{padding:14px 16px 16px}}
+@media (max-width:700px){.rsx-fly-kpis{grid-template-columns:repeat(2,minmax(0,1fr))}.rsx-project-head .rsx-h1{font-size:18px}.rsx-fly-visual{min-height:280px}.rsx-fly-visual svg{max-width:270px}.rsx-fly-center{width:96px;height:96px}.rsx-fly-center b{font-size:15px}.rsx-fly-foot{gap:7px}.rsx-fly-actions{grid-template-columns:repeat(3,minmax(0,1fr))}}
 `
 
     let styleInjected = false
@@ -775,21 +1122,386 @@ window.__ModuleLoader__.load({
       )
     }
 
+    function FlyAction(props) {
+      const p = props || {}
+      const disabled = Boolean(p.disabled)
+      const hint = disabled && p.reason ? `${p.label}：${p.reason}` : p.label || ""
+      return h(
+        "button",
+        {
+          type: "button",
+          className: "rsx-fly-action" + (p.tone ? " " + p.tone : "") + (disabled ? " is-disabled" : ""),
+          disabled: disabled,
+          "aria-disabled": disabled ? "true" : undefined,
+          title: hint,
+          "data-action": p.actionId || undefined,
+          onClick: disabled ? undefined : p.onClick,
+        },
+        h(Icon, { name: p.icon, size: 13 }),
+        h("span", null, p.label),
+      )
+    }
+
+    function Flywheel(props) {
+      const p = props || {}
+      const t = p.t
+      const lang = p.lang
+      const state = p.state || {}
+      const gate = p.gate || null
+      const next = p.next || null
+      const model = flywheelModel(state, gate)
+      const [copied, setCopied] = useState("")
+      const busy = p.busy === true
+      const loop = state.loop || {}
+      const pauses = safeArray(state.loopPauses)
+      const openPause = [...pauses].reverse().find((item) => item && item.status === "open") || null
+      const paused = loop.status === "paused" || Boolean(openPause)
+      const actionAvailability = flywheelActionAvailability(state, gate, { paused: paused, busy: busy })
+      const loopStatus = paused ? "paused" : String(loop.status || "idle")
+      const loopLabels = {
+        idle: t("loopIdle"),
+        running: t("loopRunning"),
+        paused: t("loopPaused"),
+        ready: t("loopReady"),
+        stopped: t("loopStopped"),
+      }
+      const loopLabel = loopLabels[loopStatus] || loopLabels.idle
+      const loopTone = loopStatus === "paused" ? "warn" : loopStatus === "running" ? "accent" : loopStatus === "ready" ? "ok" : loopStatus === "stopped" ? "bad" : "muted"
+      const pauseLabels = {
+        human_checkpoint: t("pauseHuman"),
+        needs_input: t("pauseInput"),
+        unmapped_gate: t("pauseUnmapped"),
+      }
+      const pauseLabel = openPause ? pauseLabels[openPause.kind] || t("openPause") : t("pauseMissing")
+      const pauseReason = openPause ? String(openPause.reason || openPause.detail || "").trim() : t("pauseMissing")
+      const primary = next && next.primary ? next.primary : null
+      const stop = next && next.stop ? next.stop : {}
+      const ready = stop.ready === true
+      const blocked = stop.blocked === true
+      const currentStage = stageLabel(state.stage, lang)
+      const currentGate = gate
+        ? gate.ok
+          ? lang === "en" ? "All gate checks pass." : "当前闸门全部通过。"
+          : `${lang === "en" ? "Blocking" : "阻断项"}: ${safeArray(gate.blocking).join(", ") || "—"}`
+        : t("noGate")
+      const nextTitle = ready
+        ? t("readyExport")
+        : blocked
+          ? String(stop.reason || t("noNext"))
+          : primary
+            ? `${primary.label || primary.tool || "—"}${primary.tool ? " · " + primary.tool : ""}`
+            : t("noNext")
+      const roundLabel = model.hasCycles ? t("roundN", { n: model.round }) : t("preflight")
+      const metrics = [
+        { value: model.gateTotal ? `${model.gatePassed}/${model.gateTotal}` : "—", label: t("gateProgress") },
+        { value: fmtNum(safeArray(state.evidence).length), label: t("evidence") },
+        { value: fmtNum(safeArray(state.sources).length), label: t("sources") },
+        { value: fmtNum(state.seq || 0), label: t("events") },
+      ]
+      const copy = (value, key) => {
+        void copyText(value).then((ok) => setCopied(ok ? key : ""))
+      }
+      const go = (view) => {
+        if (typeof p.onView === "function") p.onView(view)
+      }
+      const execute = () => {
+        if (typeof p.onPrompt === "function") p.onPrompt(campaignPrompt(state, lang))
+      }
+      const actionReason = (id) => {
+        const info = actionAvailability[id]
+        if (!info || !info.reason) return ""
+        const labels = {
+          paused: t("actionPaused"),
+          archived: t("actionArchived"),
+          release: t("actionNeedRelease"),
+          write: t("actionNeedWrite"),
+          busy: t("working"),
+        }
+        return labels[info.reason] || t("working")
+      }
+      const actionDefs = [
+        { id: "export", label: t("export"), icon: "download", tone: "primary", onClick: () => p.onExport && p.onExport(state.id) },
+        { id: "ledger", label: t("viewLedger"), icon: "list", onClick: () => go("ledger") },
+        { id: "audit", label: t("viewAudit"), icon: "shield", onClick: () => go("audit") },
+        { id: "report", label: t("viewReport"), icon: "doc", onClick: () => go("report") },
+        { id: "archive", label: t("archive"), icon: "archive", onClick: () => p.onArchive && p.onArchive(state.id) },
+      ].map((action) => {
+        const info = actionAvailability[action.id] || { enabled: false, reason: null }
+        return { ...action, disabled: !info.enabled, reason: actionReason(action.id) }
+      })
+
+      const cx = 170
+      const cy = 170
+      const radius = 126
+      const labelRadius = 92
+      const circumference = 2 * Math.PI * radius
+      const arc = Math.max(0, Math.min(1, model.progress)) * circumference
+      const nodes = model.nodes.map((node, index) => {
+        const angle = -Math.PI / 2 + (index * 2 * Math.PI) / model.total
+        const x = cx + radius * Math.cos(angle)
+        const y = cy + radius * Math.sin(angle)
+        const lx = cx + labelRadius * Math.cos(angle)
+        const ly = cy + labelRadius * Math.sin(angle)
+        const label = stageLabel(node.id, lang)
+        const fill =
+          node.status === "done"
+            ? "var(--rsx-ok)"
+            : node.status === "blocked"
+              ? "var(--rsx-bad)"
+              : node.status === "current"
+                ? "var(--rsx-accent)"
+                : "var(--rsx-sunken)"
+        const ink =
+          node.status === "pending"
+            ? "var(--rsx-muted)"
+            : node.status === "current"
+              ? "var(--rsx-surface)"
+              : "#fff"
+        return h(
+          "g",
+          { key: node.id, className: "rsx-fly-node " + node.status },
+          h("title", null, `${label} · ${node.status}`),
+          index === model.currentIndex
+            ? h("circle", { cx: x, cy: y, r: 13, fill: "none", stroke: "var(--rsx-accent)", strokeWidth: 1, strokeDasharray: "2 3", opacity: 0.7 })
+            : null,
+          h("circle", {
+            cx: x,
+            cy: y,
+            r: node.status === "current" ? 9.5 : 7.5,
+            fill: fill,
+            stroke: node.status === "current" ? "var(--rsx-surface)" : fill,
+            strokeWidth: node.status === "current" ? 3 : 1,
+          }),
+          node.status === "done"
+            ? h("path", {
+                d: `M${x - 3.1} ${y} l2.2 2.2 4.3-4.3`,
+                fill: "none",
+                stroke: "#fff",
+                strokeWidth: 1.8,
+                strokeLinecap: "round",
+                strokeLinejoin: "round",
+              })
+            : h(
+                "text",
+                {
+                  x: x,
+                  y: y + 3.2,
+                  textAnchor: "middle",
+                  style: { fill: ink, fontSize: 8, fontWeight: 700, fontFamily: "ui-sans-serif, system-ui, sans-serif" },
+                },
+                node.status === "blocked" ? "!" : String(index + 1),
+              ),
+          h(
+            "text",
+            {
+              x: lx,
+              y: ly + 3.2,
+              textAnchor: "middle",
+              className: "rsx-fly-label" + (index === model.currentIndex ? " current" : ""),
+            },
+            label,
+          ),
+        )
+      })
+
+      return h(
+        "section",
+        { className: "rsx-flywheel", "aria-label": t("flywheel") },
+        h(
+          "div",
+          { className: "rsx-fly-visual" },
+          h(
+            "svg",
+            { viewBox: "0 0 340 340", role: "img", "aria-label": `${t("flywheel")}: ${currentStage}, ${t("stageDone", { done: model.done, total: model.total })}` },
+            h("circle", { cx: cx, cy: cy, r: 146, fill: "none", stroke: "var(--rsx-line)", strokeWidth: 1, opacity: 0.55 }),
+            h("circle", { cx: cx, cy: cy, r: radius, fill: "none", stroke: "var(--rsx-line)", strokeWidth: 1.4, strokeDasharray: "3 7" }),
+            h("circle", {
+              cx: cx,
+              cy: cy,
+              r: radius,
+              fill: "none",
+              stroke: "var(--rsx-accent)",
+              strokeWidth: 2,
+              strokeLinecap: "round",
+              strokeDasharray: `${arc} ${circumference}`,
+              transform: `rotate(-90 ${cx} ${cy})`,
+              opacity: model.progress > 0 ? 1 : 0,
+            }),
+            nodes,
+          ),
+          h(
+            "div",
+            { className: "rsx-fly-center" },
+            h("span", { className: "rsx-fly-round" }, roundLabel),
+            h("b", null, currentStage),
+            h("span", { className: "rsx-fly-done" }, `${model.done}/${model.total}`),
+            h("span", { className: "rsx-fly-done-label" }, t("stageProgress")),
+          ),
+        ),
+        h(
+          "div",
+          { className: "rsx-fly-main" },
+          h(
+            "div",
+            { className: "rsx-row" },
+            h("span", { className: "rsx-eyebrow" }, t("flywheel")),
+            h("span", { className: "rsx-note" }, roundLabel),
+            h("div", { className: "rsx-top-spacer" }),
+            h(Badge, { tone: loopTone, dot: true }, loopLabel),
+          ),
+          h(
+            "div",
+            { className: "rsx-fly-headline" },
+            h("div", null, h("span", { className: "rsx-fly-current" }, t("current") + " · " + currentStage), h("span", { className: "rsx-note" }, model.hasCycles ? t("stageDone", { done: model.done, total: model.total }) : t("flywheelHint"))),
+            h("div", { className: "rsx-fly-gate-line" }, currentGate),
+          ),
+          paused
+            ? h(
+                "div",
+                { className: "rsx-fly-pause" },
+                h("div", { className: "rsx-fly-pause-ico" }, h(Icon, { name: "alert", size: 15 })),
+                h(
+                  "div",
+                  { style: { minWidth: 0, flex: 1 } },
+                  h(
+                    "div",
+                    { className: "rsx-row" },
+                    h("b", null, pauseLabel),
+                    h(Badge, { tone: "warn" }, openPause ? openPause.id : t("openPause")),
+                    openPause && openPause.blocking && openPause.blocking.length ? h("span", { className: "rsx-note" }, safeArray(openPause.blocking).join(" · ")) : null,
+                  ),
+                  h("div", { className: "rsx-note", style: { marginTop: 3 } }, pauseReason),
+                  h("div", { className: "rsx-note", style: { marginTop: 3, opacity: 0.85 } }, t("pauseHint")),
+                ),
+              )
+            : null,
+          h(
+            "div",
+            { className: "rsx-fly-kpis" },
+            metrics.map((metric) =>
+              h(
+                "div",
+                { key: metric.label, className: "rsx-fly-kpi" },
+                h("b", null, metric.value),
+                h("span", null, metric.label),
+              ),
+            ),
+          ),
+          h(
+            "div",
+            { className: "rsx-next-card" + (blocked ? " bad" : ready ? " ready" : "") },
+            h(
+              "div",
+              { className: "rsx-row" },
+              h("span", { className: "rsx-eyebrow" }, t("nextAction")),
+              ready ? h(Badge, { tone: "ok" }, t("loopReady")) : blocked ? h(Badge, { tone: "bad" }, t("loopStopped")) : primary && primary.human ? h(Badge, { tone: "warn" }, t("humanCheckpoint")) : h(Badge, { tone: "accent" }, next && next.stage ? stageLabel(next.stage, lang) : currentStage),
+              primary && primary.needsInput ? h(Badge, { tone: "warn" }, t("pauseInput")) : null,
+              h("div", { className: "rsx-top-spacer" }),
+              next && next.stage ? h("span", { className: "rsx-note" }, stageLabel(next.stage, lang)) : null,
+            ),
+            h("div", { className: "rsx-next-title" }, nextTitle),
+            primary
+              ? h(
+                  "code",
+                  { className: "rsx-next-code", title: JSON.stringify({ tool: primary.tool, arguments: primary.args }) },
+                  JSON.stringify({ tool: primary.tool, arguments: primary.args }),
+                )
+              : null,
+            !ready || primary
+              ? h(
+                  "div",
+                  { className: "rsx-actions" },
+                  !ready
+                    ? h(
+                        "button",
+                        { type: "button", className: "rsx-btn primary", onClick: execute },
+                        h(Icon, { name: "arrow", size: 13 }),
+                        t("continue"),
+                      )
+                    : null,
+                  primary
+                    ? h(
+                        "button",
+                        { type: "button", className: "rsx-btn ghost", onClick: () => copy(JSON.stringify({ tool: primary.tool, arguments: primary.args }), "next") },
+                        copied === "next" ? t("copied") : lang === "en" ? "Copy call" : "复制调用",
+                      )
+                    : null,
+                )
+              : null,
+          ),
+          h(
+            "div",
+            { className: "rsx-fly-actions-wrap" },
+            h(
+              "div",
+              { className: "rsx-fly-actions-head" },
+              h("span", { className: "rsx-eyebrow" }, t("actions")),
+              h("span", { className: "rsx-action-hint" }, t("actionsHint")),
+            ),
+            h(
+              "div",
+              { className: "rsx-fly-actions", role: "group", "aria-label": t("actions") },
+              actionDefs.map((action) => h(FlyAction, {
+                key: action.id,
+                actionId: action.id,
+                label: action.label,
+                icon: action.icon,
+                tone: action.tone,
+                disabled: action.disabled,
+                reason: action.reason,
+                onClick: action.onClick,
+              })),
+            ),
+          ),
+          h(
+            "div",
+            { className: "rsx-fly-foot" },
+            h("span", { className: "rsx-note" }, `${state.id || ""} · ${fmtTime(state.updatedAt, lang)}`),
+            h("div", { className: "rsx-top-spacer" }),
+            state.archived ? h("span", { className: "rsx-note" }, t("actionArchived")) : null,
+          ),
+        ),
+      )
+    }
+
     function Modal(props) {
       const p = props || {}
+      const boxRef = useRef(null)
+      const closeRef = useRef(p.onClose)
+      closeRef.current = p.onClose
       useEffect(() => {
+        const previous = document.activeElement
+        const node = boxRef.current
+        const focusables = node ? node.querySelectorAll("button, [href], input, select, textarea, [tabindex]:not([tabindex='-1'])") : []
+        if (focusables.length) focusables[0].focus()
         const onKey = (event) => {
-          if (event.key === "Escape") p.onClose && p.onClose()
+          if (event.key === "Escape") {
+            if (typeof closeRef.current === "function") closeRef.current()
+            return
+          }
+          if (event.key !== "Tab" || !node || focusables.length === 0) return
+          const first = focusables[0]
+          const last = focusables[focusables.length - 1]
+          if (event.shiftKey && document.activeElement === first) {
+            event.preventDefault()
+            last.focus()
+          } else if (!event.shiftKey && document.activeElement === last) {
+            event.preventDefault()
+            first.focus()
+          }
         }
         window.addEventListener("keydown", onKey)
-        return () => window.removeEventListener("keydown", onKey)
-      }, [p.onClose])
+        return () => {
+          window.removeEventListener("keydown", onKey)
+          if (previous && typeof previous.focus === "function") previous.focus()
+        }
+      }, [])
       return h(
         "div",
         { className: "rsx-modal-ov", onMouseDown: (event) => { if (event.target === event.currentTarget && p.onClose) p.onClose() } },
         h(
           "div",
-          { className: "rsx-modal" + (p.wide ? " wide" : ""), role: "dialog", "aria-modal": "true", "aria-label": p.title || "" },
+          { className: "rsx-modal" + (p.wide ? " wide" : ""), role: "dialog", "aria-modal": "true", "aria-label": p.title || "", ref: boxRef, tabIndex: -1 },
           h("div", { className: "rsx-modal-head" }, p.title || "", h("div", { className: "rsx-top-spacer" }), h("button", { type: "button", className: "rsx-icon-btn", onClick: p.onClose, "aria-label": "close" }, h(Icon, { name: "x", size: 13 }))),
           h("div", { className: "rsx-modal-body" }, p.children),
           p.footer ? h("div", { className: "rsx-modal-foot" }, p.footer) : null,
@@ -825,7 +1537,11 @@ window.__ModuleLoader__.load({
  * callbacks; they never mutate the ledger directly.
  */
 
-    function Overview(props) {
+    /**
+     * Pre-flywheel overview, kept intact as the rollback path. Set the wrapper
+     * below to `h(OverviewLinear, props)` to return to the linear stepper.
+     */
+    function OverviewLinear(props) {
       const p = props || {}
       const t = p.t
       const lang = p.lang
@@ -860,11 +1576,20 @@ window.__ModuleLoader__.load({
       const counts = state
         ? {
             sources: safeArray(state.sources).length,
+            searches: safeArray(state.searchLog).length,
+            sensitivities: safeArray(state.sensitivity).length,
+            program:
+              safeArray(state.plan && state.plan.questions).length +
+              safeArray(state.perspectives).length +
+              safeArray(state.cycles).length +
+              safeArray(state.tournament && state.tournament.matches).length +
+              safeArray(state.quality && state.quality.rows).length +
+              safeArray(state.contradictions).length,
             claims: safeArray(state.claims).length,
             numbers: safeArray(state.numbers).length,
             runs: safeArray(state.runs).length,
           }
-        : { sources: 0, claims: 0, numbers: 0, runs: 0 }
+        : { sources: 0, searches: 0, sensitivities: 0, claims: 0, numbers: 0, runs: 0 }
 
       return h(
         "div",
@@ -932,6 +1657,54 @@ window.__ModuleLoader__.load({
                   ),
                   gate && !gate.ok ? h(Icon, { name: "alert", size: 20 }) : h(Icon, { name: "check", size: 20 }),
                 ),
+                detail.next
+                  ? h(
+                      "div",
+                      { className: "rsx-row", style: { gap: 10, alignItems: "flex-start", flexWrap: "wrap" } },
+                      h(
+                        "div",
+                        { style: { flex: 1, minWidth: 220, display: "flex", flexDirection: "column", gap: 4 } },
+                        h(
+                          "div",
+                          { className: "rsx-row", style: { gap: 8 } },
+                          h("span", { className: "rsx-note" }, lang === "en" ? "Next action" : "下一步"),
+                          detail.next.stop && detail.next.stop.blocked
+                            ? h(Badge, { tone: "bad" }, lang === "en" ? "stop" : "停止")
+                            : detail.next.stop && detail.next.stop.ready
+                              ? h(Badge, { tone: "ok" }, lang === "en" ? "ready" : "可交付")
+                              : h(Badge, { tone: "accent" }, detail.next.stage),
+                          detail.next.primary && detail.next.primary.human
+                            ? h(Badge, { tone: "warn" }, lang === "en" ? "human" : "人工")
+                            : null,
+                        ),
+                        h(
+                          "div",
+                          { style: { fontSize: 13, fontWeight: 600 } },
+                          detail.next.stop && detail.next.stop.blocked
+                            ? detail.next.stop.reason
+                            : detail.next.stop && detail.next.stop.ready
+                              ? (lang === "en" ? "Export the package and hand it to the human reviewer." : "导出研究包，交给人类复核者。")
+                              : detail.next.primary
+                                ? `${detail.next.primary.label} · ${detail.next.primary.tool}`
+                                : (lang === "en" ? "No recommendation for this state." : "当前状态没有可执行建议。"),
+                        ),
+                        detail.next.primary
+                          ? h(
+                              "code",
+                              { className: "rsx-mono", style: { fontSize: 11, opacity: 0.72, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", maxWidth: "100%" } },
+                              JSON.stringify(detail.next.primary.args),
+                            )
+                          : null,
+                      ),
+                      detail.next.primary
+                        ? h(
+                            "button",
+                            { type: "button", className: "rsx-btn ghost", onClick: () => copy(JSON.stringify({ tool: detail.next.primary.tool, arguments: detail.next.primary.args }), "next") },
+                            copied === "next" ? t("copied") : (lang === "en" ? "Copy call" : "复制调用"),
+                          )
+                        : null,
+                    )
+                  : null,
                 h(
                   "div",
                   { className: "rsx-actions" },
@@ -960,6 +1733,9 @@ window.__ModuleLoader__.load({
                     "div",
                     { className: "rsx-kpis" },
                     h("div", { className: "rsx-kpi" }, h("b", null, counts.sources), h("span", null, t("sources"))),
+                    h("div", { className: "rsx-kpi" }, h("b", null, counts.searches), h("span", null, t("searches"))),
+                    h("div", { className: "rsx-kpi" }, h("b", null, counts.sensitivities), h("span", null, t("sensitivities"))),
+                    h("div", { className: "rsx-kpi" }, h("b", null, counts.program), h("span", null, t("program"))),
                     h("div", { className: "rsx-kpi" }, h("b", null, counts.claims), h("span", null, t("claims"))),
                     h("div", { className: "rsx-kpi" }, h("b", null, counts.numbers), h("span", null, t("numbers"))),
                     h("div", { className: "rsx-kpi" }, h("b", null, counts.runs), h("span", null, t("runs"))),
@@ -980,7 +1756,7 @@ window.__ModuleLoader__.load({
                     return h(
                       "div",
                       { style: { display: "flex", flexDirection: "column", gap: 9 } },
-                      h("p", { className: "rsx-note" }, lang === "en" ? "Not evaluated yet. Score the 12 engineering dimensions and persist a baseline." : "尚未评估。计算 12 个工程维度并写入基线。"),
+                      h("p", { className: "rsx-note" }, lang === "en" ? "Not evaluated yet. Score the 13 engineering dimensions and persist a baseline." : "尚未评估。计算 13 个工程维度并写入基线。"),
                       h("button", { type: "button", className: "rsx-btn primary", onClick: () => p.onEvaluate(state.id) }, lang === "en" ? "Evaluate loop" : "运行闭环评估"),
                     )
                   }
@@ -1008,6 +1784,275 @@ window.__ModuleLoader__.load({
             )
           : null,
       )
+    }
+
+    function IterationTrail(props) {
+      const p = props || {}
+      const t = p.t
+      const lang = p.lang
+      const cycles = safeArray(p.state && p.state.cycles)
+      if (cycles.length === 0) {
+        return h(
+          "div",
+          { className: "rsx-trail-empty" },
+          h(Icon, { name: "spark", size: 16 }),
+          h("div", null, h("b", null, t("iterationEmptyTitle")), h("div", null, t("iterationEmpty"))),
+        )
+      }
+      return h(
+        "div",
+        { className: "rsx-trail" },
+        cycles
+          .slice(-4)
+          .reverse()
+          .map((cycle, index) => {
+            const decision = String(cycle.decision || "continue")
+            const tone = decision === "continue" ? "ok" : decision === "stop" || decision === "escalate" ? "bad" : "warn"
+            return h(
+              "div",
+              { className: "rsx-trail-row", key: cycle.id || index },
+              h("span", { className: "rsx-trail-dot " + tone }),
+              h(
+                "div",
+                { className: "rsx-trail-main" },
+                h(
+                  "div",
+                  { className: "rsx-trail-title" },
+                  h("code", null, cycle.id || "—"),
+                  h(Badge, { tone: tone }, decision),
+                  h("span", { className: "rsx-note" }, fmtTime(cycle.at, lang)),
+                  cycle.run ? h("span", { className: "rsx-note rsx-mono" }, cycle.run) : null,
+                ),
+                h("div", { className: "rsx-trail-goal" }, cycle.goal || cycle.action || "—"),
+                cycle.observation ? h("div", { className: "rsx-trail-obs" }, cycle.observation) : null,
+              ),
+            )
+          }),
+      )
+    }
+
+    function OverviewFlywheel(props) {
+      const p = props || {}
+      const t = p.t
+      const lang = p.lang
+      const data = p.data || {}
+      const campaigns = safeArray(data.campaigns)
+      const detail = p.detail
+      const [copied, setCopied] = useState("")
+
+      const copy = (value, key) => {
+        void copyText(value).then((ok) => setCopied(ok ? key : ""))
+      }
+      const go = (view) => {
+        if (typeof p.onView === "function") p.onView(view)
+      }
+
+      if (campaigns.length === 0) {
+        return h(
+          Empty,
+          {
+            title: t("emptyTitle"),
+            body: t("emptyBody"),
+            action: h(
+              "div",
+              { className: "rsx-actions" },
+              h("button", { type: "button", className: "rsx-btn primary", onClick: () => p.onNew("template") }, h(Icon, { name: "template", size: 14 }), t("startTemplate")),
+              h("button", { type: "button", className: "rsx-btn", onClick: () => p.onNew("blank") }, h(Icon, { name: "plus", size: 14 }), t("blank")),
+            ),
+          },
+        )
+      }
+
+      const state = detail && detail.state ? detail.state : null
+      if (!state) {
+        return h(
+          "div",
+          { style: { display: "flex", flexDirection: "column", gap: 14 } },
+          h(
+            "div",
+            { className: "rsx-camps", role: "list" },
+            campaigns.map((campaign) =>
+              h(
+                "button",
+                {
+                  key: campaign.id,
+                  type: "button",
+                  className: "rsx-camp",
+                  "aria-current": data.current === campaign.id ? "true" : undefined,
+                  onClick: () => p.onSelect(campaign.id),
+                },
+                h("span", { className: "rsx-camp-title" }, campaign.title),
+                h("span", { className: "rsx-camp-meta" }, h(Badge, { tone: "accent" }, stageLabel(campaign.stage, lang)), h("span", null, campaign.tier)),
+              ),
+            ),
+          ),
+          h("div", { className: "rsx-loading" }, t("loading")),
+        )
+      }
+
+      const gate = detail && detail.gate ? detail.gate : null
+      const integrity = detail && detail.integrity ? detail.integrity : {}
+      const counts = {
+        sources: safeArray(state.sources).length,
+        searches: safeArray(state.searchLog).length,
+        sensitivities: safeArray(state.sensitivity).length,
+        program:
+          safeArray(state.plan && state.plan.questions).length +
+          safeArray(state.perspectives).length +
+          safeArray(state.cycles).length +
+          safeArray(state.tournament && state.tournament.matches).length +
+          safeArray(state.quality && state.quality.rows).length +
+          safeArray(state.contradictions).length,
+        claims: safeArray(state.claims).length,
+        numbers: safeArray(state.numbers).length,
+        runs: safeArray(state.runs).length,
+      }
+      const loop = state.loopEvaluation || null
+
+      return h(
+        "div",
+        { style: { display: "flex", flexDirection: "column", gap: 14 } },
+        h(
+          "div",
+          { className: "rsx-camps", role: "list" },
+          campaigns.map((campaign) =>
+            h(
+              "button",
+              {
+                key: campaign.id,
+                type: "button",
+                className: "rsx-camp",
+                "aria-current": state.id === campaign.id ? "true" : undefined,
+                onClick: () => p.onSelect(campaign.id),
+              },
+              h("span", { className: "rsx-camp-title" }, campaign.title),
+              h(
+                "span",
+                { className: "rsx-camp-meta" },
+                h(Badge, { tone: "accent" }, stageLabel(campaign.stage, lang)),
+                h("span", null, campaign.tier),
+                h("span", null, `${campaign.counts.sources} ${t("sources")}`),
+                h("span", { style: { marginLeft: "auto" } }, fmtTime(campaign.updatedAt, lang)),
+              ),
+            ),
+          ),
+        ),
+        h(
+          "div",
+          { className: "rsx-project-head" },
+          h(
+            "div",
+            { style: { minWidth: 0, flex: 1 } },
+            h("h2", { className: "rsx-h1" }, state.title),
+            h("p", { className: "rsx-sub" }, state.question || t("unknown")),
+            h(
+              "div",
+              { className: "rsx-project-meta" },
+              h(Badge, { tone: "accent" }, `${t("tier")} ${state.tier}`),
+              h(Badge, { tone: integrity.chainOk ? "ok" : "bad", dot: true }, integrity.chainOk ? t("chainOk") : t("chainBroken")),
+              h(
+                "button",
+                { type: "button", className: "rsx-btn ghost", style: { padding: "1px 6px", fontSize: 11 }, onClick: () => copy(state.id, "id") },
+                copied === "id" ? t("copied") : state.id,
+              ),
+              h("span", { className: "rsx-note" }, `${fmtNum(state.seq || 0)} ${t("events")} · ${fmtTime(state.updatedAt, lang)}`),
+            ),
+          ),
+        ),
+        h(Flywheel, {
+          t: t,
+          lang: lang,
+          state: state,
+          gate: gate,
+          next: detail.next,
+          onView: go,
+          onPrompt: p.onPrompt,
+          onExport: p.onExport,
+          onArchive: p.onArchive,
+          busy: p.busy === true,
+        }),
+        h(
+          "div",
+          { className: "rsx-grid" },
+          h(
+            Card,
+            {
+              title: t("iterationTrail"),
+              right: h(LinkButton, { onClick: () => go("ledger") }, t("viewLedger")),
+            },
+            h(IterationTrail, { state: state, t: t, lang: lang }),
+          ),
+          h(
+            Card,
+            {
+              title: t("gateChecks"),
+              right: h(LinkButton, { onClick: () => go("audit") }, t("viewAudit")),
+            },
+            h(GateChecks, { gate: gate, t: t, lang: lang }),
+          ),
+          h(
+            Card,
+            { title: lang === "en" ? "Campaign facts" : "项目事实" },
+            h(
+              "div",
+              { style: { display: "flex", flexDirection: "column", gap: 11 } },
+              h(
+                "div",
+                { className: "rsx-kpis" },
+                h("div", { className: "rsx-kpi" }, h("b", null, counts.sources), h("span", null, t("sources"))),
+                h("div", { className: "rsx-kpi" }, h("b", null, counts.searches), h("span", null, t("searches"))),
+                h("div", { className: "rsx-kpi" }, h("b", null, counts.sensitivities), h("span", null, t("sensitivities"))),
+                h("div", { className: "rsx-kpi" }, h("b", null, counts.program), h("span", null, t("program"))),
+                h("div", { className: "rsx-kpi" }, h("b", null, counts.claims), h("span", null, t("claims"))),
+                h("div", { className: "rsx-kpi" }, h("b", null, counts.numbers), h("span", null, t("numbers"))),
+                h("div", { className: "rsx-kpi" }, h("b", null, counts.runs), h("span", null, t("runs"))),
+              ),
+              h(BudgetBar, { budget: detail.budget || state.budget }),
+              h("div", { className: "rsx-sep" }),
+              h("div", { className: "rsx-row" }, h("span", { className: "rsx-note" }, t("template") + ":"), h("span", null, state.templateId || t("blank"))),
+              h("div", { className: "rsx-row" }, h("span", { className: "rsx-note" }, t("stage") + ":"), h("span", null, stageLabel(state.stage, lang)), h("span", { className: "rsx-note" }, `· ${state.seq || 0} events`)),
+              h("div", { className: "rsx-row" }, h("span", { className: "rsx-note" }, t("integrity") + ":"), h("span", { className: "rsx-mono" }, `${integrity.artifacts || 0} artifacts`)),
+            ),
+          ),
+          h(
+            Card,
+            { title: lang === "en" ? "Research loop" : "研究闭环" },
+            loop
+              ? h(
+                  "div",
+                  { style: { display: "flex", flexDirection: "column", gap: 9 } },
+                  h(
+                    "div",
+                    { className: "rsx-row" },
+                    h("b", { style: { fontSize: 24 } }, `${loop.score}/100`),
+                    h(Badge, { tone: loop.score >= 85 ? "ok" : loop.score >= 65 ? "warn" : "bad" }, loop.grade),
+                    h("span", { className: "rsx-note" }, loop.level),
+                    h("div", { className: "rsx-top-spacer" }),
+                    loop.delta === null || loop.delta === undefined ? null : h(Badge, { tone: loop.delta >= 0 ? "ok" : "bad" }, `${loop.delta >= 0 ? "+" : ""}${loop.delta}`),
+                  ),
+                  h("div", { className: "rsx-note" }, loop.rsi && loop.rsi.ready ? (lang === "en" ? "RSI prerequisites met — compare the next candidate against this baseline." : "已具备自我改进前提；下一次候选改动与基线比较。") : (lang === "en" ? "Next: " + (safeArray(loop.nextActions)[0] ? safeArray(loop.nextActions)[0].action : "close the highest-weight gap") : "下一步：" + (safeArray(loop.nextActions)[0] ? safeArray(loop.nextActions)[0].action : "先补权重最高的缺口"))),
+                  safeArray(loop.gaps).length
+                    ? h("ul", { className: "rsx-note", style: { margin: 0, paddingLeft: 16 } }, safeArray(loop.gaps).slice(0, 3).map((gap) => h("li", { key: gap.dimension + gap.id }, gap.detail)))
+                    : null,
+                  h("button", { type: "button", className: "rsx-btn", onClick: () => p.onEvaluate(state.id) }, lang === "en" ? "Re-evaluate" : "重新评估"),
+                )
+              : h(
+                  "div",
+                  { style: { display: "flex", flexDirection: "column", gap: 9 } },
+                  h("p", { className: "rsx-note" }, lang === "en" ? "Not evaluated yet. Score the 13 engineering dimensions and persist a baseline." : "尚未评估。计算 13 个工程维度并写入基线。"),
+                  h("button", { type: "button", className: "rsx-btn primary", onClick: () => p.onEvaluate(state.id) }, lang === "en" ? "Evaluate loop" : "运行闭环评估"),
+                ),
+          ),
+        ),
+      )
+    }
+
+    /**
+     * Overview wrapper. The old linear overview stays one line away as a
+     * rollback; swap this return for `h(OverviewLinear, props)` if needed.
+     */
+    function Overview(props) {
+      return h(OverviewFlywheel, props)
     }
 
     function Ledger(props) {
@@ -1156,7 +2201,7 @@ window.__ModuleLoader__.load({
         setError("")
         apiGet("/api/audit/" + campaignId)
           .then((payload) => setData(payload))
-          .catch((err) => setError(err.message || String(err)))
+          .catch((err) => setError(errorText(err, lang)))
           .finally(() => setLoading(false))
       }, [campaignId])
 
@@ -1174,7 +2219,7 @@ window.__ModuleLoader__.load({
             setData({ audit: payload.audit, fresh: true, matrix: payload.matrix })
             p.onRefresh && p.onRefresh()
           })
-          .catch((err) => setError(err.message || String(err)))
+          .catch((err) => setError(errorText(err, lang)))
           .finally(() => setRunning(false))
       }
 
@@ -1183,7 +2228,28 @@ window.__ModuleLoader__.load({
           .then((payload) => {
             if (downloadFile(campaignId + "-references.bib", payload.bibtex, "application/x-bibtex")) p.onNotify && p.onNotify(t("bibtexDone"))
           })
-          .catch((err) => setError(err.message || String(err)))
+          .catch((err) => setError(errorText(err, lang)))
+      }
+
+      const downloadFormat = (format, filename, type) => {
+        apiGet("/api/references/" + campaignId + "?format=" + encodeURIComponent(format))
+          .then((payload) => {
+            const content = payload && (payload.content !== undefined ? payload.content : payload.bibtex)
+            if (!content) throw new Error(t("error"))
+            if (downloadFile(campaignId + "-" + filename, content, type)) p.onNotify && p.onNotify(t("referencesDone"))
+          })
+          .catch((err) => setError(errorText(err, lang)))
+      }
+
+      const downloadPrisma = () => {
+        apiGet("/api/prisma/" + campaignId)
+          .then((payload) => {
+            const prisma = payload && payload.prisma
+            if (!prisma) throw new Error(t("error"))
+            const content = JSON.stringify(prisma, null, 2)
+            if (downloadFile(campaignId + "-PRISMA.json", content, "application/json")) p.onNotify && p.onNotify(t("prismaDone"))
+          })
+          .catch((err) => setError(errorText(err, lang)))
       }
 
       const audit = data && data.audit ? data.audit : null
@@ -1236,6 +2302,9 @@ window.__ModuleLoader__.load({
           h("button", { type: "button", className: "rsx-btn primary", onClick: run, disabled: running || loading }, h(Icon, { name: "shield", size: 13 }), running ? t("auditRunning") : t("auditRun")),
           h("button", { type: "button", className: "rsx-btn", onClick: load, disabled: loading }, h(Icon, { name: "refresh", size: 13 }), t("refresh")),
           h("button", { type: "button", className: "rsx-btn", onClick: downloadBib }, h(Icon, { name: "download", size: 13 }), t("downloadBibtex")),
+          h("button", { type: "button", className: "rsx-btn", onClick: () => downloadFormat("csl-json", "references.csl.json", "application/json") }, h(Icon, { name: "download", size: 13 }), t("downloadCsl")),
+          h("button", { type: "button", className: "rsx-btn", onClick: () => downloadFormat("ris", "references.ris", "application/x-research-info-systems") }, h(Icon, { name: "download", size: 13 }), t("downloadRis")),
+          h("button", { type: "button", className: "rsx-btn", onClick: downloadPrisma }, h(Icon, { name: "download", size: 13 }), t("downloadPrisma")),
           h("div", { className: "rsx-top-spacer" }),
           audit
             ? h(Badge, { tone: fresh ? "ok" : "warn", dot: true }, fresh ? t("auditFresh") : t("auditStale"))
@@ -1341,7 +2410,7 @@ window.__ModuleLoader__.load({
         setError("")
         apiGet("/api/report/" + state.id)
           .then((payload) => setMarkdown(payload.markdown || ""))
-          .catch((err) => setError(err.message || String(err)))
+          .catch((err) => setError(errorText(err, lang)))
           .finally(() => setLoading(false))
       }, [state && state.id])
 
@@ -1363,7 +2432,7 @@ window.__ModuleLoader__.load({
           document.body.removeChild(anchor)
           setTimeout(() => URL.revokeObjectURL(url), 2000)
         } catch (err) {
-          setError(err.message || String(err))
+          setError(errorText(err, lang))
         }
       }
 
@@ -1375,7 +2444,7 @@ window.__ModuleLoader__.load({
             p.onRefresh && p.onRefresh()
             load()
           })
-          .catch((err) => setError(err.message || String(err)))
+          .catch((err) => setError(errorText(err, lang)))
           .finally(() => setSaving(false))
       }
 
@@ -1480,7 +2549,7 @@ window.__ModuleLoader__.load({
             payload.observations = observations
           }
         } catch (error) {
-          setMonitorError(error.message || String(error))
+          setMonitorError(errorText(error, lang))
           return
         }
         p.onSaveMonitoring(payload)
@@ -1649,6 +2718,352 @@ window.__ModuleLoader__.load({
       )
     }
 
+    /**
+     * Cross-campaign control room. The server computes the portfolio so the
+     * panel does not re-verify every ledger on each render; the view only
+     * filters, ranks and explains attention items.
+     */
+    function Portfolio(props) {
+      const p = props || {}
+      const t = p.t
+      const lang = p.lang
+      const [report, setReport] = useState(null)
+      const [error, setError] = useState("")
+      const [busy, setBusy] = useState(false)
+      const [query, setQuery] = useState("")
+      const [filter, setFilter] = useState("all")
+
+      const load = () => {
+        setBusy(true)
+        setError("")
+        apiGet("/api/portfolio")
+          .then((payload) => setReport(payload))
+          .catch((err) => setError(errorText(err, lang)))
+          .finally(() => setBusy(false))
+      }
+
+      useEffect(() => {
+        load()
+      }, [])
+
+      if (!report && busy) return h("div", { className: "rsx-loading" }, t("loading"))
+      if (!report && error) {
+        return h("div", { className: "rsx-error" }, h("span", null, `${t("error")}: ${error}`), h("button", { type: "button", className: "rsx-btn ghost", onClick: load }, t("retry")))
+      }
+      if (!report) return null
+
+      const totals = report.totals || {}
+      const reasonLabels = {
+        stale_audit: t("reasonStaleAudit"),
+        audit_blocking: t("reasonAuditBlocking"),
+        monitoring_alert: t("reasonMonitoringAlert"),
+        integrity: t("reasonIntegrity"),
+        schema: t("reasonSchema"),
+      }
+      const all = safeArray(report.campaigns)
+      const needle = query.trim().toLowerCase()
+      const matches = all
+        .filter((row) => {
+          if (filter === "attention" && row.attention !== true) return false
+          if (filter === "released" && row.releasePassed !== true) return false
+          if (filter === "active" && row.releasePassed === true) return false
+          if (!needle) return true
+          return [row.id, row.title, row.domain, row.stage].some((value) => String(value || "").toLowerCase().indexOf(needle) >= 0)
+        })
+        .sort((a, b) => {
+          const rank = (row) => (row.attention ? 1 : 0)
+          if (rank(a) !== rank(b)) return rank(b) - rank(a)
+          return String(b.updatedAt || "").localeCompare(String(a.updatedAt || ""))
+        })
+
+      const scoreText = (row) => (row.score === null || row.score === undefined ? "—" : `${row.score}/100`)
+      const integrityText = (row) => {
+        const integrity = row.integrity || {}
+        return integrity.chainOk === true && integrity.stateOk !== false ? t("chainOk") : t("chainBroken")
+      }
+      const auditText = (row) => {
+        if (!row.audit) return "—"
+        const blocking = Number(row.audit.blocking) || 0
+        return row.audit.fresh ? `${row.audit.verdict || "fresh"}${blocking ? ` · ${blocking}` : ""}` : t("auditStale")
+      }
+
+      const rows = matches.map((row) => [
+        h(
+          "div",
+          { key: row.id + ":title", style: { minWidth: 0 } },
+          h("div", { style: { fontWeight: 600 } }, row.title || row.id),
+          h("div", { className: "rsx-note", style: { display: "flex", gap: 6, flexWrap: "wrap", alignItems: "center" } },
+            h("span", { className: "rsx-mono" }, row.id),
+            row.domain ? h(Badge, { tone: "muted" }, row.domain) : null,
+          ),
+          row.attention
+            ? h("div", { className: "rsx-note", style: { color: "var(--rsx-warn)" } }, safeArray(row.attentionReasons).map((reason) => reasonLabels[reason] || reason).join(" · "))
+            : null,
+        ),
+        h("div", { key: row.id + ":stage" }, h(Badge, { tone: row.stage === "release" ? "ok" : "accent" }, stageLabel(row.stage, lang))),
+        h("div", { key: row.id + ":score", className: "rsx-mono" }, scoreText(row)),
+        h("div", { key: row.id + ":audit" }, row.audit ? h(Badge, { tone: row.audit.fresh ? "ok" : "warn" }, auditText(row)) : h("span", { className: "rsx-note" }, "—")),
+        h("div", { key: row.id + ":integrity" }, h(Badge, { tone: row.integrity && row.integrity.chainOk !== false && row.integrity.stateOk !== false ? "ok" : "bad", dot: true }, integrityText(row))),
+        h("div", { key: row.id + ":alerts" }, row.alerts ? h(Badge, { tone: "warn" }, String(row.alerts)) : h("span", { className: "rsx-note" }, "0")),
+        h("div", { key: row.id + ":updated", className: "rsx-note" }, fmtTime(row.updatedAt, lang)),
+        h("button", { key: row.id + ":open", type: "button", className: "rsx-btn ghost", onClick: () => p.onOpen(row.id) }, t("openCampaign")),
+      ])
+
+      const filterButton = (id, label, count) =>
+        h(
+          "button",
+          { key: id, type: "button", className: "rsx-chip" + (filter === id ? " on" : ""), "aria-pressed": filter === id ? "true" : "false", onClick: () => setFilter(id) },
+          label,
+          count === undefined ? null : h("span", { className: "rsx-count" }, count),
+        )
+
+      return h(
+        "div",
+        { style: { display: "flex", flexDirection: "column", gap: 14 } },
+        h(
+          "div",
+          { className: "rsx-card" },
+          h(
+            "div",
+            { className: "rsx-card-body", style: { display: "flex", flexDirection: "column", gap: 12 } },
+            h(
+              "div",
+              { className: "rsx-row", style: { alignItems: "flex-start" } },
+              h(
+                "div",
+                { style: { flex: 1, minWidth: 0 } },
+                h("h2", { className: "rsx-h1" }, t("portfolio")),
+                h("p", { className: "rsx-sub" }, t("portfolioHint")),
+              ),
+              h(Badge, { tone: totals.attention ? "warn" : "ok", dot: true }, totals.attention ? `${totals.attention} ${t("attention")}` : t("healthOk")),
+            ),
+            h(
+              "div",
+              { className: "rsx-kpis" },
+              h("div", { className: "rsx-kpi" }, h("b", null, totals.campaigns || 0), h("span", null, t("activeCampaigns"))),
+              h("div", { className: "rsx-kpi" }, h("b", null, totals.released || 0), h("span", null, t("released"))),
+              h("div", { className: "rsx-kpi" }, h("b", null, totals.attention || 0), h("span", null, t("attention"))),
+              h("div", { className: "rsx-kpi" }, h("b", null, totals.archived || 0), h("span", null, t("archivedProjects"))),
+            ),
+            h(
+              "div",
+              { className: "rsx-row rsx-toolbar" },
+              h("input", { className: "rsx-input", style: { flex: 1, minWidth: 160 }, value: query, placeholder: t("searchCampaigns"), "aria-label": t("searchCampaigns"), onChange: (event) => setQuery(event.target.value) }),
+              h(
+                "div",
+                { className: "rsx-chips" },
+                filterButton("all", t("all"), all.length),
+                filterButton("attention", t("needsAttention"), totals.attention || 0),
+                filterButton("active", t("activeCampaigns"), all.filter((row) => row.releasePassed !== true).length),
+                filterButton("released", t("released"), totals.released || 0),
+              ),
+              h("button", { type: "button", className: "rsx-btn ghost", onClick: load, disabled: busy }, busy ? t("working") : t("refresh")),
+            ),
+            error ? h("div", { className: "rsx-error" }, h("span", null, `${t("error")}: ${error}`), h("button", { type: "button", className: "rsx-btn ghost", onClick: load }, t("retry"))) : null,
+          ),
+        ),
+        h(
+          Card,
+          { title: `${t("portfolio")} · ${matches.length}`, flush: true },
+          h(DataTable, {
+            columns: [
+              { label: t("healthCampaign"), width: "30%" },
+              { label: t("stage"), width: "10%" },
+              { label: t("score"), width: "9%" },
+              { label: t("healthAudit"), width: "16%" },
+              { label: t("integrity"), width: "11%" },
+              { label: t("alerts"), width: "7%" },
+              { label: t("updated"), width: "10%" },
+              { label: "", width: "7%" },
+            ],
+            rows,
+            empty: needle ? t("noMatches") : filter === "attention" ? t("attentionEmpty") : t("emptyBody"),
+          }),
+        ),
+      )
+    }
+
+    function Health(props) {
+      const p = props || {}
+      const t = p.t
+      const lang = p.lang
+      const [report, setReport] = useState(null)
+      const [busy, setBusy] = useState(false)
+      const [message, setMessage] = useState("")
+      const [tone, setTone] = useState("muted")
+
+      const load = () => {
+        setBusy(true)
+        setMessage("")
+        apiGet("/api/doctor")
+          .then((data) => setReport(data))
+          .catch((error) => {
+            setMessage(errorText(error, lang))
+            setTone("bad")
+          })
+          .finally(() => setBusy(false))
+      }
+
+      useEffect(() => {
+        load()
+      }, [])
+
+      const notify = (text, nextTone) => {
+        setMessage(text)
+        setTone(nextTone || "ok")
+        if (p.onNotify) p.onNotify(text, nextTone || "ok")
+      }
+
+      const reindex = () => {
+        setBusy(true)
+        apiPost("/api/reindex", {})
+          .then((result) => {
+            if (result && result.ok === false) {
+              const first = safeArray(result.skipped)[0]
+              notify(first ? `${t("error")}: ${first.error || first.code}` : t("error"), "bad")
+            } else {
+              notify(t("reindexDone"), "ok")
+            }
+            load()
+          })
+          .catch((error) => notify(errorText(error, lang), "bad"))
+          .finally(() => setBusy(false))
+      }
+
+      const migrate = (row) => {
+        if (typeof window !== "undefined" && typeof window.confirm === "function" && !window.confirm(t("migrateConfirm"))) return
+        setBusy(true)
+        apiPost("/api/campaign", { action: "migrate", campaign: row.id })
+          .then((result) => {
+            if (result && result.migrated) {
+              notify(`${t("migrateDone")} · ${t("backup")}: ${result.backup ? result.backup.name : "—"}`, "ok")
+            } else {
+              notify(t("alreadyCurrent"), "muted")
+            }
+            load()
+          })
+          .catch((error) => notify(errorText(error, lang), "bad"))
+          .finally(() => setBusy(false))
+      }
+
+      if (!report) {
+        return h(
+          "div",
+          { style: { display: "flex", flexDirection: "column", gap: 12 } },
+          h("div", { className: "rsx-loading" }, busy ? t("healthRunning") : message || t("loading")),
+          message ? h("div", { className: "rsx-error" }, h("span", null, message), h("button", { type: "button", className: "rsx-btn ghost", onClick: load }, t("retry"))) : null,
+        )
+      }
+
+      const counts = report.counts || {}
+      const rows = safeArray(report.campaigns).map((row) => [
+        h("div", { key: row.id + ":id" }, h("div", { className: "rsx-mono" }, row.id), h("div", { className: "rsx-note" }, row.title || "—")),
+        h("div", { key: row.id + ":schema" }, h(Badge, { tone: row.canMigrate ? "warn" : "ok" }, `schema ${row.schema || "?"}`), row.canMigrate ? h("span", { className: "rsx-note" }, ` → ${row.targetSchema}`) : null),
+        h(Badge, { key: row.id + ":chain", tone: row.chainOk ? "ok" : "bad", dot: true }, row.chainOk ? t("healthChain") : `${t("healthChain")} !`),
+        h("div", { key: row.id + ":audit" }, row.audit ? h(Badge, { tone: row.audit.fresh && row.audit.signed ? "ok" : "warn" }, row.audit.fresh ? (row.audit.verdict || "fresh") : t("auditStale")) : h("span", { className: "rsx-note" }, "—")),
+        h("div", { key: row.id + ":steward" }, row.stewardship ? h(Badge, { tone: row.stewardship.ok ? "ok" : "warn" }, `${row.stewardship.percent}%`) : h("span", { className: "rsx-note" }, "—")),
+        h(
+          "div",
+          { key: row.id + ":issues" },
+          safeArray(row.issues).length
+            ? h(
+                "details",
+                { className: "rsx-issues" },
+                h("summary", null, h("span", { className: "rsx-issue-count" }, `E${row.errors || 0} W${row.warnings || 0} I${safeArray(row.issues).filter((issue) => issue.severity === "info").length}`)),
+                h(
+                  "ul",
+                  null,
+                  safeArray(row.issues).map((issue, index) => h("li", { key: issue.code + ":" + index }, h("code", { className: "rsx-issue-" + issue.severity }, issue.severity), " ", issue.detail || issue.code, issue.ref ? h("span", { className: "rsx-note" }, ` · ${issue.ref}`) : null)),
+                ),
+              )
+            : h(Badge, { tone: "ok" }, "0"),
+        ),
+        row.canMigrate ? h("button", { key: row.id + ":migrate", type: "button", className: "rsx-btn ghost", disabled: busy, onClick: () => migrate(row) }, t("migrate")) : h("span", { key: row.id + ":current", className: "rsx-note" }, t("alreadyCurrent")),
+      ])
+
+      return h(
+        "div",
+        { style: { display: "flex", flexDirection: "column", gap: 14 } },
+        h(
+          "div",
+          { className: "rsx-card" },
+          h(
+            "div",
+            { className: "rsx-card-body", style: { display: "flex", flexDirection: "column", gap: 12 } },
+            h(
+              "div",
+              { className: "rsx-row", style: { alignItems: "flex-start" } },
+              h(
+                "div",
+                { style: { flex: 1, minWidth: 0 } },
+                h("h2", { className: "rsx-h1" }, t("health")),
+                h("p", { className: "rsx-sub" }, t("healthHint")),
+              ),
+              h(Badge, { tone: report.ok ? (report.healthy ? "ok" : "warn") : "bad", dot: true }, report.ok ? (report.healthy ? t("healthOk") : t("healthWarnings", { n: counts.warnings || 0 })) : t("healthErrors", { n: counts.errors || 0 })),
+            ),
+            h(
+              "div",
+              { className: "rsx-kpis" },
+              h("div", { className: "rsx-kpi" }, h("b", null, `v${report.version || "—"}`), h("span", null, t("healthSchema"))),
+              h("div", { className: "rsx-kpi" }, h("b", null, counts.campaigns || 0), h("span", null, t("healthCampaign"))),
+              h("div", { className: "rsx-kpi" }, h("b", null, counts.errors || 0), h("span", null, lang === "en" ? "errors" : "错误")),
+              h("div", { className: "rsx-kpi" }, h("b", null, counts.unmigrated || 0), h("span", null, t("healthUnmigrated"))),
+            ),
+            h(
+              "div",
+              { className: "rsx-row", style: { flexWrap: "wrap" } },
+              h(Badge, { tone: report.index && report.index.ok ? "ok" : "bad", dot: true }, report.index && report.index.ok ? t("healthIndexOk") : t("healthIndexBad")),
+              h("span", { className: "rsx-note" }, `schema ${report.schemaVersion || "—"} · ${counts.scanned || 0}/${counts.campaigns || 0}`),
+              h("div", { className: "rsx-top-spacer" }),
+              h("button", { type: "button", className: "rsx-btn", onClick: load, disabled: busy }, busy ? t("healthRunning") : t("runHealth")),
+              h("button", { type: "button", className: "rsx-btn ghost", onClick: reindex, disabled: busy }, t("reindex")),
+            ),
+            message ? h("div", { className: message && tone === "bad" ? "rsx-error" : "rsx-note" }, message) : null,
+          ),
+        ),
+        h(
+          "div",
+          { className: "rsx-grid" },
+          h(
+            Card,
+            { title: t("doctorChecks") },
+            h(DataTable, {
+              columns: [{ label: "check" }, { label: "state" }, { label: "detail" }],
+              rows: safeArray(report.checks).map((check) => [
+                h("span", { key: check.code, className: "rsx-mono" }, check.code),
+                h(Badge, { key: check.code + ":v", tone: check.ok ? (check.severity === "info" ? "muted" : "ok") : check.severity === "error" ? "bad" : "warn" }, check.ok ? "ok" : "fail"),
+                check.detail || "—",
+              ]),
+              empty: t("healthNoCampaigns"),
+            }),
+          ),
+          h(
+            Card,
+            { title: t("health") },
+            h("p", { className: "rsx-note" }, lang === "en" ? "A migration is explicit and backed up; nothing is auto-repaired by the scan." : "迁移是显式动作并先写备份；体检不会自动修复。"),
+            h("div", { className: "rsx-row" }, h(Badge, { tone: "ok" }, `v${report.version}`), h(Badge, { tone: "accent" }, `schema ${report.schemaVersion}`), h("span", { className: "rsx-note" }, `${report.ms || 0} ms`)),
+          ),
+        ),
+        h(
+          Card,
+          { title: t("healthCampaign"), flush: true },
+          h(DataTable, {
+            columns: [
+              { label: t("healthCampaign"), width: "22%" },
+              { label: t("healthSchema"), width: "10%" },
+              { label: t("healthChain"), width: "10%" },
+              { label: t("healthAudit"), width: "14%" },
+              { label: t("healthStewardship"), width: "10%" },
+              { label: "issues", width: "16%" },
+              { label: "", width: "18%" },
+            ],
+            rows: rows,
+            empty: t("healthNoCampaigns"),
+          }),
+        ),
+      )
+    }
+
     function SettingsForm(props) {
       const p = props || {}
       const t = p.t
@@ -1658,7 +3073,6 @@ window.__ModuleLoader__.load({
       const defaults = data.defaults || {}
       const [tier, setTier] = useState(settings.defaultTier || defaults.tier || "M")
       const [language, setLanguage] = useState(settings.language || lang)
-      const [allowExec, setAllowExec] = useState(settings.allowExec === true)
       const [saving, setSaving] = useState(false)
       const [integrity, setIntegrity] = useState(null)
       const [error, setError] = useState("")
@@ -1666,9 +3080,9 @@ window.__ModuleLoader__.load({
       const save = () => {
         setSaving(true)
         setError("")
-        apiPost("/api/settings", { patch: { defaultTier: tier, language: language, allowExec: allowExec } })
-          .then(() => p.onSaved && p.onSaved())
-          .catch((err) => setError(err.message || String(err)))
+        apiPost("/api/settings", { patch: { defaultTier: tier, language: language } })
+          .then(() => p.onSaved && p.onSaved(language))
+          .catch((err) => setError(errorText(err, lang)))
           .finally(() => setSaving(false))
       }
 
@@ -1677,7 +3091,7 @@ window.__ModuleLoader__.load({
         if (!id) return
         apiGet("/api/integrity/" + id)
           .then((payload) => setIntegrity(payload.integrity))
-          .catch((err) => setError(err.message || String(err)))
+          .catch((err) => setError(errorText(err, lang)))
       }
 
       return h(
@@ -1693,10 +3107,6 @@ window.__ModuleLoader__.load({
             h("option", { value: "zh" }, "中文"),
             h("option", { value: "en" }, "English"),
           ),
-        ),
-        h("label", { className: "rsx-row", style: { gap: 7, fontSize: 12 } },
-          h("input", { type: "checkbox", checked: allowExec, onChange: (event) => setAllowExec(event.target.checked) }),
-          lang === "en" ? "Allow rsx_run to execute commands (off by default)" : "允许 rsx_run 直接执行命令（默认关闭）",
         ),
         h(Field, { label: t("dataDir") }, h("div", { className: "rsx-mono", style: { wordBreak: "break-all" } }, data.dataDir || "—")),
         h(
@@ -1736,6 +3146,8 @@ window.__ModuleLoader__.load({
       const [detail, setDetail] = useState(null)
       const [error, setError] = useState("")
       const [busy, setBusy] = useState(false)
+      const [refreshing, setRefreshing] = useState(false)
+      const [lastSync, setLastSync] = useState(0)
       const [toast, setToast] = useState(null)
       const [modal, setModal] = useState(null)
       const [form, setForm] = useState({ title: "", question: "", scope: "", success: "", tier: "M", domain: "general" })
@@ -1759,56 +3171,73 @@ window.__ModuleLoader__.load({
 
       const clearToast = useCallback(() => setToast(null), [])
 
+      const detailSeq = useRef(0)
+      const domainSeq = useRef(0)
+      const refreshSeq = useRef(0)
+
       const loadDetail = useCallback((id) => {
+        const seq = ++detailSeq.current
         if (!id) {
           setDetail(null)
-          setDomainInfo(null)
           return Promise.resolve(null)
         }
         return apiGet("/api/campaign/" + id)
           .then((payload) => {
-            setDetail(payload)
+            if (seq === detailSeq.current) setDetail(payload)
             return payload
           })
           .catch((err) => {
-            setError(err.message || String(err))
+            if (seq === detailSeq.current) setError(errorText(err))
             return null
           })
       }, [])
 
       const loadDomainInfo = useCallback((id) => {
+        const seq = ++domainSeq.current
         if (!id) {
           setDomainInfo(null)
           return Promise.resolve(null)
         }
         return apiGet("/api/campaign/" + id + "/domain")
           .then((payload) => {
-            setDomainInfo(payload)
+            if (seq === domainSeq.current) setDomainInfo(payload)
             return payload
           })
           .catch(() => {
-            setDomainInfo(null)
+            if (seq === domainSeq.current) setDomainInfo(null)
             return null
           })
       }, [])
 
       const refresh = useCallback(
         (preferredId) => {
+          const seq = ++refreshSeq.current
+          setRefreshing(true)
           return apiGet("/api/state")
             .then((payload) => {
+              if (seq !== refreshSeq.current) return null
               setData(payload)
               setError("")
+              setLastSync(Date.now())
               const campaigns = safeArray(payload.campaigns)
-              const next = preferredId || selected || payload.current || (campaigns[0] && campaigns[0].id) || ""
+              const requested = preferredId === undefined ? selected : preferredId
+              const active = campaigns.some((campaign) => campaign.id === requested)
+              const current = campaigns.some((campaign) => campaign.id === payload.current)
+              const next = active ? requested : current ? payload.current : (campaigns[0] && campaigns[0].id) || ""
               setSelected(next)
+              setDomainInfo(null)
+              void loadDomainInfo(next)
               return loadDetail(next)
             })
             .catch((err) => {
-              setError(err.message || String(err))
+              if (seq === refreshSeq.current) setError(errorText(err))
               return null
             })
+            .finally(() => {
+              if (seq === refreshSeq.current) setRefreshing(false)
+            })
         },
-        [selected, loadDetail],
+        [selected, loadDetail, loadDomainInfo],
       )
 
       useEffect(() => {
@@ -1821,32 +3250,13 @@ window.__ModuleLoader__.load({
           .catch(() => setDomains([]))
       }, [])
 
-      useEffect(() => {
-        if (!selected) return undefined
-        let cancelled = false
-        apiGet("/api/campaign/" + selected)
-          .then((payload) => {
-            if (!cancelled) setDetail(payload)
-          })
-          .catch((err) => {
-            if (!cancelled) setError(err.message || String(err))
-          })
-        apiGet("/api/campaign/" + selected + "/domain")
-          .then((payload) => {
-            if (!cancelled) setDomainInfo(payload)
-          })
-          .catch(() => {
-            if (!cancelled) setDomainInfo(null)
-          })
-        return () => {
-          cancelled = true
-        }
-      }, [selected])
-
       const selectCampaign = (id) => {
         setSelected(id)
         setDomainInfo(null)
+        setError("")
         setView("overview")
+        void loadDetail(id)
+        void loadDomainInfo(id)
         apiPost("/api/campaign", { action: "select", campaign: id }).catch(() => {
           /* selection is a convenience; reading still works */
         })
@@ -1865,7 +3275,7 @@ window.__ModuleLoader__.load({
             setView("overview")
             return refresh(payload.campaign.id)
           })
-          .catch((err) => notify(err.message || String(err), "bad"))
+          .catch((err) => notify(errorText(err), "bad"))
           .finally(() => setBusy(false))
       }
 
@@ -1877,7 +3287,7 @@ window.__ModuleLoader__.load({
             notify(t("domain"))
             return Promise.all([loadDetail(selected), loadDomainInfo(selected)])
           })
-          .catch((err) => notify(err.message || String(err), "bad"))
+          .catch((err) => notify(errorText(err), "bad"))
           .finally(() => setBusy(false))
       }
 
@@ -1889,7 +3299,7 @@ window.__ModuleLoader__.load({
             notify(t("monitorSaved"))
             return Promise.all([loadDetail(selected), loadDomainInfo(selected)])
           })
-          .catch((err) => notify(err.message || String(err), "bad"))
+          .catch((err) => notify(errorText(err), "bad"))
           .finally(() => setBusy(false))
       }
 
@@ -1902,7 +3312,7 @@ window.__ModuleLoader__.load({
             setApplyTopic("")
             return refresh(payload.campaign.id)
           })
-          .catch((err) => notify(err.message || String(err), "bad"))
+          .catch((err) => notify(errorText(err), "bad"))
           .finally(() => setBusy(false))
       }
 
@@ -1914,7 +3324,7 @@ window.__ModuleLoader__.load({
             notify((lang === "en" ? "Loop score " : "闭环成熟度 ") + (evaluation.score ?? "—") + "/100")
             return loadDetail(id)
           })
-          .catch((err) => notify(err.message || String(err), "bad"))
+          .catch((err) => notify(errorText(err), "bad"))
           .finally(() => setBusy(false))
       }
 
@@ -1925,7 +3335,7 @@ window.__ModuleLoader__.load({
             notify(t("exportDone") + (payload.paths && payload.paths.bundle ? " · " + payload.paths.bundle : ""))
             return loadDetail(id)
           })
-          .catch((err) => notify(err.message || String(err), "bad"))
+          .catch((err) => notify(errorText(err), "bad"))
           .finally(() => setBusy(false))
       }
 
@@ -1938,7 +3348,20 @@ window.__ModuleLoader__.load({
             setSelected("")
             return refresh("")
           })
-          .catch((err) => notify(err.message || String(err), "bad"))
+          .catch((err) => notify(errorText(err), "bad"))
+          .finally(() => setBusy(false))
+      }
+
+      const restoreCampaign = (id) => {
+        setBusy(true)
+        apiPost("/api/campaign", { action: "unarchive", campaign: id })
+          .then(() => {
+            notify(t("restoreDone"))
+            setModal(null)
+            setView("overview")
+            return refresh(id)
+          })
+          .catch((err) => notify(errorText(err), "bad"))
           .finally(() => setBusy(false))
       }
 
@@ -1952,6 +3375,7 @@ window.__ModuleLoader__.load({
       }
 
       const campaigns = safeArray(data && data.campaigns)
+      const archived = safeArray(data && data.archivedCampaigns)
       const current = selected || (data && data.current) || ""
       const navCount = detail && detail.state ? safeArray(detail.state.claims).length : 0
       const auditState = detail && detail.state ? detail.state : null
@@ -1977,7 +3401,20 @@ window.__ModuleLoader__.load({
                 campaigns.map((campaign) => h("option", { key: campaign.id, value: campaign.id }, `${campaign.title} · ${stageLabel(campaign.stage, lang)}`)),
               )
             : null,
+          data && data.archivedCount
+            ? h(
+                "button",
+                { type: "button", className: "rsx-btn ghost", onClick: () => setModal({ type: "archived" }), title: t("archiveHint") },
+                h(Icon, { name: "archive", size: 13 }),
+                `${t("archivedProjects")} ${data.archivedCount}`,
+              )
+            : null,
           h("div", { className: "rsx-top-spacer" }),
+          h(
+            "button",
+            { type: "button", className: "rsx-icon-btn" + (refreshing ? " is-spinning" : ""), onClick: () => refresh(), title: `${t("refresh")}${lastSync ? " · " + new Date(lastSync).toLocaleTimeString() : ""}`, "aria-label": t("refresh"), disabled: refreshing },
+            h(Icon, { name: "refresh", size: 15 }),
+          ),
           h("button", { type: "button", className: "rsx-btn primary", onClick: () => { setView("templates") } }, h(Icon, { name: "plus", size: 13 }), t("newCampaign")),
           h(
             "button",
@@ -1991,9 +3428,11 @@ window.__ModuleLoader__.load({
           { className: "rsx-nav", role: "tablist" },
           [
             { id: "overview", label: t("overview"), icon: "flask" },
+            { id: "portfolio", label: t("portfolio"), icon: "chart" },
             { id: "domain", label: t("domain"), icon: "shield", count: domainInfo && domainInfo.completeness ? domainInfo.completeness.missing : 0 },
             { id: "ledger", label: t("ledger"), icon: "list", count: navCount },
             { id: "audit", label: t("audit"), icon: "shield", count: auditCount },
+            { id: "health", label: t("health"), icon: "shield" },
             { id: "templates", label: t("templates"), icon: "template" },
             { id: "report", label: t("report"), icon: "doc" },
           ].map((item) =>
@@ -2013,6 +3452,7 @@ window.__ModuleLoader__.load({
             "div",
             { className: "rsx-body-inner" },
             error ? h("div", { className: "rsx-error" }, h("span", null, `${t("error")}: ${error}`), h("button", { type: "button", className: "rsx-btn ghost", onClick: () => refresh() }, t("retry"))) : null,
+            data && view === "portfolio" ? h(Portfolio, { t: t, lang: lang, onOpen: selectCampaign }) : null,
             !data ? h("div", { className: "rsx-loading" }, t("loading")) : null,
             data && view === "overview"
               ? h(Overview, {
@@ -2026,6 +3466,8 @@ window.__ModuleLoader__.load({
                   onExport: exportCampaign,
                   onEvaluate: evaluateCampaign,
                   onArchive: archiveCampaign,
+                  onView: setView,
+                  busy: busy,
                 })
               : null,
             data && view === "domain"
@@ -2042,6 +3484,7 @@ window.__ModuleLoader__.load({
               : null,
             data && view === "ledger" ? h(Ledger, { t: t, lang: lang, detail: detail }) : null,
             data && view === "audit" ? h(Audit, { t: t, lang: lang, detail: detail, onRefresh: () => refresh(selected), onNotify: notify }) : null,
+            data && view === "health" ? h(Health, { t: t, lang: lang, onNotify: notify }) : null,
             data && view === "templates" ? h(Templates, { t: t, lang: lang, templates: templates, onApply: (template) => { setApplyTopic(""); setModal({ type: "apply", template: template }) } }) : null,
             data && view === "report" ? h(Report, { t: t, lang: lang, detail: detail, onExport: exportCampaign, onRefresh: () => loadDetail(selected) }) : null,
           ),
@@ -2056,13 +3499,40 @@ window.__ModuleLoader__.load({
                 lang: lang,
                 data: data || {},
                 onClose: () => setModal(null),
-                onSaved: () => {
+                onSaved: (nextLang) => {
                   setModal(null)
                   notify(t("save"))
-                  setLang(lang)
+                  if (nextLang === "zh" || nextLang === "en") setLang(nextLang)
                   void refresh()
                 },
               }),
+            )
+          : null,
+
+        modal && modal.type === "archived"
+          ? h(
+              Modal,
+              { title: `${t("archivedProjects")} · ${archived.length}`, onClose: () => setModal(null), wide: true },
+              h("p", { className: "rsx-note" }, t("archiveHint")),
+              archived.length === 0
+                ? h("div", { className: "rsx-empty", style: { padding: "22px 12px" } }, h("p", null, t("archivedEmpty")))
+                : h(
+                    "div",
+                    { className: "rsx-arch-list" },
+                    archived.map((campaign) =>
+                      h(
+                        "div",
+                        { key: campaign.id, className: "rsx-arch-row" },
+                        h(
+                          "div",
+                          { style: { minWidth: 0, flex: 1 } },
+                          h("div", { style: { fontWeight: 600 } }, campaign.title || campaign.id),
+                          h("div", { className: "rsx-note" }, h("span", { className: "rsx-mono" }, campaign.id), ` · ${stageLabel(campaign.stage, lang)} · ${fmtTime(campaign.updatedAt, lang)}`),
+                        ),
+                        h("button", { type: "button", className: "rsx-btn ghost", disabled: busy, onClick: () => restoreCampaign(campaign.id) }, h(Icon, { name: "refresh", size: 12 }), t("restore")),
+                      ),
+                    ),
+                  ),
             )
           : null,
 
@@ -2203,6 +3673,12 @@ window.__ModuleLoader__.load({
         stageLabel: stageLabel,
         latestGates: latestGates,
         stageTone: stageTone,
+        flywheelModel: flywheelModel,
+        flywheelActionAvailability: flywheelActionAvailability,
+        errorText: errorText,
+        Portfolio: Portfolio,
+        Flywheel: Flywheel,
+        FlyAction: FlyAction,
         campaignPrompt: campaignPrompt,
         shortHash: shortHash,
         fmtNum: fmtNum,

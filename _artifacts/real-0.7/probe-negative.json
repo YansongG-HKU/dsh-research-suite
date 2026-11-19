@@ -1,0 +1,7 @@
+{
+  "seed": 7,
+  "mode": "negative",
+  "legacy_missing_search_blocked": 0,
+  "blocked": false,
+  "note": "早期 schema 的同一缺失检索不阻断 survey（版本化契约的负对照）。"
+}

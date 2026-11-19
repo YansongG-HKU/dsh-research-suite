@@ -94,7 +94,7 @@ test('empty campaign gets a low loop score and a recorded baseline', () => {
     const id = createCampaign(service)
     const result = service.evaluate(id)
     assert.equal(result.recorded, true)
-    assert.equal(result.evaluation.dimensions.length, 12)
+    assert.equal(result.evaluation.dimensions.length, 13)
     assert.ok(result.evaluation.score < 45)
     assert.equal(result.evaluation.rsi.ready, false)
     assert.ok(result.evaluation.gaps.length > 0)
@@ -190,3 +190,4 @@ test('evaluateLoop is pure and reports missing integrity instead of throwing', (
     cleanup()
   }
 })
+

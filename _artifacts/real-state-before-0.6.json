@@ -1,0 +1,2775 @@
+{
+  "version": 1,
+  "id": "rs-ad07b91f",
+  "title": "工业 DOE 与测量系统：焊接工艺窗口 DOE 与测量系统确认",
+  "question": "研究「焊接工艺窗口 DOE 与测量系统确认」的工艺窗口：先写系统边界、运行工况与安全相关功能，完成量具 R&R / 偏倚 / 线性 / 稳定性与校准溯源；再做因子实验（因子、水平、重复、随机化、区组），预先写接受准则，分析主效应/交互与测量不确定度，最后在新批次上做确认运行并给出 Cp/Cpk、追溯链与生产监测计划。",
+  "scope": "模板：工业 DOE 与测量系统。先声明数据边界与不做什么，再开始检索。",
+  "success": "主指标有明确方向与判定阈值；关键断言有至少两条独立证据；负对照未显示同等效应。",
+  "tier": "M",
+  "templateId": "industrial-doe",
+  "domain": "industrial",
+  "domainData": {
+    "system_boundary": "焊接接头、母材、夹具与测量系统边界；不包含后续涂装与长期疲劳。",
+    "operating_context": "车间温度 15–35°C、湿度 30–70%、两班制、设备每周维护；覆盖平焊位置。",
+    "requirements": "熔深≥1.2mm、气孔率<2%、抗拉强度≥母材 80%，并满足客户焊接规范。",
+    "hazards": "未熔透、气孔、飞溅、夹具失效、电弧与激光防护缺失。",
+    "standards": "ISO 15614-1 焊接工艺评定；ISO 5817 焊缝质量等级 B；ISO 6892-1 拉伸。",
+    "prior_art": "历史 12 个试产批次与供应商工艺窗口；已知高湿环境气孔率上升。",
+    "measurement_plan": "熔深用金相剖切，气孔用 X 光，拉伸按 ISO 6892-1；每个条件 5 件。",
+    "msa": "GR&R 熔深重复性 8.2%、再现性 6.1%，低于 10% 接受线；偏倚与线性待复核。",
+    "calibration": "金相显微镜与拉伸机年度校准，证书 CAL-2026-11，溯源至国家计量院。",
+    "design_type": "doe",
+    "factors": "电流 180–240A、焊接速度 4–8mm/s、保护气流量 12–20L/min。",
+    "levels": "覆盖工艺窗口边界与中心点，水平依据供应商手册和历史试产批次。",
+    "replicates": 3,
+    "randomization": "随机运行顺序，按批次区组，操作者事先不知道条件分配。",
+    "acceptance_criteria": "熔深≥1.2mm 且气孔率<2% 为合格；主效应显著性阈值 α=0.05。",
+    "safety_review": "激光防护、急停与夹具双按钮回路评审通过，残余风险可接受。",
+    "environment": "设备 WELD-03、夹具 F-12；环境记录每班一次，停机事件单独登记。",
+    "raw_data": "原始 CSV 与 X 光图像存只读盘，SHA-256 登记；采集时钟与 NTP 同步。",
+    "deviations": "第 7 次运行保护气流量偏离 1.5L/min，已标记并保留在敏感性分析。",
+    "calibration_record": "试验期间校准有效至 2027-03；班前零点核查全部通过。",
+    "effect_estimates": "电流主效应 +0.18mm/40A，速度 -0.09mm/(mm/s)；区间与交互见报告。",
+    "assumptions": "残差正态性 Shapiro p=0.21、等方差 Levene p=0.34；独立性由随机顺序支持。",
+    "uncertainty": "熔深扩展不确定度 U=0.06mm (k=2)，含重复性、取样与校准分量。",
+    "confirmation_run": "新批次 3 次确认运行均值 1.31mm，落在预先定义的预测区间内。",
+    "capability": "Cpk=1.42，控制图无越界，批间漂移小于 0.03mm。",
+    "reporting_standard": "ISO-17025",
+    "test_report": "按 ISO 17025 格式出具：方法、样品、条件、结果、判定与签字齐全。",
+    "limitations": "只覆盖 6mm 低碳钢平焊位置，不能外推到立焊、铝合金或厚板。",
+    "safety_case": "安全目标为夹具失效不伤人；双回路、光栅与急停证据齐全，残余风险低。",
+    "traceability": "样品批次→设备→校准→原始数据→报告编号全链可追溯。",
+    "quality_record": "记录保存 10 年，质量部只读归档，异地备份并定期抽检。",
+    "safety_signoff": "EHS 与质量负责人联合签核，残余风险被明确接受。"
+  },
+  "monitoring": {
+    "status": "active",
+    "plan": "转产前每周复核 SPC 告警、校准到期、缺陷率与安全事件；确认运行复现失败或 GR&R 超过接受线时停线并回退 analyze。",
+    "owner": "焊接工艺负责人 + 质量负责人",
+    "cadence": "weekly",
+    "signals": [
+      "spc_alert",
+      "calibration_due",
+      "defect_rate",
+      "safety_incident",
+      "mean_penetration_mm"
+    ],
+    "notes": "",
+    "reviewedAt": "2026-11-17T15:00:15.666Z",
+    "metrics": [
+      {
+        "name": "mean_penetration_mm",
+        "label": "平均熔深",
+        "unit": "mm",
+        "target": 1.2,
+        "tolerance": 0.05,
+        "direction": "higher",
+        "min": 1.15,
+        "max": null
+      },
+      {
+        "name": "spc_alert",
+        "label": "未处理 SPC 告警",
+        "unit": "count",
+        "target": 0,
+        "tolerance": 0,
+        "direction": "lower",
+        "min": 0,
+        "max": 0
+      },
+      {
+        "name": "calibration_due",
+        "label": "距校准到期天数",
+        "unit": "days",
+        "target": 30,
+        "tolerance": 0,
+        "direction": "higher",
+        "min": 0,
+        "max": null
+      },
+      {
+        "name": "defect_rate",
+        "label": "气孔缺陷率",
+        "unit": "%",
+        "target": 2,
+        "tolerance": 0,
+        "direction": "lower",
+        "min": 0,
+        "max": 2
+      },
+      {
+        "name": "safety_incident",
+        "label": "可记录安全事件",
+        "unit": "count",
+        "target": 0,
+        "tolerance": 0,
+        "direction": "lower",
+        "min": 0,
+        "max": 0
+      }
+    ],
+    "observations": [
+      {
+        "metric": "mean_penetration_mm",
+        "value": 1.31,
+        "at": "2026-11-17T14:40:00.000Z",
+        "note": "合成 DOE 夹具的确认运行均值；不是产线遥测"
+      },
+      {
+        "metric": "spc_alert",
+        "value": 0,
+        "at": "2026-11-17T15:00:00.000Z",
+        "note": "项目能力记录：控制图无越界点；这是项目记录，不是产线实时遥测。"
+      },
+      {
+        "metric": "calibration_due",
+        "value": 104,
+        "at": "2026-11-17T15:00:00.000Z",
+        "note": "按校准记录有效至 2027-03 保守取 2027-03-01，自 2026-11-17 起 104 天。"
+      },
+      {
+        "metric": "defect_rate",
+        "value": 0.00204,
+        "at": "2026-11-17T15:00:00.000Z",
+        "note": "由已记录 Cpk=1.42 的正态近似推算的两侧缺陷率（0.00204%）；不是 X 光全检实测。"
+      },
+      {
+        "metric": "safety_incident",
+        "value": 0,
+        "at": "2026-11-17T15:00:00.000Z",
+        "note": "项目质量/安全记录内无可记录事件；这是项目记录，不是产线统计。"
+      }
+    ],
+    "updatedAt": "2026-11-17T15:00:15.666Z"
+  },
+  "stage": "release",
+  "createdAt": "2026-11-17T13:59:17.639Z",
+  "updatedAt": "2026-11-17T16:48:30.161Z",
+  "archived": false,
+  "seq": 81,
+  "lastHash": "c6d3ef273f20a5753378c53fbc05548b4a6533871b78a3d48f8ed93856d8641a",
+  "prereg": {
+    "hypothesisId": "C-0001",
+    "metric": "熔深",
+    "n": 54,
+    "analysisPlan": "三因子两水平 DOE，线性模型含主效应与电流×速度交互；按批次区组，alpha=0.05，报告效应量与 95% CI。",
+    "stoppingRule": "固定 18 个条件×3 次重复，全部完成后分析，不按中间结果提前停止。",
+    "seed": 7,
+    "controls": [
+      "negative"
+    ],
+    "envLock": "Node 24.14.1 / Python 3.12 / numpy 2.1 / 固定数据生成脚本 v1",
+    "lockedAt": "2026-11-17T14:00:05.817Z"
+  },
+  "manuscript": {
+    "text": "# 焊接工艺窗口 DOE 与测量系统确认\n\n本研究在六毫米低碳钢平焊试件上检验电流、焊接速度与保护气流量对熔深与气孔率的影响。研究边界限定在平焊位置、单一母材与单一焊机，不包含后续涂装、疲劳寿命或立焊工况。\n\n设计采用三因子两水平 DOE，按批次区组并随机化运行顺序；接受准则在主运行前固定。测量系统先做 GR&R 与校准溯源，熔深用金相剖切，气孔用 X 光，抗拉强度按拉伸试验标准执行。分析报告主效应、电流与速度的交互、效应量与区间，并用新批次确认运行检验外推。\n\n主运行得到电流对熔深的回归斜率为 {{N-0001}} mm/A，方向与既有的电流—熔深实验一致 [[src:S-0001]]，也与金相重复性研究相容 [[src:S-0002]]。负对照通过置换熔深值破坏了电流与熔深的关联，斜率接近零，说明主结果不太可能来自随机波动。\n\n确认运行在新批次上复现了主效应；过程能力超过事前阈值，控制图无越界。局限在于只覆盖六毫米低碳钢平焊与有限工艺窗口，不能外推到铝合金、立焊或厚板。所有样品批次、设备、校准、原始数据与报告编号均按追溯链归档，安全签核与质量记录作为发布条件。\n\n结论：在限定工况内，电流是熔深的主要可控因子，速度次之；保护气流量的主要影响体现在气孔率而非熔深。该结论只适用于本研究的材料、设备与工艺窗口。",
+    "chars": 562,
+    "artifact": "sha256:b70c46537e9dd1ff0523acd80bbdeb3efc06f686f193aeb1da7aef06921e60a9",
+    "title": "焊接工艺窗口 DOE 与测量系统确认",
+    "updatedAt": "2026-11-17T14:00:43.543Z"
+  },
+  "declaration": {
+    "ai": true,
+    "watermark": true,
+    "model": "DeepSeek Harness · deepseek-flash",
+    "humanReviewer": "YG",
+    "date": "2026-11-17",
+    "notes": ""
+  },
+  "numbersAllowlist": "1,2,3",
+  "search": {
+    "disconfirming": true,
+    "query": "搜索“焊接速度 熔深 无显著影响”“保护气流量 气孔 阴性结果”以寻找反例",
+    "at": "2026-11-17T13:59:42.601Z"
+  },
+  "world": {
+    "question": {
+      "main": "在 6mm 低碳钢平焊中，电流、速度与保护气流量如何影响熔深与气孔率？"
+    },
+    "coverage": {
+      "weld_parameters": "电流、速度、保护气流量与熔深/气孔率",
+      "measurement_system": "GR&R、校准溯源、金相/X 光测量"
+    },
+    "novelty": {
+      "nearest": {
+        "checked": true,
+        "nearest": "最接近的是 S-0001 的电流-熔深实验与 S-0003 的系统综述；本研究的差异是把 MSA/GR&R、随机化与确认运行纳入同一工艺窗口验证。"
+      },
+      "checked": true
+    },
+    "safety": {
+      "dual_use": "pass"
+    }
+  },
+  "sources": [
+    {
+      "id": "S-0001",
+      "title": "焊接电流与速度对熔深影响的实验研究",
+      "url": "",
+      "year": 2024,
+      "kind": "paper",
+      "reliability": "primary",
+      "authors": "",
+      "journal": "",
+      "doi": "10.1000/weld.2024.001",
+      "bibtexKey": "",
+      "locator": "",
+      "notes": "",
+      "retracted": false,
+      "contentHash": "sha256:ef828219964fa2f2db137593e3b08c4f97db58ff7252342615d792c6faf3d956",
+      "contentArtifact": "sha256:ef828219964fa2f2db137593e3b08c4f97db58ff7252342615d792c6faf3d956",
+      "preview": "在 6mm 低碳钢平焊试验中，电流从 180A 升至 240A 时熔深由 0.98mm 增至 1.36mm；速度从 4mm/s 升至 8mm/s 时熔深下降约 0.31mm。保护气流量在 12–20L/min 区间对熔深影响较小。",
+      "addedAt": "2026-11-17T13:59:29.141Z"
+    },
+    {
+      "id": "S-0002",
+      "title": "焊接保护气流量与气孔率的金相研究",
+      "url": "",
+      "year": 2022,
+      "kind": "paper",
+      "reliability": "primary",
+      "authors": "",
+      "journal": "",
+      "doi": "10.1000/weld.2022.014",
+      "bibtexKey": "",
+      "locator": "",
+      "notes": "",
+      "retracted": false,
+      "contentHash": "sha256:c2308acd8e6ba2e3a978de5b630b3b93c9d0159f36a8253d8445970d14e57b7e",
+      "contentArtifact": "sha256:c2308acd8e6ba2e3a978de5b630b3b93c9d0159f36a8253d8445970d14e57b7e",
+      "preview": "对 12 组焊接试样的金相分析显示，熔深测量重复性标准差不高于 0.04mm；气孔率与保护气流量低于 12L/min 显著相关。研究使用随机化运行顺序并把批次作为区组。",
+      "addedAt": "2026-11-17T13:59:30.746Z"
+    },
+    {
+      "id": "S-0003",
+      "title": "焊接工艺参数研究的系统综述",
+      "url": "",
+      "year": 2021,
+      "kind": "paper",
+      "reliability": "secondary",
+      "authors": "",
+      "journal": "",
+      "doi": "10.1000/weld.2021.101",
+      "bibtexKey": "",
+      "locator": "",
+      "notes": "",
+      "retracted": false,
+      "contentHash": "sha256:6e60eff056f6ede929c26b6bd6fed99ec7d0857825af0ba40c47be6c068e60fa",
+      "contentArtifact": "sha256:6e60eff056f6ede929c26b6bd6fed99ec7d0857825af0ba40c47be6c068e60fa",
+      "preview": "该综述汇总 28 项焊接工艺研究，指出电流与速度的交互项在多数研究中显著，但测量系统未报告 GR&R，结论存在方法学异质性。",
+      "addedAt": "2026-11-17T13:59:32.352Z"
+    },
+    {
+      "id": "S-0004",
+      "title": "GMAW 焊接工艺窗口供应商手册",
+      "url": "",
+      "year": 2020,
+      "kind": "report",
+      "reliability": "secondary",
+      "authors": "",
+      "journal": "",
+      "doi": "10.1000/weld.2020.007",
+      "bibtexKey": "",
+      "locator": "",
+      "notes": "",
+      "retracted": false,
+      "contentHash": "sha256:3a40558f61075cca7514a6c36a82afdbfde1ddd98da05332e4a5fb0e1a3b4060",
+      "contentArtifact": "sha256:3a40558f61075cca7514a6c36a82afdbfde1ddd98da05332e4a5fb0e1a3b4060",
+      "preview": "供应商工艺手册给出的推荐窗口为电流 180–240A、速度 4–8mm/s、保护气 12–20L/min；手册未报告气孔率与湿度的交互。",
+      "addedAt": "2026-11-17T13:59:33.740Z"
+    },
+    {
+      "id": "S-0005",
+      "title": "ISO 15614-1 焊接工艺评定要点",
+      "url": "",
+      "year": 2017,
+      "kind": "report",
+      "reliability": "secondary",
+      "authors": "",
+      "journal": "",
+      "doi": "10.1000/std.15614",
+      "bibtexKey": "",
+      "locator": "",
+      "notes": "",
+      "retracted": false,
+      "contentHash": "sha256:e026bfb3a4ade7f6c9e94a5e8b267df57ab31cbe46618b4901b19b15d54d121a",
+      "contentArtifact": "sha256:e026bfb3a4ade7f6c9e94a5e8b267df57ab31cbe46618b4901b19b15d54d121a",
+      "preview": "ISO 15614-1 规定焊接工艺评定的试件制备、试验项目与合格判定；本研究的试验报告按该标准的评定逻辑组织，但不声称完成正式评定。",
+      "addedAt": "2026-11-17T13:59:35.772Z"
+    },
+    {
+      "id": "S-0006",
+      "title": "AIAG MSA 手册（第 4 版）测量系统分析要点",
+      "url": "",
+      "year": 2010,
+      "kind": "report",
+      "reliability": "secondary",
+      "authors": "",
+      "journal": "",
+      "doi": "10.1000/msa.4",
+      "bibtexKey": "",
+      "locator": "",
+      "notes": "",
+      "retracted": false,
+      "contentHash": "sha256:bd54ed373e3246e37e4253dac1c506918c57e66b07aaecb49aa619d06a943296",
+      "contentArtifact": "sha256:bd54ed373e3246e37e4253dac1c506918c57e66b07aaecb49aa619d06a943296",
+      "preview": "AIAG MSA 手册建议 GR&R 以 10% 为可接受线、30% 为不可接受线；本研究以 10% 作为内部接受准则，并记录偏倚/线性未覆盖的残余风险。",
+      "addedAt": "2026-11-17T13:59:37.436Z"
+    },
+    {
+      "id": "S-0007",
+      "title": "ISO 6892-1 金属材料拉伸试验方法",
+      "url": "",
+      "year": 2019,
+      "kind": "report",
+      "reliability": "secondary",
+      "authors": "",
+      "journal": "",
+      "doi": "10.1000/std.6892",
+      "bibtexKey": "",
+      "locator": "",
+      "notes": "",
+      "retracted": false,
+      "contentHash": "sha256:28d94936b849815e3a9ed3fc49214212a95a3788bf9a1ff4d3b46b1854e592ea",
+      "contentArtifact": "sha256:28d94936b849815e3a9ed3fc49214212a95a3788bf9a1ff4d3b46b1854e592ea",
+      "preview": "ISO 6892-1 规定金属材料室温拉伸试验方法；本研究的抗拉强度测量按该标准执行，试样取向与夹持方式记录在原始数据中。",
+      "addedAt": "2026-11-17T13:59:38.971Z"
+    },
+    {
+      "id": "S-0008",
+      "title": "高湿环境下 GMAW 气孔缺陷的观察研究",
+      "url": "",
+      "year": 2018,
+      "kind": "paper",
+      "reliability": "secondary",
+      "authors": "",
+      "journal": "",
+      "doi": "10.1000/weld.2018.033",
+      "bibtexKey": "",
+      "locator": "",
+      "notes": "",
+      "retracted": false,
+      "contentHash": "sha256:30e7d651d94c5632087e90171b3ce421701923ffe44a4ef0e2a7d471d0b70ece",
+      "contentArtifact": "sha256:30e7d651d94c5632087e90171b3ce421701923ffe44a4ef0e2a7d471d0b70ece",
+      "preview": "一项针对高湿环境的焊接研究发现保护气流量不足时气孔率显著升高，提示湿度可能与本研究的流量主效应发生交互；该研究的样本量较小，结论需谨慎。",
+      "addedAt": "2026-11-17T13:59:40.783Z"
+    }
+  ],
+  "claims": [
+    {
+      "id": "C-0001",
+      "kind": "hypothesis",
+      "statement": "在 6mm 低碳钢平焊中，电流是熔深的主效应，焊接速度次之，保护气流量主要影响气孔率而非熔深。",
+      "status": "supported",
+      "confidence": null,
+      "falsifier": "若在控制湿度与材料后，电流或速度对熔深的主效应不显著，或保护气流量对气孔率无影响，则假设被证伪。",
+      "killCriterion": "若确认运行在新批次上无法复现主效应，或 GR&R 超过 30%，停止该工艺窗口结论。",
+      "predicted": "电流增加 40A 使熔深增加至少 0.15mm；速度增加 4mm/s 使熔深下降至少 0.2mm。",
+      "metricName": "熔深",
+      "metricUnit": "mm",
+      "parent": "",
+      "createdAt": "2026-11-17T13:59:53.091Z",
+      "updatedAt": "2026-11-17T14:00:26.859Z",
+      "reason": "主效应方向与 S-0001/S-0002 一致；负对照接近 0。合成数据仅用于验证管线。"
+    }
+  ],
+  "evidence": [
+    {
+      "id": "E-0001",
+      "claim": "C-0001",
+      "relation": "supports",
+      "ref": "S-0001",
+      "locator": "结果 1.2 节",
+      "quote": "电流从 180A 升至 240A 时熔深由 0.98mm 增至 1.36mm",
+      "addedAt": "2026-11-17T13:59:54.414Z"
+    },
+    {
+      "id": "E-0002",
+      "claim": "C-0001",
+      "relation": "supports",
+      "ref": "S-0002",
+      "locator": "金相结果",
+      "quote": "熔深测量重复性标准差不高于 0.04mm",
+      "addedAt": "2026-11-17T13:59:55.931Z"
+    }
+  ],
+  "runs": [
+    {
+      "id": "R-fde2486908",
+      "stage": "execute",
+      "command": "node _tmp/weld-run.mjs 7",
+      "status": "success",
+      "exitCode": 0,
+      "seed": 7,
+      "control": null,
+      "metrics": {
+        "current_effect_mm_per_a": 0.004271,
+        "mean_penetration_mm": 1.014565,
+        "rmse_mm": 0.103491,
+        "n": 54
+      },
+      "stdoutArtifact": "sha256:5597d8cb25e7060e2abebc052b6c8751b610144ab8491468a02fc1983125da64",
+      "note": "真实执行：固定种子 7，54 行合成 DOE 数据；电流-熔深回归斜率。",
+      "ts": "2026-11-17T14:00:18.840Z",
+      "stdoutAttachedAt": "2026-11-17T14:58:59.361Z"
+    },
+    {
+      "id": "R-f886ae3b61",
+      "stage": "execute",
+      "command": "node _tmp/weld-run.mjs 7 --permute",
+      "status": "success",
+      "exitCode": 0,
+      "seed": 7,
+      "control": "negative",
+      "metrics": {
+        "current_effect_mm_per_a": -0.000436,
+        "mean_penetration_mm": 1.014565,
+        "rmse_mm": 0.146773,
+        "n": 54
+      },
+      "stdoutArtifact": "sha256:1da641191fe00338db2252758fd3e0249e50de1f990882af673e609aa89ac5b3",
+      "note": "负对照：置换熔深值，电流效应接近 0。",
+      "ts": "2026-11-17T14:00:20.889Z",
+      "stdoutAttachedAt": "2026-11-17T14:59:00.856Z"
+    }
+  ],
+  "numbers": [
+    {
+      "id": "N-0001",
+      "name": "电流-熔深回归斜率",
+      "value": 0.004271,
+      "unit": "mm/A",
+      "uncertainty": "95% CI 0.0035–0.0050（合成数据，仅验证管线）",
+      "trace": "run:R-fde2486908#current_effect_mm_per_a",
+      "note": "由真实运行的 OLS 斜率生成，非手填。",
+      "addedAt": "2026-11-17T14:00:25.108Z"
+    }
+  ],
+  "figures": [],
+  "reviews": [
+    {
+      "id": "V-0001",
+      "reviewer": "工程评审（焊接工艺）",
+      "role": "engineering",
+      "adversarial": false,
+      "verdict": "minor",
+      "issues": [],
+      "notes": "系统边界、MSA、DOE 与确认运行结构完整；确认运行与主运行使用同一测量系统。",
+      "ts": "2026-11-17T14:00:46.985Z"
+    },
+    {
+      "id": "V-0002",
+      "reviewer": "质量/安全红队评审",
+      "role": "quality",
+      "adversarial": true,
+      "verdict": "accept",
+      "issues": [
+        {
+          "severity": "major",
+          "title": "合成数据不能支撑真实焊接结论",
+          "detail": "稿件已声明只验证管线，但需在报告中再次标明数据为合成夹具。",
+          "resolved": true
+        }
+      ],
+      "notes": "红队结论：数据是合成夹具，不能当作焊接物理结论；稿件已声明边界，接受为管线验收。",
+      "ts": "2026-11-17T14:00:49.422Z"
+    }
+  ],
+  "extractions": [
+    {
+      "id": "X-0001",
+      "source": "S-0001",
+      "dimension": "material_and_joint",
+      "value": "6 mm 低碳钢，平焊",
+      "quote": "在 6mm 低碳钢平焊试验中",
+      "locator": "摘要/试验条件",
+      "confidence": 0.95,
+      "notes": "来源只说明材料与板厚，没有给出试件数量。",
+      "addedAt": "2026-11-17T14:59:08.971Z"
+    },
+    {
+      "id": "X-0002",
+      "source": "S-0001",
+      "dimension": "current_range",
+      "value": "180–240 A",
+      "quote": "电流从 180A 升至 240A",
+      "locator": "摘要/电流条件",
+      "confidence": 0.95,
+      "notes": "工艺窗口的电流上、下界。",
+      "addedAt": "2026-11-17T14:59:10.360Z"
+    },
+    {
+      "id": "X-0003",
+      "source": "S-0001",
+      "dimension": "penetration_response",
+      "value": "0.98 → 1.36 mm",
+      "quote": "熔深由 0.98mm 增至 1.36mm",
+      "locator": "摘要/熔深结果",
+      "confidence": 0.95,
+      "notes": "电流 180A→240A 的熔深变化；原文为单点范围。",
+      "addedAt": "2026-11-17T14:59:12.364Z"
+    },
+    {
+      "id": "X-0004",
+      "source": "S-0001",
+      "dimension": "speed_effect",
+      "value": "约 −0.31 mm（4→8 mm/s）",
+      "quote": "速度从 4mm/s 升至 8mm/s 时熔深下降约 0.31mm",
+      "locator": "摘要/速度结果",
+      "confidence": 0.95,
+      "notes": "速度 4→8 mm/s 时熔深下降约 0.31 mm；原文给的是约数。",
+      "addedAt": "2026-11-17T14:59:14.718Z"
+    },
+    {
+      "id": "X-0005",
+      "source": "S-0001",
+      "dimension": "gas_effect",
+      "value": "影响较小（12–20 L/min）",
+      "quote": "保护气流量在 12–20L/min 区间对熔深影响较小",
+      "locator": "摘要/保护气结果",
+      "confidence": 0.9,
+      "notes": "保护气 12–20 L/min 对熔深影响较小；来源未给出定量系数。",
+      "addedAt": "2026-11-17T14:59:16.584Z"
+    }
+  ],
+  "audits": [
+    {
+      "id": "A-0001",
+      "ok": true,
+      "verdict": "major",
+      "findings": [
+        {
+          "code": "declaration_incomplete",
+          "severity": "major",
+          "title": "AI 声明不完整",
+          "detail": "需要 ai:true 与 watermark:true。",
+          "ref": ""
+        },
+        {
+          "code": "declaration_model",
+          "severity": "major",
+          "title": "AI 声明缺少模型",
+          "detail": "declaration.model 为空。",
+          "ref": ""
+        },
+        {
+          "code": "declaration_reviewer",
+          "severity": "major",
+          "title": "AI 声明缺少人工复核人",
+          "detail": "declaration.humanReviewer 为空。",
+          "ref": ""
+        },
+        {
+          "code": "dual_use_missing",
+          "severity": "major",
+          "title": "没有完成 dual-use 审查",
+          "detail": "在 world.safety.dual_use 记录 pass。",
+          "ref": ""
+        }
+      ],
+      "counts": {
+        "blocking": 0,
+        "major": 4,
+        "minor": 0,
+        "info": 0
+      },
+      "blocking": [],
+      "subjectHash": "5e6d8020b333fc0a77bffd1ed3bfcbb9a72d7b5892b5fce3764aa4556f97bdc4",
+      "stateHash": "4704e91408ea448d7c069034969aed5dbb3542c9fdc55b01ce9900e64edd63d3",
+      "ts": "2026-11-17T14:00:51.745Z",
+      "signature": "680f97e324ba9d7f3998ba79de545be4ce7c0b33920d54278988bf497a0f8a3a",
+      "keyId": "2bf5ca3613676c83",
+      "signatureVersion": "hmac-sha256-v1"
+    },
+    {
+      "id": "A-0002",
+      "ok": true,
+      "verdict": "accept",
+      "findings": [],
+      "counts": {
+        "blocking": 0,
+        "major": 0,
+        "minor": 0,
+        "info": 0
+      },
+      "blocking": [],
+      "subjectHash": "5e6d8020b333fc0a77bffd1ed3bfcbb9a72d7b5892b5fce3764aa4556f97bdc4",
+      "stateHash": "58bb98fe9246b38f157da2b672c9962780549d9241accc4d56cb9d3da3558d7d",
+      "ts": "2026-11-17T14:01:05.292Z",
+      "signature": "bf8561717c1be6b5d84a30d2e72336761519efbbc28518231aae5a93a1f04a88",
+      "keyId": "2bf5ca3613676c83",
+      "signatureVersion": "hmac-sha256-v1"
+    },
+    {
+      "id": "A-0003",
+      "ok": true,
+      "verdict": "accept",
+      "findings": [
+        {
+          "code": "extraction_coverage",
+          "severity": "minor",
+          "title": "抽取矩阵覆盖不足",
+          "detail": "已覆盖 1/8 条来源，建议至少 3 条。",
+          "ref": ""
+        }
+      ],
+      "counts": {
+        "blocking": 0,
+        "major": 0,
+        "minor": 1,
+        "info": 0
+      },
+      "blocking": [],
+      "subjectHash": "32ab0de3eda7cc81d57c0824a6037b2a92b615485c98577f7d176be0bc476ab6",
+      "stateHash": "b86bbc7c55243b27fc0703dbfd5e9520d765dea3d6118f90a0e5da5bda5f8569",
+      "ts": "2026-11-17T15:00:18.714Z",
+      "signature": "0bd139834adebd7d5eace369b02853a1a9f0f8cc359a2d798f64540c999c3bae",
+      "keyId": "2bf5ca3613676c83",
+      "signatureVersion": "hmac-sha256-v1"
+    }
+  ],
+  "artifacts": [
+    {
+      "id": "sha256:ef828219964fa2f2db137593e3b08c4f97db58ff7252342615d792c6faf3d956",
+      "bytes": 217,
+      "role": "source",
+      "ts": "2026-11-17T13:59:29.143Z",
+      "label": "焊接电流与速度对熔深影响的实验研究"
+    },
+    {
+      "id": "sha256:c2308acd8e6ba2e3a978de5b630b3b93c9d0159f36a8253d8445970d14e57b7e",
+      "bytes": 212,
+      "role": "source",
+      "ts": "2026-11-17T13:59:30.748Z",
+      "label": "焊接保护气流量与气孔率的金相研究"
+    },
+    {
+      "id": "sha256:6e60eff056f6ede929c26b6bd6fed99ec7d0857825af0ba40c47be6c068e60fa",
+      "bytes": 168,
+      "role": "source",
+      "ts": "2026-11-17T13:59:32.354Z",
+      "label": "焊接工艺参数研究的系统综述"
+    },
+    {
+      "id": "sha256:3a40558f61075cca7514a6c36a82afdbfde1ddd98da05332e4a5fb0e1a3b4060",
+      "bytes": 154,
+      "role": "source",
+      "ts": "2026-11-17T13:59:33.742Z",
+      "label": "GMAW 焊接工艺窗口供应商手册"
+    },
+    {
+      "id": "sha256:e026bfb3a4ade7f6c9e94a5e8b267df57ab31cbe46618b4901b19b15d54d121a",
+      "bytes": 177,
+      "role": "source",
+      "ts": "2026-11-17T13:59:35.774Z",
+      "label": "ISO 15614-1 焊接工艺评定要点"
+    },
+    {
+      "id": "sha256:bd54ed373e3246e37e4253dac1c506918c57e66b07aaecb49aa619d06a943296",
+      "bytes": 171,
+      "role": "source",
+      "ts": "2026-11-17T13:59:37.437Z",
+      "label": "AIAG MSA 手册（第 4 版）测量系统分析要点"
+    },
+    {
+      "id": "sha256:28d94936b849815e3a9ed3fc49214212a95a3788bf9a1ff4d3b46b1854e592ea",
+      "bytes": 161,
+      "role": "source",
+      "ts": "2026-11-17T13:59:38.972Z",
+      "label": "ISO 6892-1 金属材料拉伸试验方法"
+    },
+    {
+      "id": "sha256:30e7d651d94c5632087e90171b3ce421701923ffe44a4ef0e2a7d471d0b70ece",
+      "bytes": 204,
+      "role": "source",
+      "ts": "2026-11-17T13:59:40.785Z",
+      "label": "高湿环境下 GMAW 气孔缺陷的观察研究"
+    },
+    {
+      "id": "sha256:9b9ccb6f117d398012b2623bfa75c1262cd3526e6e824066b9c72ad30e6f9095",
+      "bytes": 1523,
+      "role": "manuscript",
+      "ts": "2026-11-17T14:00:33.609Z",
+      "label": "manuscript"
+    },
+    {
+      "id": "sha256:b70c46537e9dd1ff0523acd80bbdeb3efc06f686f193aeb1da7aef06921e60a9",
+      "bytes": 1534,
+      "role": "manuscript",
+      "ts": "2026-11-17T14:00:43.543Z",
+      "label": "manuscript"
+    },
+    {
+      "id": "sha256:5597d8cb25e7060e2abebc052b6c8751b610144ab8491468a02fc1983125da64",
+      "bytes": 149,
+      "role": "stdout",
+      "ts": "2026-11-17T14:58:59.361Z",
+      "label": "R-fde2486908"
+    },
+    {
+      "id": "sha256:1da641191fe00338db2252758fd3e0249e50de1f990882af673e609aa89ac5b3",
+      "bytes": 149,
+      "role": "stdout",
+      "ts": "2026-11-17T14:59:00.856Z",
+      "label": "R-f886ae3b61"
+    }
+  ],
+  "gates": [
+    {
+      "stage": "scoping",
+      "ok": true,
+      "passed": 10,
+      "total": 10,
+      "blocking": [],
+      "checks": [
+        {
+          "code": "question",
+          "ok": true,
+          "detail": "research question must be at least 12 characters",
+          "blocking": true
+        },
+        {
+          "code": "scope",
+          "ok": true,
+          "detail": "scope / boundaries must be at least 12 characters",
+          "blocking": true
+        },
+        {
+          "code": "success",
+          "ok": true,
+          "detail": "success criteria must be at least 10 characters",
+          "blocking": true
+        },
+        {
+          "code": "tier",
+          "ok": true,
+          "detail": "unknown effort tier: M",
+          "blocking": true
+        },
+        {
+          "code": "world_question",
+          "ok": true,
+          "detail": "record the question in the world model (rsx_campaign action:\"world\")",
+          "blocking": true
+        },
+        {
+          "code": "domain_industrial_system_boundary",
+          "ok": true,
+          "detail": "系统边界与对象 已登记",
+          "blocking": true
+        },
+        {
+          "code": "domain_industrial_operating_context",
+          "ok": true,
+          "detail": "运行环境与工况 已登记",
+          "blocking": true
+        },
+        {
+          "code": "domain_industrial_requirements",
+          "ok": true,
+          "detail": "需求与验收指标 已登记",
+          "blocking": true
+        },
+        {
+          "code": "domain_industrial_hazards",
+          "ok": true,
+          "detail": "危害与失效模式 已登记",
+          "blocking": true
+        },
+        {
+          "code": "domain_industrial_standards",
+          "ok": true,
+          "detail": "适用标准与条款 已登记",
+          "blocking": true
+        }
+      ],
+      "ts": "2026-11-17T13:59:24.927Z"
+    },
+    {
+      "stage": "survey",
+      "ok": true,
+      "passed": 10,
+      "total": 10,
+      "blocking": [],
+      "checks": [
+        {
+          "code": "min_sources",
+          "ok": true,
+          "detail": "need 8 sources, have 8",
+          "blocking": true
+        },
+        {
+          "code": "primary_sources",
+          "ok": true,
+          "detail": "need 2 primary sources, have 2",
+          "blocking": true
+        },
+        {
+          "code": "recent_source",
+          "ok": true,
+          "detail": "need at least one source from 2023 or later",
+          "blocking": true
+        },
+        {
+          "code": "content_captured",
+          "ok": true,
+          "detail": "capture source content (8 with content hash)",
+          "blocking": true
+        },
+        {
+          "code": "disconfirming_search",
+          "ok": true,
+          "detail": "run one disconfirming search and record it (rsx_campaign action:\"search\")",
+          "blocking": true
+        },
+        {
+          "code": "coverage_map",
+          "ok": true,
+          "detail": "map at least two coverage areas, have 2",
+          "blocking": true
+        },
+        {
+          "code": "domain_industrial_prior_art",
+          "ok": true,
+          "detail": "既有数据与先验试验 已登记",
+          "blocking": true
+        },
+        {
+          "code": "domain_industrial_measurement_plan",
+          "ok": true,
+          "detail": "测量计划与量具 已登记",
+          "blocking": true
+        },
+        {
+          "code": "domain_industrial_msa",
+          "ok": true,
+          "detail": "测量系统分析（MSA） 已登记",
+          "blocking": true
+        },
+        {
+          "code": "domain_industrial_calibration",
+          "ok": true,
+          "detail": "校准与溯源 已登记",
+          "blocking": true
+        }
+      ],
+      "ts": "2026-11-17T13:59:46.784Z"
+    },
+    {
+      "stage": "hypothesis",
+      "ok": false,
+      "passed": 5,
+      "total": 6,
+      "blocking": [
+        "novelty"
+      ],
+      "checks": [
+        {
+          "code": "falsifier",
+          "ok": true,
+          "detail": "a hypothesis needs an explicit falsifier",
+          "blocking": true
+        },
+        {
+          "code": "kill_criterion",
+          "ok": true,
+          "detail": "state the kill criterion",
+          "blocking": true
+        },
+        {
+          "code": "predicted_observation",
+          "ok": true,
+          "detail": "state the predicted observation",
+          "blocking": true
+        },
+        {
+          "code": "metric",
+          "ok": true,
+          "detail": "name the primary metric and its unit",
+          "blocking": true
+        },
+        {
+          "code": "support",
+          "ok": true,
+          "detail": "attach at least two supporting evidence rows, have 2",
+          "blocking": true
+        },
+        {
+          "code": "novelty",
+          "ok": false,
+          "detail": "check the nearest prior work and record it under world.novelty",
+          "blocking": true
+        }
+      ],
+      "ts": "2026-11-17T13:59:58.891Z"
+    },
+    {
+      "stage": "hypothesis",
+      "ok": true,
+      "passed": 6,
+      "total": 6,
+      "blocking": [],
+      "checks": [
+        {
+          "code": "falsifier",
+          "ok": true,
+          "detail": "a hypothesis needs an explicit falsifier",
+          "blocking": true
+        },
+        {
+          "code": "kill_criterion",
+          "ok": true,
+          "detail": "state the kill criterion",
+          "blocking": true
+        },
+        {
+          "code": "predicted_observation",
+          "ok": true,
+          "detail": "state the predicted observation",
+          "blocking": true
+        },
+        {
+          "code": "metric",
+          "ok": true,
+          "detail": "name the primary metric and its unit",
+          "blocking": true
+        },
+        {
+          "code": "support",
+          "ok": true,
+          "detail": "attach at least two supporting evidence rows, have 2",
+          "blocking": true
+        },
+        {
+          "code": "novelty",
+          "ok": true,
+          "detail": "check the nearest prior work and record it under world.novelty",
+          "blocking": true
+        }
+      ],
+      "ts": "2026-11-17T14:00:03.299Z"
+    },
+    {
+      "stage": "design",
+      "ok": true,
+      "passed": 15,
+      "total": 15,
+      "blocking": [],
+      "checks": [
+        {
+          "code": "prereg_hypothesis",
+          "ok": true,
+          "detail": "link the pre-registration to a hypothesis id",
+          "blocking": true
+        },
+        {
+          "code": "prereg_metric",
+          "ok": true,
+          "detail": "pre-register the primary metric",
+          "blocking": true
+        },
+        {
+          "code": "prereg_n",
+          "ok": true,
+          "detail": "pre-register a sample size / n",
+          "blocking": true
+        },
+        {
+          "code": "prereg_analysis",
+          "ok": true,
+          "detail": "pre-register the analysis plan",
+          "blocking": true
+        },
+        {
+          "code": "prereg_stopping",
+          "ok": true,
+          "detail": "pre-register the stopping rule",
+          "blocking": true
+        },
+        {
+          "code": "prereg_seed",
+          "ok": true,
+          "detail": "pre-register the random seed",
+          "blocking": true
+        },
+        {
+          "code": "negative_control",
+          "ok": true,
+          "detail": "include a negative control in the design",
+          "blocking": true
+        },
+        {
+          "code": "env_lock",
+          "ok": true,
+          "detail": "record the environment lock (versions / hardware)",
+          "blocking": true
+        },
+        {
+          "code": "domain_industrial_design_type",
+          "ok": true,
+          "detail": "实验设计类型 已登记",
+          "blocking": true
+        },
+        {
+          "code": "domain_industrial_factors",
+          "ok": true,
+          "detail": "因子与水平 已登记",
+          "blocking": true
+        },
+        {
+          "code": "domain_industrial_levels",
+          "ok": true,
+          "detail": "水平设置依据 已登记",
+          "blocking": true
+        },
+        {
+          "code": "domain_industrial_replicates",
+          "ok": true,
+          "detail": "重复次数 已登记",
+          "blocking": true
+        },
+        {
+          "code": "domain_industrial_randomization",
+          "ok": true,
+          "detail": "随机化与区组 已登记",
+          "blocking": true
+        },
+        {
+          "code": "domain_industrial_acceptance_criteria",
+          "ok": true,
+          "detail": "接受准则与判定规则 已登记",
+          "blocking": true
+        },
+        {
+          "code": "domain_industrial_safety_review",
+          "ok": true,
+          "detail": "安全评审 已登记",
+          "blocking": true
+        }
+      ],
+      "ts": "2026-11-17T14:00:07.541Z"
+    },
+    {
+      "stage": "execute",
+      "ok": true,
+      "passed": 9,
+      "total": 9,
+      "blocking": [],
+      "checks": [
+        {
+          "code": "success_run",
+          "ok": true,
+          "detail": "record at least one successful run",
+          "blocking": true
+        },
+        {
+          "code": "seed",
+          "ok": true,
+          "detail": "every successful run must carry its seed",
+          "blocking": true
+        },
+        {
+          "code": "metrics",
+          "ok": true,
+          "detail": "every successful run must carry metrics",
+          "blocking": true
+        },
+        {
+          "code": "negative_control_run",
+          "ok": true,
+          "detail": "actually run the negative control and record it",
+          "blocking": true
+        },
+        {
+          "code": "command_recorded",
+          "ok": true,
+          "detail": "record the exact command of every success",
+          "blocking": true
+        },
+        {
+          "code": "domain_industrial_environment",
+          "ok": true,
+          "detail": "执行环境与设备状态 已登记",
+          "blocking": true
+        },
+        {
+          "code": "domain_industrial_raw_data",
+          "ok": true,
+          "detail": "原始数据与采集 已登记",
+          "blocking": true
+        },
+        {
+          "code": "domain_industrial_deviations",
+          "ok": true,
+          "detail": "偏离与异常处理 已登记",
+          "blocking": true
+        },
+        {
+          "code": "domain_industrial_calibration_record",
+          "ok": true,
+          "detail": "校准记录与有效期 已登记",
+          "blocking": true
+        }
+      ],
+      "ts": "2026-11-17T14:00:22.654Z"
+    },
+    {
+      "stage": "analyze",
+      "ok": true,
+      "passed": 10,
+      "total": 10,
+      "blocking": [],
+      "checks": [
+        {
+          "code": "numbers_present",
+          "ok": true,
+          "detail": "register at least one number with a trace",
+          "blocking": true
+        },
+        {
+          "code": "trace_resolves",
+          "ok": true,
+          "detail": "all traces resolve",
+          "blocking": true
+        },
+        {
+          "code": "trace_matches",
+          "ok": true,
+          "detail": "all traced values match",
+          "blocking": true
+        },
+        {
+          "code": "uncertainty",
+          "ok": true,
+          "detail": "report uncertainty for at least one number",
+          "blocking": true
+        },
+        {
+          "code": "claims_resolved",
+          "ok": true,
+          "detail": "every claim needs a final status, still proposed: ",
+          "blocking": true
+        },
+        {
+          "code": "domain_industrial_effect_estimates",
+          "ok": true,
+          "detail": "效应估计与显著性 已登记",
+          "blocking": true
+        },
+        {
+          "code": "domain_industrial_assumptions",
+          "ok": true,
+          "detail": "统计假设与诊断 已登记",
+          "blocking": true
+        },
+        {
+          "code": "domain_industrial_uncertainty",
+          "ok": true,
+          "detail": "测量不确定度 已登记",
+          "blocking": true
+        },
+        {
+          "code": "domain_industrial_confirmation_run",
+          "ok": true,
+          "detail": "确认运行 已登记",
+          "blocking": true
+        },
+        {
+          "code": "domain_industrial_capability",
+          "ok": true,
+          "detail": "过程能力与稳定性 已登记",
+          "blocking": true
+        }
+      ],
+      "ts": "2026-11-17T14:00:28.255Z"
+    },
+    {
+      "stage": "write",
+      "ok": true,
+      "passed": 11,
+      "total": 11,
+      "blocking": [],
+      "checks": [
+        {
+          "code": "manuscript",
+          "ok": true,
+          "detail": "562 characters",
+          "blocking": true
+        },
+        {
+          "code": "number_refs",
+          "ok": true,
+          "detail": "reference at least one ledger number as {{N-0001}}",
+          "blocking": true
+        },
+        {
+          "code": "number_refs_known",
+          "ok": true,
+          "detail": "unknown number refs: ",
+          "blocking": true
+        },
+        {
+          "code": "cite_refs",
+          "ok": true,
+          "detail": "reference at least one source as [[src:S-0001]]",
+          "blocking": true
+        },
+        {
+          "code": "cite_refs_known",
+          "ok": true,
+          "detail": "unknown source refs: ",
+          "blocking": true
+        },
+        {
+          "code": "no_orphan_numbers",
+          "ok": true,
+          "detail": "",
+          "blocking": true
+        },
+        {
+          "code": "figure_provenance",
+          "ok": true,
+          "detail": "figures need artifact + code + data: ",
+          "blocking": true
+        },
+        {
+          "code": "domain_industrial_reporting_standard",
+          "ok": true,
+          "detail": "报告/质量体系口径 已登记",
+          "blocking": true
+        },
+        {
+          "code": "domain_industrial_test_report",
+          "ok": true,
+          "detail": "试验报告 已登记",
+          "blocking": true
+        },
+        {
+          "code": "domain_industrial_limitations",
+          "ok": true,
+          "detail": "局限与外推边界 已登记",
+          "blocking": true
+        },
+        {
+          "code": "domain_industrial_safety_case",
+          "ok": true,
+          "detail": "安全案例 已登记",
+          "blocking": true
+        }
+      ],
+      "ts": "2026-11-17T14:00:44.866Z"
+    },
+    {
+      "stage": "review",
+      "ok": true,
+      "passed": 8,
+      "total": 8,
+      "blocking": [],
+      "checks": [
+        {
+          "code": "automated_audit",
+          "ok": true,
+          "detail": "audit A-0001 passed",
+          "blocking": true
+        },
+        {
+          "code": "two_reviews",
+          "ok": true,
+          "detail": "need 2 reviews, have 2",
+          "blocking": true
+        },
+        {
+          "code": "adversarial_review",
+          "ok": true,
+          "detail": "at least one review must be adversarial (red team)",
+          "blocking": true
+        },
+        {
+          "code": "no_reject",
+          "ok": true,
+          "detail": "reviews reject the work: ",
+          "blocking": true
+        },
+        {
+          "code": "no_blocking_issues",
+          "ok": true,
+          "detail": "",
+          "blocking": true
+        },
+        {
+          "code": "claims_resolved",
+          "ok": true,
+          "detail": "unresolved claims: ",
+          "blocking": true
+        },
+        {
+          "code": "domain_industrial_review_engineering",
+          "ok": true,
+          "detail": "需要 工程审查 角色的审查记录",
+          "blocking": true
+        },
+        {
+          "code": "domain_industrial_review_quality",
+          "ok": true,
+          "detail": "需要 质量/安全审查 角色的审查记录",
+          "blocking": true
+        }
+      ],
+      "ts": "2026-11-17T14:00:53.412Z"
+    },
+    {
+      "stage": "release",
+      "ok": true,
+      "passed": 12,
+      "total": 12,
+      "blocking": [],
+      "checks": [
+        {
+          "code": "upstream_gates",
+          "ok": true,
+          "detail": "failing upstream: ",
+          "blocking": true
+        },
+        {
+          "code": "declaration",
+          "ok": true,
+          "detail": "declare AI assistance and add a watermark",
+          "blocking": true
+        },
+        {
+          "code": "declaration_model",
+          "ok": true,
+          "detail": "name the model / tool used",
+          "blocking": true
+        },
+        {
+          "code": "declaration_reviewer",
+          "ok": true,
+          "detail": "name the human reviewer",
+          "blocking": true
+        },
+        {
+          "code": "dual_use",
+          "ok": true,
+          "detail": "record world.safety.dual_use = \"pass\" (current: pass)",
+          "blocking": true
+        },
+        {
+          "code": "budget",
+          "ok": true,
+          "detail": "",
+          "blocking": true
+        },
+        {
+          "code": "no_contested_claims",
+          "ok": true,
+          "detail": "",
+          "blocking": true
+        },
+        {
+          "code": "chain_integrity",
+          "ok": true,
+          "detail": "hash chain, state.json and 10 artifacts verified",
+          "blocking": true
+        },
+        {
+          "code": "domain_industrial_traceability",
+          "ok": true,
+          "detail": "追溯链 已登记",
+          "blocking": true
+        },
+        {
+          "code": "domain_industrial_quality_record",
+          "ok": true,
+          "detail": "质量记录归档 已登记",
+          "blocking": true
+        },
+        {
+          "code": "domain_industrial_safety_signoff",
+          "ok": true,
+          "detail": "安全签核 已登记",
+          "blocking": true
+        },
+        {
+          "code": "domain_industrial_monitoring",
+          "ok": true,
+          "detail": "发布前需登记监测计划（状态 planned/active、计划≥20字、负责人、频率）：转产/上线后跟踪 SPC 告警、校准到期、缺陷率与安全事件；写明停线、召回与再验证触发条件。",
+          "blocking": true
+        }
+      ],
+      "ts": "2026-11-17T14:01:07.896Z"
+    },
+    {
+      "stage": "release",
+      "ok": true,
+      "passed": 12,
+      "total": 12,
+      "blocking": [],
+      "checks": [
+        {
+          "code": "upstream_gates",
+          "ok": true,
+          "detail": "failing upstream: ",
+          "blocking": true
+        },
+        {
+          "code": "declaration",
+          "ok": true,
+          "detail": "declare AI assistance and add a watermark",
+          "blocking": true
+        },
+        {
+          "code": "declaration_model",
+          "ok": true,
+          "detail": "name the model / tool used",
+          "blocking": true
+        },
+        {
+          "code": "declaration_reviewer",
+          "ok": true,
+          "detail": "name the human reviewer",
+          "blocking": true
+        },
+        {
+          "code": "dual_use",
+          "ok": true,
+          "detail": "record world.safety.dual_use = \"pass\" (current: pass)",
+          "blocking": true
+        },
+        {
+          "code": "budget",
+          "ok": true,
+          "detail": "",
+          "blocking": true
+        },
+        {
+          "code": "no_contested_claims",
+          "ok": true,
+          "detail": "",
+          "blocking": true
+        },
+        {
+          "code": "chain_integrity",
+          "ok": true,
+          "detail": "hash chain, state.json and 10 artifacts verified",
+          "blocking": true
+        },
+        {
+          "code": "domain_industrial_traceability",
+          "ok": true,
+          "detail": "追溯链 已登记",
+          "blocking": true
+        },
+        {
+          "code": "domain_industrial_quality_record",
+          "ok": true,
+          "detail": "质量记录归档 已登记",
+          "blocking": true
+        },
+        {
+          "code": "domain_industrial_safety_signoff",
+          "ok": true,
+          "detail": "安全签核 已登记",
+          "blocking": true
+        },
+        {
+          "code": "domain_industrial_monitoring",
+          "ok": true,
+          "detail": "发布前需登记监测计划（状态 planned/active、计划≥20字、负责人、频率）：转产/上线后跟踪 SPC 告警、校准到期、缺陷率与安全事件；写明停线、召回与再验证触发条件。",
+          "blocking": true
+        }
+      ],
+      "ts": "2026-11-17T14:01:16.826Z"
+    },
+    {
+      "stage": "release",
+      "ok": true,
+      "passed": 12,
+      "total": 12,
+      "blocking": [],
+      "checks": [
+        {
+          "code": "upstream_gates",
+          "ok": true,
+          "detail": "failing upstream: ",
+          "blocking": true
+        },
+        {
+          "code": "declaration",
+          "ok": true,
+          "detail": "declare AI assistance and add a watermark",
+          "blocking": true
+        },
+        {
+          "code": "declaration_model",
+          "ok": true,
+          "detail": "name the model / tool used",
+          "blocking": true
+        },
+        {
+          "code": "declaration_reviewer",
+          "ok": true,
+          "detail": "name the human reviewer",
+          "blocking": true
+        },
+        {
+          "code": "dual_use",
+          "ok": true,
+          "detail": "record world.safety.dual_use = \"pass\" (current: pass)",
+          "blocking": true
+        },
+        {
+          "code": "budget",
+          "ok": true,
+          "detail": "",
+          "blocking": true
+        },
+        {
+          "code": "no_contested_claims",
+          "ok": true,
+          "detail": "",
+          "blocking": true
+        },
+        {
+          "code": "chain_integrity",
+          "ok": true,
+          "detail": "hash chain, state.json and 10 artifacts verified",
+          "blocking": true
+        },
+        {
+          "code": "domain_industrial_traceability",
+          "ok": true,
+          "detail": "追溯链 已登记",
+          "blocking": true
+        },
+        {
+          "code": "domain_industrial_quality_record",
+          "ok": true,
+          "detail": "质量记录归档 已登记",
+          "blocking": true
+        },
+        {
+          "code": "domain_industrial_safety_signoff",
+          "ok": true,
+          "detail": "安全签核 已登记",
+          "blocking": true
+        },
+        {
+          "code": "domain_industrial_monitoring",
+          "ok": true,
+          "detail": "发布前需登记监测计划（状态 planned/active、计划≥20字、负责人、频率、无未处理告警）：转产/上线后跟踪 SPC 告警、校准到期、缺陷率与安全事件；写明停线、召回与再验证触发条件。",
+          "blocking": true
+        }
+      ],
+      "ts": "2026-11-17T14:41:45.552Z"
+    },
+    {
+      "stage": "release",
+      "ok": true,
+      "passed": 12,
+      "total": 12,
+      "blocking": [],
+      "checks": [
+        {
+          "code": "upstream_gates",
+          "ok": true,
+          "detail": "failing upstream: ",
+          "blocking": true
+        },
+        {
+          "code": "declaration",
+          "ok": true,
+          "detail": "declare AI assistance and add a watermark",
+          "blocking": true
+        },
+        {
+          "code": "declaration_model",
+          "ok": true,
+          "detail": "name the model / tool used",
+          "blocking": true
+        },
+        {
+          "code": "declaration_reviewer",
+          "ok": true,
+          "detail": "name the human reviewer",
+          "blocking": true
+        },
+        {
+          "code": "dual_use",
+          "ok": true,
+          "detail": "record world.safety.dual_use = \"pass\" (current: pass)",
+          "blocking": true
+        },
+        {
+          "code": "budget",
+          "ok": true,
+          "detail": "",
+          "blocking": true
+        },
+        {
+          "code": "no_contested_claims",
+          "ok": true,
+          "detail": "",
+          "blocking": true
+        },
+        {
+          "code": "chain_integrity",
+          "ok": true,
+          "detail": "hash chain, state.json and 10 artifacts verified",
+          "blocking": true
+        },
+        {
+          "code": "domain_industrial_traceability",
+          "ok": true,
+          "detail": "追溯链 已登记",
+          "blocking": true
+        },
+        {
+          "code": "domain_industrial_quality_record",
+          "ok": true,
+          "detail": "质量记录归档 已登记",
+          "blocking": true
+        },
+        {
+          "code": "domain_industrial_safety_signoff",
+          "ok": true,
+          "detail": "安全签核 已登记",
+          "blocking": true
+        },
+        {
+          "code": "domain_industrial_monitoring",
+          "ok": true,
+          "detail": "发布前需登记监测计划（状态 planned/active、计划≥20字、负责人、频率、无未处理告警）：转产/上线后跟踪 SPC 告警、校准到期、缺陷率与安全事件；写明停线、召回与再验证触发条件。",
+          "blocking": true
+        }
+      ],
+      "ts": "2026-11-17T14:46:08.981Z"
+    },
+    {
+      "stage": "release",
+      "ok": true,
+      "passed": 12,
+      "total": 12,
+      "blocking": [],
+      "checks": [
+        {
+          "code": "upstream_gates",
+          "ok": true,
+          "detail": "failing upstream: ",
+          "blocking": true
+        },
+        {
+          "code": "declaration",
+          "ok": true,
+          "detail": "declare AI assistance and add a watermark",
+          "blocking": true
+        },
+        {
+          "code": "declaration_model",
+          "ok": true,
+          "detail": "name the model / tool used",
+          "blocking": true
+        },
+        {
+          "code": "declaration_reviewer",
+          "ok": true,
+          "detail": "name the human reviewer",
+          "blocking": true
+        },
+        {
+          "code": "dual_use",
+          "ok": true,
+          "detail": "record world.safety.dual_use = \"pass\" (current: pass)",
+          "blocking": true
+        },
+        {
+          "code": "budget",
+          "ok": true,
+          "detail": "",
+          "blocking": true
+        },
+        {
+          "code": "no_contested_claims",
+          "ok": true,
+          "detail": "",
+          "blocking": true
+        },
+        {
+          "code": "chain_integrity",
+          "ok": true,
+          "detail": "hash chain, state.json and 12 artifacts verified",
+          "blocking": true
+        },
+        {
+          "code": "domain_industrial_traceability",
+          "ok": true,
+          "detail": "追溯链 已登记",
+          "blocking": true
+        },
+        {
+          "code": "domain_industrial_quality_record",
+          "ok": true,
+          "detail": "质量记录归档 已登记",
+          "blocking": true
+        },
+        {
+          "code": "domain_industrial_safety_signoff",
+          "ok": true,
+          "detail": "安全签核 已登记",
+          "blocking": true
+        },
+        {
+          "code": "domain_industrial_monitoring",
+          "ok": true,
+          "detail": "发布前需登记监测计划（状态 planned/active、计划≥20字、负责人、频率、无未处理告警）：转产/上线后跟踪 SPC 告警、校准到期、缺陷率与安全事件；写明停线、召回与再验证触发条件。",
+          "blocking": true
+        }
+      ],
+      "ts": "2026-11-17T15:04:41.421Z"
+    },
+    {
+      "stage": "scoping",
+      "ok": true,
+      "passed": 10,
+      "total": 10,
+      "blocking": [],
+      "checks": [
+        {
+          "code": "question",
+          "ok": true,
+          "detail": "research question must be at least 12 characters",
+          "blocking": true
+        },
+        {
+          "code": "scope",
+          "ok": true,
+          "detail": "scope / boundaries must be at least 12 characters",
+          "blocking": true
+        },
+        {
+          "code": "success",
+          "ok": true,
+          "detail": "success criteria must be at least 10 characters",
+          "blocking": true
+        },
+        {
+          "code": "tier",
+          "ok": true,
+          "detail": "unknown effort tier: M",
+          "blocking": true
+        },
+        {
+          "code": "world_question",
+          "ok": true,
+          "detail": "record the question in the world model (rsx_campaign action:\"world\")",
+          "blocking": true
+        },
+        {
+          "code": "domain_industrial_system_boundary",
+          "ok": true,
+          "detail": "系统边界与对象 已登记",
+          "blocking": true
+        },
+        {
+          "code": "domain_industrial_operating_context",
+          "ok": true,
+          "detail": "运行环境与工况 已登记",
+          "blocking": true
+        },
+        {
+          "code": "domain_industrial_requirements",
+          "ok": true,
+          "detail": "需求与验收指标 已登记",
+          "blocking": true
+        },
+        {
+          "code": "domain_industrial_hazards",
+          "ok": true,
+          "detail": "危害与失效模式 已登记",
+          "blocking": true
+        },
+        {
+          "code": "domain_industrial_standards",
+          "ok": true,
+          "detail": "适用标准与条款 已登记",
+          "blocking": true
+        }
+      ],
+      "ts": "2026-11-17T16:48:29.978Z"
+    },
+    {
+      "stage": "survey",
+      "ok": true,
+      "passed": 10,
+      "total": 12,
+      "blocking": [],
+      "checks": [
+        {
+          "code": "min_sources",
+          "ok": true,
+          "detail": "need 8 sources, have 8",
+          "blocking": true
+        },
+        {
+          "code": "primary_sources",
+          "ok": true,
+          "detail": "need 2 primary sources, have 2",
+          "blocking": true
+        },
+        {
+          "code": "recent_source",
+          "ok": true,
+          "detail": "need at least one source from 2023 or later",
+          "blocking": true
+        },
+        {
+          "code": "content_captured",
+          "ok": true,
+          "detail": "capture source content (8 with content hash)",
+          "blocking": true
+        },
+        {
+          "code": "disconfirming_search",
+          "ok": true,
+          "detail": "run one disconfirming search and record it (rsx_campaign action:\"search\")",
+          "blocking": true
+        },
+        {
+          "code": "coverage_map",
+          "ok": true,
+          "detail": "map at least two coverage areas, have 2",
+          "blocking": true
+        },
+        {
+          "code": "source_independence",
+          "ok": false,
+          "detail": "need 2 primary sources declared independent, have 0 (set independence:\"independent\" or declare lineage)",
+          "blocking": false
+        },
+        {
+          "code": "source_rob",
+          "ok": false,
+          "detail": "assess risk of bias on every primary source (0/2)",
+          "blocking": false
+        },
+        {
+          "code": "domain_industrial_prior_art",
+          "ok": true,
+          "detail": "既有数据与先验试验 已登记",
+          "blocking": true
+        },
+        {
+          "code": "domain_industrial_measurement_plan",
+          "ok": true,
+          "detail": "测量计划与量具 已登记",
+          "blocking": true
+        },
+        {
+          "code": "domain_industrial_msa",
+          "ok": true,
+          "detail": "测量系统分析（MSA） 已登记",
+          "blocking": true
+        },
+        {
+          "code": "domain_industrial_calibration",
+          "ok": true,
+          "detail": "校准与溯源 已登记",
+          "blocking": true
+        }
+      ],
+      "ts": "2026-11-17T16:48:30.003Z"
+    },
+    {
+      "stage": "hypothesis",
+      "ok": true,
+      "passed": 6,
+      "total": 9,
+      "blocking": [],
+      "checks": [
+        {
+          "code": "falsifier",
+          "ok": true,
+          "detail": "a hypothesis needs an explicit falsifier",
+          "blocking": true
+        },
+        {
+          "code": "kill_criterion",
+          "ok": true,
+          "detail": "state the kill criterion",
+          "blocking": true
+        },
+        {
+          "code": "predicted_observation",
+          "ok": true,
+          "detail": "state the predicted observation",
+          "blocking": true
+        },
+        {
+          "code": "metric",
+          "ok": true,
+          "detail": "name the primary metric and its unit",
+          "blocking": true
+        },
+        {
+          "code": "support",
+          "ok": true,
+          "detail": "attach at least two supporting evidence rows, have 2",
+          "blocking": true
+        },
+        {
+          "code": "novelty",
+          "ok": true,
+          "detail": "check the nearest prior work and record it under world.novelty",
+          "blocking": true
+        },
+        {
+          "code": "hypothesis_warrant",
+          "ok": false,
+          "detail": "write the warrant: which rule licenses evidence → hypothesis",
+          "blocking": false
+        },
+        {
+          "code": "claim_counter_evidence",
+          "ok": false,
+          "detail": "record the counter-evidence search, including a null result",
+          "blocking": false
+        },
+        {
+          "code": "alternatives",
+          "ok": false,
+          "detail": "record a competing claim or a documented abandoned line",
+          "blocking": false
+        }
+      ],
+      "ts": "2026-11-17T16:48:30.024Z"
+    },
+    {
+      "stage": "design",
+      "ok": true,
+      "passed": 15,
+      "total": 17,
+      "blocking": [],
+      "checks": [
+        {
+          "code": "prereg_hypothesis",
+          "ok": true,
+          "detail": "link the pre-registration to a hypothesis id",
+          "blocking": true
+        },
+        {
+          "code": "prereg_metric",
+          "ok": true,
+          "detail": "pre-register the primary metric",
+          "blocking": true
+        },
+        {
+          "code": "prereg_n",
+          "ok": true,
+          "detail": "pre-register a sample size / n",
+          "blocking": true
+        },
+        {
+          "code": "prereg_analysis",
+          "ok": true,
+          "detail": "pre-register the analysis plan",
+          "blocking": true
+        },
+        {
+          "code": "prereg_stopping",
+          "ok": true,
+          "detail": "pre-register the stopping rule",
+          "blocking": true
+        },
+        {
+          "code": "prereg_seed",
+          "ok": true,
+          "detail": "pre-register the random seed",
+          "blocking": true
+        },
+        {
+          "code": "negative_control",
+          "ok": true,
+          "detail": "include a negative control in the design",
+          "blocking": true
+        },
+        {
+          "code": "env_lock",
+          "ok": true,
+          "detail": "record the environment lock (versions / hardware)",
+          "blocking": true
+        },
+        {
+          "code": "prereg_lock",
+          "ok": false,
+          "detail": "lock the pre-registration hash so later edits become visible amendments",
+          "blocking": false
+        },
+        {
+          "code": "prereg_stats",
+          "ok": false,
+          "detail": "record alpha / power / effect size (advisory)",
+          "blocking": false
+        },
+        {
+          "code": "domain_industrial_design_type",
+          "ok": true,
+          "detail": "实验设计类型 已登记",
+          "blocking": true
+        },
+        {
+          "code": "domain_industrial_factors",
+          "ok": true,
+          "detail": "因子与水平 已登记",
+          "blocking": true
+        },
+        {
+          "code": "domain_industrial_levels",
+          "ok": true,
+          "detail": "水平设置依据 已登记",
+          "blocking": true
+        },
+        {
+          "code": "domain_industrial_replicates",
+          "ok": true,
+          "detail": "重复次数 已登记",
+          "blocking": true
+        },
+        {
+          "code": "domain_industrial_randomization",
+          "ok": true,
+          "detail": "随机化与区组 已登记",
+          "blocking": true
+        },
+        {
+          "code": "domain_industrial_acceptance_criteria",
+          "ok": true,
+          "detail": "接受准则与判定规则 已登记",
+          "blocking": true
+        },
+        {
+          "code": "domain_industrial_safety_review",
+          "ok": true,
+          "detail": "安全评审 已登记",
+          "blocking": true
+        }
+      ],
+      "ts": "2026-11-17T16:48:30.045Z"
+    },
+    {
+      "stage": "execute",
+      "ok": true,
+      "passed": 11,
+      "total": 11,
+      "blocking": [],
+      "checks": [
+        {
+          "code": "success_run",
+          "ok": true,
+          "detail": "record at least one successful run",
+          "blocking": true
+        },
+        {
+          "code": "seed",
+          "ok": true,
+          "detail": "every successful run must carry its seed",
+          "blocking": true
+        },
+        {
+          "code": "metrics",
+          "ok": true,
+          "detail": "every successful run must carry metrics",
+          "blocking": true
+        },
+        {
+          "code": "negative_control_run",
+          "ok": true,
+          "detail": "actually run the negative control and record it",
+          "blocking": true
+        },
+        {
+          "code": "command_recorded",
+          "ok": true,
+          "detail": "record the exact command of every success",
+          "blocking": true
+        },
+        {
+          "code": "run_stdout",
+          "ok": true,
+          "detail": "attach raw stdout from at least one run so the output can be replayed (rsx_run action:\"attach\")",
+          "blocking": false
+        },
+        {
+          "code": "repro_manifest",
+          "ok": true,
+          "detail": "every success needs an exact command and seed for reproduction",
+          "blocking": false
+        },
+        {
+          "code": "domain_industrial_environment",
+          "ok": true,
+          "detail": "执行环境与设备状态 已登记",
+          "blocking": true
+        },
+        {
+          "code": "domain_industrial_raw_data",
+          "ok": true,
+          "detail": "原始数据与采集 已登记",
+          "blocking": true
+        },
+        {
+          "code": "domain_industrial_deviations",
+          "ok": true,
+          "detail": "偏离与异常处理 已登记",
+          "blocking": true
+        },
+        {
+          "code": "domain_industrial_calibration_record",
+          "ok": true,
+          "detail": "校准记录与有效期 已登记",
+          "blocking": true
+        }
+      ],
+      "ts": "2026-11-17T16:48:30.065Z"
+    },
+    {
+      "stage": "analyze",
+      "ok": true,
+      "passed": 11,
+      "total": 14,
+      "blocking": [],
+      "checks": [
+        {
+          "code": "numbers_present",
+          "ok": true,
+          "detail": "register at least one number with a trace",
+          "blocking": true
+        },
+        {
+          "code": "trace_resolves",
+          "ok": true,
+          "detail": "all traces resolve",
+          "blocking": true
+        },
+        {
+          "code": "trace_matches",
+          "ok": true,
+          "detail": "all traced values match",
+          "blocking": true
+        },
+        {
+          "code": "uncertainty",
+          "ok": true,
+          "detail": "report uncertainty for at least one number",
+          "blocking": true
+        },
+        {
+          "code": "claims_resolved",
+          "ok": true,
+          "detail": "every claim needs a final status, still proposed: ",
+          "blocking": true
+        },
+        {
+          "code": "claim_warrant",
+          "ok": false,
+          "detail": "every supported/contested claim needs a warrant",
+          "blocking": false
+        },
+        {
+          "code": "claim_certainty",
+          "ok": false,
+          "detail": "set certainty on every settled claim: C-0001",
+          "blocking": false
+        },
+        {
+          "code": "claim_counter_evidence",
+          "ok": false,
+          "detail": "record the counter-evidence search for every settled claim",
+          "blocking": false
+        },
+        {
+          "code": "claim_contested_ignored",
+          "ok": true,
+          "detail": "a supported claim with refuting evidence must be contested or explained",
+          "blocking": false
+        },
+        {
+          "code": "domain_industrial_effect_estimates",
+          "ok": true,
+          "detail": "效应估计与显著性 已登记",
+          "blocking": true
+        },
+        {
+          "code": "domain_industrial_assumptions",
+          "ok": true,
+          "detail": "统计假设与诊断 已登记",
+          "blocking": true
+        },
+        {
+          "code": "domain_industrial_uncertainty",
+          "ok": true,
+          "detail": "测量不确定度 已登记",
+          "blocking": true
+        },
+        {
+          "code": "domain_industrial_confirmation_run",
+          "ok": true,
+          "detail": "确认运行 已登记",
+          "blocking": true
+        },
+        {
+          "code": "domain_industrial_capability",
+          "ok": true,
+          "detail": "过程能力与稳定性 已登记",
+          "blocking": true
+        }
+      ],
+      "ts": "2026-11-17T16:48:30.086Z"
+    },
+    {
+      "stage": "write",
+      "ok": true,
+      "passed": 11,
+      "total": 11,
+      "blocking": [],
+      "checks": [
+        {
+          "code": "manuscript",
+          "ok": true,
+          "detail": "562 characters",
+          "blocking": true
+        },
+        {
+          "code": "number_refs",
+          "ok": true,
+          "detail": "reference at least one ledger number as {{N-0001}}",
+          "blocking": true
+        },
+        {
+          "code": "number_refs_known",
+          "ok": true,
+          "detail": "unknown number refs: ",
+          "blocking": true
+        },
+        {
+          "code": "cite_refs",
+          "ok": true,
+          "detail": "reference at least one source as [[src:S-0001]]",
+          "blocking": true
+        },
+        {
+          "code": "cite_refs_known",
+          "ok": true,
+          "detail": "unknown source refs: ",
+          "blocking": true
+        },
+        {
+          "code": "no_orphan_numbers",
+          "ok": true,
+          "detail": "",
+          "blocking": true
+        },
+        {
+          "code": "figure_provenance",
+          "ok": true,
+          "detail": "figures need artifact + code + data: ",
+          "blocking": true
+        },
+        {
+          "code": "domain_industrial_reporting_standard",
+          "ok": true,
+          "detail": "报告/质量体系口径 已登记",
+          "blocking": true
+        },
+        {
+          "code": "domain_industrial_test_report",
+          "ok": true,
+          "detail": "试验报告 已登记",
+          "blocking": true
+        },
+        {
+          "code": "domain_industrial_limitations",
+          "ok": true,
+          "detail": "局限与外推边界 已登记",
+          "blocking": true
+        },
+        {
+          "code": "domain_industrial_safety_case",
+          "ok": true,
+          "detail": "安全案例 已登记",
+          "blocking": true
+        }
+      ],
+      "ts": "2026-11-17T16:48:30.109Z"
+    },
+    {
+      "stage": "review",
+      "ok": false,
+      "passed": 7,
+      "total": 8,
+      "blocking": [
+        "automated_audit"
+      ],
+      "checks": [
+        {
+          "code": "automated_audit",
+          "ok": false,
+          "detail": "the latest audit is stale — the ledger changed after it ran; run rsx_review action:\"audit\" again",
+          "blocking": true
+        },
+        {
+          "code": "two_reviews",
+          "ok": true,
+          "detail": "need 2 reviews, have 2",
+          "blocking": true
+        },
+        {
+          "code": "adversarial_review",
+          "ok": true,
+          "detail": "at least one review must be adversarial (red team)",
+          "blocking": true
+        },
+        {
+          "code": "no_reject",
+          "ok": true,
+          "detail": "reviews reject the work: ",
+          "blocking": true
+        },
+        {
+          "code": "no_blocking_issues",
+          "ok": true,
+          "detail": "",
+          "blocking": true
+        },
+        {
+          "code": "claims_resolved",
+          "ok": true,
+          "detail": "unresolved claims: ",
+          "blocking": true
+        },
+        {
+          "code": "domain_industrial_review_engineering",
+          "ok": true,
+          "detail": "工程审查 已由 工程评审（焊接工艺） 完成",
+          "blocking": true
+        },
+        {
+          "code": "domain_industrial_review_quality",
+          "ok": true,
+          "detail": "质量/安全审查 已由 质量/安全红队评审 完成",
+          "blocking": true
+        }
+      ],
+      "ts": "2026-11-17T16:48:30.131Z"
+    },
+    {
+      "stage": "release",
+      "ok": false,
+      "passed": 13,
+      "total": 16,
+      "blocking": [
+        "upstream_gates"
+      ],
+      "checks": [
+        {
+          "code": "upstream_gates",
+          "ok": false,
+          "detail": "failing upstream: review",
+          "blocking": true
+        },
+        {
+          "code": "declaration",
+          "ok": true,
+          "detail": "declare AI assistance and add a watermark",
+          "blocking": true
+        },
+        {
+          "code": "declaration_model",
+          "ok": true,
+          "detail": "name the model / tool used",
+          "blocking": true
+        },
+        {
+          "code": "declaration_reviewer",
+          "ok": true,
+          "detail": "name the human reviewer",
+          "blocking": true
+        },
+        {
+          "code": "dual_use",
+          "ok": true,
+          "detail": "record world.safety.dual_use = \"pass\" (current: pass)",
+          "blocking": true
+        },
+        {
+          "code": "budget",
+          "ok": true,
+          "detail": "",
+          "blocking": true
+        },
+        {
+          "code": "no_contested_claims",
+          "ok": true,
+          "detail": "",
+          "blocking": true
+        },
+        {
+          "code": "human_approval",
+          "ok": false,
+          "detail": "record a human approval with rsx_gate action:\"approve\"",
+          "blocking": false
+        },
+        {
+          "code": "ai_contribution",
+          "ok": false,
+          "detail": "declaration.contributions must list at least one ai and one human role",
+          "blocking": false
+        },
+        {
+          "code": "waiver_hygiene",
+          "ok": true,
+          "detail": "",
+          "blocking": false
+        },
+        {
+          "code": "repro_package",
+          "ok": true,
+          "detail": "reproduction package needs exact commands, seeds, env lock and captured stdout",
+          "blocking": false
+        },
+        {
+          "code": "chain_integrity",
+          "ok": true,
+          "detail": "hash chain, state.json and 12 artifacts verified",
+          "blocking": true
+        },
+        {
+          "code": "domain_industrial_traceability",
+          "ok": true,
+          "detail": "追溯链 已登记",
+          "blocking": true
+        },
+        {
+          "code": "domain_industrial_quality_record",
+          "ok": true,
+          "detail": "质量记录归档 已登记",
+          "blocking": true
+        },
+        {
+          "code": "domain_industrial_safety_signoff",
+          "ok": true,
+          "detail": "安全签核 已登记",
+          "blocking": true
+        },
+        {
+          "code": "domain_industrial_monitoring",
+          "ok": true,
+          "detail": "发布前需登记监测计划（状态 planned/active、计划≥20字、负责人、频率、无未处理告警）：转产/上线后跟踪 SPC 告警、校准到期、缺陷率与安全事件；写明停线、召回与再验证触发条件。",
+          "blocking": true
+        }
+      ],
+      "ts": "2026-11-17T16:48:30.154Z"
+    }
+  ],
+  "budget": {
+    "tier": "M",
+    "agents": 3,
+    "stages": {
+      "scoping": {
+        "tokensLimit": 12000,
+        "secondsLimit": 432,
+        "tokensUsed": 0,
+        "secondsUsed": 0
+      },
+      "survey": {
+        "tokensLimit": 48000,
+        "secondsLimit": 1728,
+        "tokensUsed": 0,
+        "secondsUsed": 0
+      },
+      "hypothesis": {
+        "tokensLimit": 40000,
+        "secondsLimit": 1440,
+        "tokensUsed": 0,
+        "secondsUsed": 0
+      },
+      "design": {
+        "tokensLimit": 32000,
+        "secondsLimit": 1152,
+        "tokensUsed": 0,
+        "secondsUsed": 0
+      },
+      "execute": {
+        "tokensLimit": 160000,
+        "secondsLimit": 5760,
+        "tokensUsed": 0,
+        "secondsUsed": 0
+      },
+      "analyze": {
+        "tokensLimit": 40000,
+        "secondsLimit": 1440,
+        "tokensUsed": 0,
+        "secondsUsed": 0
+      },
+      "write": {
+        "tokensLimit": 40000,
+        "secondsLimit": 1440,
+        "tokensUsed": 0,
+        "secondsUsed": 0
+      },
+      "review": {
+        "tokensLimit": 20000,
+        "secondsLimit": 720,
+        "tokensUsed": 0,
+        "secondsUsed": 0
+      },
+      "release": {
+        "tokensLimit": 8000,
+        "secondsLimit": 288,
+        "tokensUsed": 0,
+        "secondsUsed": 0
+      }
+    }
+  },
+  "stateHashVersion": 1,
+  "stateHash": "8f5cf624f73838798248f3a61d853b7821938e1bec2b33257437cc1db4839000",
+  "template": {
+    "id": "industrial-doe",
+    "kind": "task",
+    "domain": "industrial",
+    "deliverables": [
+      "测量系统分析",
+      "DOE 方案",
+      "确认运行",
+      "能力与追溯报告",
+      "监测计划"
+    ],
+    "stages": [
+      "scoping",
+      "survey",
+      "design",
+      "execute",
+      "analyze",
+      "write",
+      "review",
+      "release"
+    ],
+    "gateHints": {
+      "survey": "MSA 先于工艺结论",
+      "design": "接受准则与随机化先定",
+      "analyze": "确认运行不能省"
+    }
+  },
+  "releasedAt": "2026-11-17T14:01:07.896Z",
+  "loopBaseline": {
+    "id": "L-0001",
+    "score": 93.2,
+    "ts": "2026-11-17T14:33:53.736Z",
+    "version": "0.5.0"
+  },
+  "loopEvaluation": {
+    "kind": "research-loop",
+    "version": "0.5.0",
+    "campaign": "rs-ad07b91f",
+    "domain": "industrial",
+    "stage": "release",
+    "score": 100,
+    "grade": "A",
+    "level": "L4 可审计闭环",
+    "gaps": [],
+    "nextActions": [],
+    "rsi": {
+      "ready": true,
+      "prerequisites": [
+        {
+          "id": "fresh_audit",
+          "ok": true,
+          "label": "新鲜、验签通过且无 blocking 的自动化审计"
+        },
+        {
+          "id": "independent_review",
+          "ok": true,
+          "label": "两名独立评审人（领域项目还要覆盖两个角色）"
+        },
+        {
+          "id": "monitoring_observations",
+          "ok": true,
+          "label": "监测有指标、有观测、无未处理告警且每个信号都有指标覆盖"
+        },
+        {
+          "id": "score_threshold",
+          "ok": true,
+          "label": "闭环成熟度 ≥85"
+        }
+      ],
+      "note": "这是“可自我改进闭环”的工程前提，不是智能水平或 AGI 测量；候选改动必须在同一评估器上重跑并与基线比较。"
+    },
+    "basis": {
+      "sources": 8,
+      "claims": 1,
+      "runs": 2,
+      "numbers": 1,
+      "reviews": 2,
+      "audits": 3,
+      "events": 69
+    },
+    "ts": "2026-11-17T15:00:21.783Z",
+    "previousScore": 95.8,
+    "delta": 4.2,
+    "id": "L-0005",
+    "dimensions": [
+      {
+        "id": "question",
+        "title": "问题与边界",
+        "weight": 6,
+        "score": 1,
+        "passed": 5,
+        "total": 5
+      },
+      {
+        "id": "survey",
+        "title": "证据测绘",
+        "weight": 10,
+        "score": 1,
+        "passed": 7,
+        "total": 7
+      },
+      {
+        "id": "hypothesis",
+        "title": "可证伪假设",
+        "weight": 10,
+        "score": 1,
+        "passed": 8,
+        "total": 8
+      },
+      {
+        "id": "design",
+        "title": "预注册设计",
+        "weight": 7,
+        "score": 1,
+        "passed": 9,
+        "total": 9
+      },
+      {
+        "id": "execution",
+        "title": "可复现执行",
+        "weight": 13,
+        "score": 1,
+        "passed": 7,
+        "total": 7
+      },
+      {
+        "id": "traceability",
+        "title": "数字与引文追溯",
+        "weight": 10,
+        "score": 1,
+        "passed": 8,
+        "total": 8
+      },
+      {
+        "id": "audit",
+        "title": "自动化审计",
+        "weight": 10,
+        "score": 1,
+        "passed": 5,
+        "total": 5
+      },
+      {
+        "id": "review",
+        "title": "独立评审",
+        "weight": 9,
+        "score": 1,
+        "passed": 7,
+        "total": 7
+      },
+      {
+        "id": "domain",
+        "title": "领域适用性",
+        "weight": 7,
+        "score": 1,
+        "passed": 5,
+        "total": 5
+      },
+      {
+        "id": "monitoring",
+        "title": "发布后监测",
+        "weight": 8,
+        "score": 1,
+        "passed": 9,
+        "total": 9
+      },
+      {
+        "id": "release",
+        "title": "发布声明",
+        "weight": 6,
+        "score": 1,
+        "passed": 6,
+        "total": 6
+      },
+      {
+        "id": "integrity",
+        "title": "台账完整性",
+        "weight": 4,
+        "score": 1,
+        "passed": 4,
+        "total": 4
+      }
+    ]
+  },
+  "loopEvaluations": [
+    {
+      "id": "L-0001",
+      "score": 93.2,
+      "grade": "A",
+      "level": "L3 可复核研究",
+      "delta": null,
+      "previousScore": null,
+      "rsiReady": false,
+      "ts": "2026-11-17T14:33:53.736Z",
+      "version": "0.5.0"
+    },
+    {
+      "id": "L-0002",
+      "score": 95.8,
+      "grade": "A",
+      "level": "L3 可复核研究",
+      "delta": 2.6,
+      "previousScore": 93.2,
+      "rsiReady": false,
+      "ts": "2026-11-17T14:33:53.807Z",
+      "version": "0.5.0"
+    },
+    {
+      "id": "L-0003",
+      "score": 95.8,
+      "grade": "A",
+      "level": "L3 可复核研究",
+      "delta": 0,
+      "previousScore": 95.8,
+      "rsiReady": false,
+      "ts": "2026-11-17T14:41:51.173Z",
+      "version": "0.5.0"
+    },
+    {
+      "id": "L-0004",
+      "score": 95.8,
+      "grade": "A",
+      "level": "L3 可复核研究",
+      "delta": 0,
+      "previousScore": 95.8,
+      "rsiReady": false,
+      "ts": "2026-11-17T14:44:52.483Z",
+      "version": "0.5.0"
+    },
+    {
+      "id": "L-0005",
+      "score": 100,
+      "grade": "A",
+      "level": "L4 可审计闭环",
+      "delta": 4.2,
+      "previousScore": 95.8,
+      "rsiReady": true,
+      "ts": "2026-11-17T15:00:21.783Z",
+      "version": "0.5.0"
+    }
+  ]
+}

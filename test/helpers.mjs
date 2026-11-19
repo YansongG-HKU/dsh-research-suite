@@ -1,4 +1,4 @@
-import { mkdtempSync, rmSync } from 'node:fs'
+import { mkdtempSync, rmSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 
@@ -43,20 +43,42 @@ export function passScoping(service, id) {
 
 export function addSources(service, id, count = 8) {
   for (let i = 1; i <= count; i += 1) {
+    const primary = i <= 2
     service.sourceAdd(id, {
       title: `酶动力学研究 ${i}`,
       year: i === 1 ? 2024 : 2020,
       kind: 'paper',
-      reliability: i <= 2 ? 'primary' : 'secondary',
-      content: `这是第 ${i} 篇来源的正文内容，用于测试内容捕获与哈希。`,
+      reliability: primary ? 'primary' : 'secondary',
+      content: `这是第 ${i} 篇来源的正文内容。在体外纯化酶体系中，温度从 20°C 升到 40°C 会提高初速度，40°C 时初速度约为 20°C 的两倍。反应体系在 60°C 以上会快速失活，初速度显著下降。`,
       url: `https://example.org/paper/${i}`,
+      ...(primary
+        ? {
+            independence: 'independent',
+            design: 'in-vitro enzyme kinetics assay',
+            riskOfBias: 'low',
+            robNote: '随机化加样顺序，盲法读数，样本量足够。',
+            captureMethod: 'html',
+          }
+        : {}),
+      ...(i === 3
+        ? { independence: 'same-group', design: 'secondary analysis' }
+        : {}),
     })
   }
 }
 
 export function passSurvey(service, id) {
   addSources(service, id, 8)
-  service.search(id, { disconfirming: true, query: 'enzyme temperature null result' })
+  service.search(id, {
+    disconfirming: true,
+    query: 'enzyme temperature null result',
+    database: 'PubMed',
+    dateFrom: '2015-01-01',
+    dateTo: '2025-12-31',
+    hits: 120,
+    screened: 40,
+    included: 8,
+  })
   service.world(id, { action: 'set', kind: 'coverage', key: 'in-vitro', value: 'covered by S-0001..S-0008' })
   service.world(id, { action: 'set', kind: 'coverage', key: 'in-vivo', value: 'out of scope' })
   return service.gate(id, { action: 'advance' })
@@ -72,13 +94,20 @@ export function addHypothesis(service, id) {
     metricName: 'initial_rate',
     metricUnit: 'umol/min',
     confidence: 0.6,
+    warrant: '若升温提高催化速率常数，则同一底物浓度下的初速度应随温度单调上升；文献与主运行都测量同一初速度定义。',
+    counterEvidence: '检索了 “enzyme temperature optimum null result” 与 “heat inactivation” 两组关键词；未发现 20–40°C 区间内方向相反的独立研究。',
+    certainty: 'moderate',
   }).claim
   const again = service.claimAdd(id, {
     statement: '反应体系在 60°C 以上会快速失活。',
     confidence: 0.5,
+    warrant: '超过最适温度后蛋白变性占主导，同一体系在 60°C 以上初速度应显著下降。',
+    counterEvidence: '检索了热稳定酶与嗜热同源酶文献；未发现本体系在 60°C 以上仍保持初速度的证据。',
+    certainty: 'low',
   }).claim
-  service.evidenceAdd(id, { claim: hypothesis.id, relation: 'supports', ref: 'S-0001', locator: 'p.4', quote: 'rate increases with temperature up to 40C' })
-  service.evidenceAdd(id, { claim: hypothesis.id, relation: 'supports', ref: 'S-0002', locator: 'Fig.2', quote: 'initial rate doubled at 40C' })
+  service.evidenceAdd(id, { claim: hypothesis.id, relation: 'supports', ref: 'S-0001', locator: 'p.4', quote: '温度从 20°C 升到 40°C 会提高初速度' })
+  service.evidenceAdd(id, { claim: hypothesis.id, relation: 'supports', ref: 'S-0002', locator: 'Fig.2', quote: '温度从 20°C 升到 40°C 会提高初速度，40°C 时初速度约为 20°C 的两倍' })
+  service.evidenceAdd(id, { claim: again.id, relation: 'supports', ref: 'S-0003', locator: 'p.2', quote: '反应体系在 60°C 以上会快速失活' })
   service.world(id, { action: 'set', kind: 'novelty', key: 'nearest', value: 'S-0002 studies a different enzyme family' })
   service.world(id, { action: 'set', kind: 'novelty', key: 'checked', value: true })
   return { hypothesis, again }
@@ -98,16 +127,23 @@ export function passDesign(service, id) {
     seed: 7,
     controls: ['negative'],
     envLock: 'node 22 / python 3.12 / numpy 2.1',
+    alpha: '0.05',
+    power: '0.8',
+    effectSize: 'r=0.3',
+    test: 'Pearson correlation with permutation negative control',
   })
   return service.gate(id, { action: 'advance' })
 }
 
 export function passExecute(service, id) {
+  const stdoutPath = join(tmpdir(), `dsh-rs-stdout-${Date.now()}-${Math.random().toString(16).slice(2)}.txt`)
+  writeFileSync(stdoutPath, 'pearson_r=0.4461\np_value=0.0005\nseed=7\n', 'utf8')
   const main = service.runRecord(id, {
     command: 'python work/exp.py --seed 7',
     status: 'success',
     seed: 7,
     metrics: { pearson_r: 0.4461, p_value: 0.0005 },
+    stdoutPath,
   }).run
   service.runRecord(id, {
     command: 'python work/exp.py --seed 7 --permute-labels',
@@ -129,6 +165,15 @@ export function passAnalyze(service, id, runId) {
   }).number
   service.claimStatus(id, { claim: 'C-0001', status: 'supported', reason: '主运行与文献一致' })
   service.claimStatus(id, { claim: 'C-0002', status: 'supported', reason: '文献支持高温失活' })
+  service.sensitivityAdd(id, {
+    claim: 'C-0001',
+    name: 'leave-one-batch-out',
+    method: 'leave-one-out',
+    specification: '逐批剔除一个批次后重估温度主效应，检查是否由单一批次驱动。',
+    result: 'r 仍在 0.41–0.46 之间，方向不变。',
+    direction: 'consistent',
+    trace: `run:${runId}#pearson_r`,
+  })
   return { number, ...service.gate(id, { action: 'advance' }) }
 }
 
@@ -155,7 +200,79 @@ export function passWrite(service, id, numberId) {
   return service.gate(id, { action: 'advance' })
 }
 
+export function seedProgram(service, id) {
+  service.program(id, {
+    action: 'plan',
+    objective: '用可复核的计划、视角与锦标赛判断温度效应是否成立。',
+    questions: [
+      {
+        question: '20–40°C 升温是否提高体外纯化酶的初速度？',
+        priority: 'high',
+        owner: 'lead',
+        coverage: ['S-0001', 'S-0002'],
+      },
+      {
+        question: '60°C 以上失活是否构成主效应的边界条件？',
+        priority: 'medium',
+        owner: 'domain-reviewer',
+        coverage: ['S-0003'],
+      },
+    ],
+  })
+  service.program(id, {
+    action: 'perspective',
+    name: '动力学实验者',
+    stakeholder: '实验团队',
+    question: '升温效应在批间是否稳定？',
+    sources: ['S-0001', 'S-0002'],
+  })
+  service.program(id, {
+    action: 'perspective',
+    name: '统计评审',
+    stakeholder: '独立评审组',
+    question: '效应是否可能由批次或标签置换解释？',
+    sources: ['S-0001', 'S-0003'],
+  })
+  service.program(id, {
+    action: 'autonomy',
+    maxCycles: 4,
+    stopCriteria: '主运行与负对照结果一致，或达到预注册的 200 次测量后停止。',
+    escalation: '出现方向相反的独立证据时升级给人类评审。',
+    humanCheckpoints: '发布前由人类评审者核对证据、复现包与局限。',
+    owner: 'YG',
+  })
+  service.program(id, {
+    action: 'cycle',
+    goal: '检验升温主效应并保留负对照',
+    step: '执行主运行与标签置换负对照，记录指标与 stdout。',
+    observation: '主运行 r=0.4461，负对照 r=-0.0399。',
+    decision: 'continue',
+    question: 'G-0001',
+  })
+  service.program(id, {
+    action: 'match',
+    a: 'C-0001',
+    b: 'C-0002',
+    winner: 'a',
+    criterion: '主运行与两条独立来源方向一致，负对照不支持随机波动解释。',
+  })
+  service.program(id, {
+    action: 'quality',
+    reviewer: '自动化质量评分',
+    scope: '完整研究包',
+    scores: {
+      factual_accuracy: 0.86,
+      citation_accuracy: 0.9,
+      completeness: 0.82,
+      source_quality: 0.84,
+      tool_efficiency: 0.8,
+      limitations: 0.88,
+    },
+  })
+}
+
 export function passReview(service, id) {
+  seedProgram(service, id)
   service.audit(id)
   service.gate(id, {
     action: 'review',
@@ -182,7 +299,34 @@ export function passReview(service, id) {
   return service.gate(id, { action: 'advance' })
 }
 
+export function passStewardship(service, id) {
+  return service.stewardship(id, {
+    action: 'set',
+    license: 'CC-BY-4.0',
+    licenseUrl: 'https://creativecommons.org/licenses/by/4.0/',
+    dataAvailability: '合成夹具与导出包随仓库提供；真实数据不包含。',
+    codeAvailability: '全部代码在仓库内，Node 22 可重跑。',
+    competingInterests: '无。测试夹具不代表真实利益关系。',
+    ethics: '不涉及人类受试者或动物实验。',
+    funding: ['内部测试预算'],
+    keywords: ['research-suite', 'fixture'],
+    contributors: [
+      {
+        name: 'YG',
+        roles: ['conceptualization', 'supervision', 'writing-review-editing'],
+        affiliation: 'Independent',
+      },
+      {
+        name: '小码酱',
+        roles: ['software', 'validation', 'writing-original-draft'],
+        affiliation: 'DeepSeek Harness',
+      },
+    ],
+  })
+}
+
 export function passRelease(service, id) {
+  passStewardship(service, id)
   service.world(id, { action: 'set', kind: 'safety', key: 'dual_use', value: 'pass' })
   service.write(id, {
     action: 'declaration',
@@ -191,5 +335,38 @@ export function passRelease(service, id) {
     model: 'DeepSeek Harness test',
     humanReviewer: 'YG',
   })
+  service.gate(id, {
+    action: 'approve',
+    approver: 'YG',
+    role: 'human-reviewer',
+    statement: '我已核对证据、复现包与局限，批准发布该版本。',
+  })
   return service.gate(id, { action: 'advance' })
+}
+
+/**
+ * A fully released fixture for route-level action-gate tests. Kept separate
+ * from the short create/export smoke fixture so existing assertions keep
+ * their original meaning.
+ */
+export function releasedCampaign(service) {
+  const id = createCampaign(service)
+  passScoping(service, id)
+  passSurvey(service, id)
+  service.extractionAdd(id, {
+    source: 'S-0001',
+    dimension: 'sample_size',
+    value: 8,
+    quote: '这是第 1 篇来源的正文内容。',
+    locator: 'p.1',
+    confidence: 0.8,
+  })
+  passHypothesis(service, id)
+  passDesign(service, id)
+  const executed = passExecute(service, id)
+  const analyzed = passAnalyze(service, id, executed.main.id)
+  passWrite(service, id, analyzed.number.id)
+  passReview(service, id)
+  passRelease(service, id)
+  return id
 }

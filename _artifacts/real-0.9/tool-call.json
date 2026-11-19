@@ -1,0 +1,56 @@
+{
+  "ok": true,
+  "generatedAt": "2026-11-17T20:32:55.620Z",
+  "tool": "rsx_search",
+  "wallMs": 4221,
+  "checks": {
+    "ok": true,
+    "bothProviders": true,
+    "merged": true,
+    "bounded": true,
+    "noWarnings": true,
+    "didNotWriteCampaigns": true,
+    "underBudget": true
+  },
+  "counts": {
+    "openalex": 4,
+    "crossref": 4
+  },
+  "warnings": [],
+  "candidates": [
+    {
+      "title": "GVIM 2.0: A Multi-Agent Research System for Chemistry and Materials Science",
+      "year": 2026,
+      "doi": "10.26434/chemrxiv.15005228/v1",
+      "providers": [
+        "openalex",
+        "crossref"
+      ]
+    },
+    {
+      "title": "GVIM 2.0: A Multi-Agent Research System for Chemistry and Materials Science",
+      "year": 2026,
+      "doi": "10.26434/chemrxiv.15005228/v2",
+      "providers": [
+        "openalex",
+        "crossref"
+      ]
+    },
+    {
+      "title": "Multi-agent systems: which research for which applications",
+      "year": 1999,
+      "doi": "10.1016/s0921-8890(98)00085-2",
+      "providers": [
+        "openalex"
+      ]
+    },
+    {
+      "title": "The research on multi-agent system for microgrid control and optimization",
+      "year": 2017,
+      "doi": "10.1016/j.rser.2017.05.279",
+      "providers": [
+        "openalex"
+      ]
+    }
+  ]
+}

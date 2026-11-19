@@ -1,8 +1,8 @@
 {
   "name": "dsh-research-suite",
-  "version": "0.5.0",
+  "version": "1.1.0",
   "private": true,
-  "description": "科研套件（Research Suite）：把 DSH 变成可审计的科研项目工作台——模板起步、证据台账、九道闸门、领域协议档案、自动化审查、BibTeX/证据矩阵/RO-Crate 研究包。",
+  "description": "科研套件（Research Suite）1.1.0：把 DSH 变成可审计、可迁移、可复用的科研项目工作台——模板起步、证据台账、九道闸门、领域协议档案、自动化审查、BibTeX/CSL-JSON/RIS/证据矩阵/RO-Crate 研究包、候选级筛选与 PRISMA 2020、研究程序与确定性规划器、OpenAlex/Crossref 实时检索，以及 schema 5 的 FAIR/CRediT 治理、显式迁移备份、只读体检、跨项目组合视图、可恢复归档与带校验和的导出清单。",
   "license": "MIT",
   "author": "YansongG-HKU",
   "type": "module",
@@ -26,13 +26,19 @@
     "icon.svg",
     "README.md",
     "CHANGELOG.md",
+    "MIGRATION.md",
+    "SECURITY.md",
     "LICENSE"
   ],
   "scripts": {
     "build:client": "node scripts/build-client.mjs",
     "check": "node --check index.js && node scripts/build-client.mjs --check && node --check client.js",
+    "release:check": "node scripts/release-check.mjs",
     "test": "node --test test/unit/*.test.mjs",
+    "verify": "npm run release:check && npm run check && npm test",
+    "acceptance": "node scripts/acceptance.mjs",
     "rsi": "node scripts/rsi-eval.mjs",
+    "rsi:suite": "node scripts/rsi-suite.mjs",
     "measure": "node scripts/measure-overhead.mjs && python scripts/measure_tokens.py --out _artifacts"
   },
   "keywords": [
@@ -45,6 +51,10 @@
     "domain-profiles",
     "research-workflow",
     "reproducibility",
+    "csl-json",
+    "ris",
+    "zotero",
+    "doi",
     "科研套件",
     "科研"
   ],
@@ -73,6 +83,10 @@
   },
   "engines": {
     "node": ">=22",
-    "dsh": ">=0.2.2-rc.3"
+    "dsh": ">=0.2.2-rc.5"
   }
 }
+
+
+
+

@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "harnessVersion": "0.5.0",
+  "harnessVersion": "0.7.0",
   "campaign": "rsi-fixture",
   "score": 100,
   "grade": "A",
@@ -17,38 +17,38 @@
     {
       "id": "survey",
       "score": 1,
-      "passed": 7,
-      "total": 7
+      "passed": 10,
+      "total": 10
     },
     {
       "id": "hypothesis",
       "score": 1,
-      "passed": 8,
-      "total": 8
+      "passed": 11,
+      "total": 11
     },
     {
       "id": "design",
       "score": 1,
-      "passed": 9,
-      "total": 9
+      "passed": 11,
+      "total": 11
     },
     {
       "id": "execution",
-      "score": 1,
-      "passed": 7,
-      "total": 7
-    },
-    {
-      "id": "traceability",
       "score": 1,
       "passed": 8,
       "total": 8
     },
     {
+      "id": "traceability",
+      "score": 1,
+      "passed": 13,
+      "total": 13
+    },
+    {
       "id": "audit",
       "score": 1,
-      "passed": 5,
-      "total": 5
+      "passed": 6,
+      "total": 6
     },
     {
       "id": "review",
@@ -71,8 +71,8 @@
     {
       "id": "release",
       "score": 1,
-      "passed": 6,
-      "total": 6
+      "passed": 10,
+      "total": 10
     },
     {
       "id": "integrity",
@@ -81,6 +81,6 @@
       "total": 4
     }
   ],
-  "generatedAt": "2026-11-17T14:43:05.117Z",
-  "savedAt": "2026-11-17T14:43:05.131Z"
+  "generatedAt": "2026-11-17T17:52:33.665Z",
+  "savedAt": "2026-11-17T17:52:33.753Z"
 }

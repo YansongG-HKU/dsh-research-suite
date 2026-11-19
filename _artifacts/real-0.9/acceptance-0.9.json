@@ -1,0 +1,115 @@
+{
+  "ok": true,
+  "version": "0.9.0",
+  "generatedAt": "2026-11-17T20:35:00Z",
+  "scope": "Step 1 of the 0.9 execution-layer plan: host-side literature retrieval",
+  "tests": {
+    "total": 122,
+    "passed": 122,
+    "failed": 0,
+    "durationMs": 7385,
+    "newRetrievalTests": 12,
+    "newToolTests": 2
+  },
+  "checks": {
+    "npmCheck": true,
+    "rsi": {
+      "score": 100,
+      "grade": "A",
+      "level": "L4",
+      "rsiReady": true
+    },
+    "rsiSuite": "5/5 ready=true",
+    "devkit": {
+      "runId": "20261117-203649-x5c0bw",
+      "boundary": "pass",
+      "version": "pass",
+      "unit": "pass (122 tests)"
+    }
+  },
+  "liveRetrieval": {
+    "query": "multi-agent research system",
+    "provider": "both",
+    "limit": 6,
+    "counts": {
+      "openalex": 6,
+      "crossref": 6
+    },
+    "mergedCandidates": 6,
+    "warnings": 0,
+    "wallMs": 3794,
+    "checksPassed": 12,
+    "fallback": {
+      "query": "sleep deprivation working memory",
+      "provider": "crossref",
+      "candidates": 3,
+      "warnings": 0,
+      "wallMs": 340
+    }
+  },
+  "toolHandler": {
+    "query": "multi-agent research system",
+    "counts": {
+      "openalex": 4,
+      "crossref": 4
+    },
+    "mergedCandidates": 4,
+    "warnings": 0,
+    "wallMs": 4221,
+    "campaignsAfterCall": 0
+  },
+  "hostSession": {
+    "query": "reproducibility crisis psychology",
+    "counts": {
+      "openalex": 3,
+      "crossref": 3
+    },
+    "mergedCandidates": 3,
+    "crossProviderMerged": 1,
+    "warnings": 0,
+    "elapsedMs": 2606,
+    "invalidInput": {
+      "query": " ",
+      "ok": false,
+      "code": "invalid_input",
+      "networkRequest": false
+    }
+  },
+  "hostSessionFinal": {
+    "query": "open science reproducibility",
+    "counts": { "openalex": 2, "crossref": 2 },
+    "mergedCandidates": 2,
+    "warnings": 0,
+    "elapsedMs": 3442,
+    "codeIncludesResponseCap": true
+  },
+  "tokenOverhead": {
+    "cl100k": 11422,
+    "o200k": 11390,
+    "prompt": {
+      "cl100k": 940,
+      "o200k": 925
+    },
+    "searchSchema": {
+      "cl100k": 372,
+      "o200k": 372
+    },
+    "deltaFrom080": {
+      "cl100k": 420,
+      "o200k": 421
+    }
+  },
+  "artifacts": [
+    "search-live.json",
+    "search-live.log",
+    "tool-call.json",
+    "host-tool-call.json",
+    "run-search.mjs",
+    "run-tool.mjs"
+  ],
+  "knownIssues": [
+    "One live run hit OpenAlex HTTP 429 and correctly fell back to Crossref with a warning; a later run recovered. No retry/backoff is implemented.",
+    "Metadata only: no full text, PDF parsing or semantic relevance ranking; candidates still require inspection and explicit rsx_source registration.",
+    "This is an engineering acceptance, not a retrieval recall/precision benchmark."
+  ]
+}

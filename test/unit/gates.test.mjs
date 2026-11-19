@@ -47,6 +47,9 @@ test('gate survey needs eight sources, two primary, capture and a disconfirming 
         year: i === 1 ? 2024 : 2019,
         reliability: i <= 2 ? 'primary' : 'secondary',
         content: `content ${i}`,
+        ...(i <= 2
+          ? { independence: 'independent', design: 'bench assay', riskOfBias: 'low', robNote: 'randomized order' }
+          : {}),
       })
     }
     service.search(id, { disconfirming: true, query: 'null result' })
@@ -95,6 +98,7 @@ test('gate execute requires a seeded metric-bearing run and a negative control r
     let result = checkGate(store.get(id), 'execute')
     assert.ok(result.blocking.includes('negative_control_run'))
     service.runRecord(id, { command: 'python x.py --permute', status: 'success', seed: 7, control: 'negative', metrics: { r: 0 } })
+    store.get(id).runs[0].stdoutArtifact = 'sha256:' + '0'.repeat(64)
     result = checkGate(store.get(id), 'execute')
     assert.equal(result.ok, true, JSON.stringify(result.blocking))
   } finally {
@@ -105,12 +109,26 @@ test('gate execute requires a seeded metric-bearing run and a negative control r
 test('gate analyze rejects an unresolved trace and a mismatched value', () => {
   const { service, store, id, cleanup } = fixture()
   try {
-    const claim = service.claimAdd(id, { statement: 'temperature raises the rate' }).claim
+    const claim = service.claimAdd(id, {
+      statement: 'temperature raises the rate',
+      warrant: 'A higher rate constant raises the initial rate at fixed substrate concentration.',
+      counterEvidence: 'Searched for null results; none in the 20-40C range.',
+      certainty: 'moderate',
+    }).claim
     const run = service.runRecord(id, { command: 'python x.py', status: 'success', seed: 7, metrics: { r: 0.4461 } }).run
     service.numberAdd(id, { name: 'r', value: 0.4461, trace: `run:${run.id}#r`, uncertainty: 'CI' })
     let result = checkGate(store.get(id), 'analyze')
     assert.ok(result.blocking.includes('claims_resolved'))
     service.claimStatus(id, { claim: claim.id, status: 'supported' })
+    service.sensitivityAdd(id, {
+      claim: claim.id,
+      name: 'subgroup split',
+      method: 'subgroup',
+      specification: '按批次拆成两组分别重估 r，检查效应是否只来自其中一组。',
+      result: '两组 r 均为正，方向一致。',
+      direction: 'consistent',
+      trace: `run:${run.id}#r`,
+    })
     result = checkGate(store.get(id), 'analyze')
     assert.equal(result.ok, true, JSON.stringify(result.blocking))
     assert.equal(resolveTrace(store.get(id), 'run:nope#r').ok, false)

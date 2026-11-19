@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /**
  * Snapshot the fixed context the plugin adds on every request: the prompt
- * section and the nine tool schemas. Tokenization happens in measure.py with
+ * section and the sixteen tool schemas. Tokenization happens in measure.py with
  * tiktoken so the numbers are reproducible on any machine.
  */
 import { readFileSync, writeFileSync, mkdirSync } from 'node:fs'
@@ -33,3 +33,4 @@ console.log(JSON.stringify({
   tools: schemas.length,
   schemaChars: schemas.reduce((sum, item) => sum + JSON.stringify(item).length, 0),
 }))
+

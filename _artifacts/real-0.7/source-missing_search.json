@@ -1,0 +1,11 @@
+{
+  "seed": 7,
+  "case": "missing_search",
+  "blocked": true,
+  "blocking": [
+    "disconfirming_search",
+    "search_protocol"
+  ],
+  "note": "缺少检索协议时 survey 闸门阻断",
+  "source": "exploratory probe run; confirmatory run recorded inside the campaign"
+}

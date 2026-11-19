@@ -14,7 +14,7 @@ window.__ModuleLoader__.load({
     const NS = "dsh-research-suite"
     const API_BASE = "/dsh-research-suite"
     const REQ_HEADER = "x-dsh-research-suite"
-    const VERSION = "0.5.0"
+    const VERSION = "1.1.0"
     const LANG_KEY = "dsh-research-suite.lang"
 
     const STAGES = [
@@ -35,6 +35,37 @@ window.__ModuleLoader__.load({
       zh: {
         panel: "科研套件",
         overview: "总览",
+        flywheel: "研究飞轮",
+        flywheelHint: "每一圈都从当前闸门的阻断项开始；把动作与观察写回台账，再决定下一圈。",
+        roundN: "第 {n} 圈",
+        preflight: "预备",
+        loopStatus: "循环状态",
+        loopIdle: "未启动",
+        loopRunning: "运行中",
+        loopPaused: "已暂停",
+        loopReady: "可交付",
+        loopStopped: "已停止",
+        loopLastCheck: "上次检查",
+        stageDone: "已完成 {done}/{total} 阶段",
+        stageProgress: "阶段",
+        gateProgress: "闸门",
+        iterationTrail: "迭代轨迹",
+        iterationEmptyTitle: "还没有循环记录",
+        iterationEmpty: "在对话里用 rsx_campaign action:\"cycle\" 把这一圈的目标、观察与决策写回台账；飞轮会从真实轮次里长出来。",
+        nextAction: "下一步动作",
+        noNext: "当前状态没有可执行建议。",
+        readyExport: "全部闸门通过，可导出研究包。",
+        openPause: "待处理暂停",
+        pauseHuman: "等待人工批准",
+        pauseInput: "等待输入",
+        pauseUnmapped: "需要人工判断",
+        pauseMissing: "循环已暂停，但没有找到开放的暂停记录。",
+        pauseHint: "处理完再在对话里调用 rsx_campaign action:\"loop\" resume:true；未变化的阻断会被拒绝。",
+        viewLedger: "查看台账",
+        viewAudit: "查看审查",
+        viewReport: "查看报告",
+        events: "事件",
+        humanCheckpoint: "人工检查点",
         ledger: "台账",
         templates: "模板",
         report: "报告",
@@ -52,7 +83,37 @@ window.__ModuleLoader__.load({
         auditMajor: "主要",
         auditMinor: "次要",
         downloadBibtex: "下载 references.bib",
+        downloadCsl: "下载 CSL-JSON",
+        downloadRis: "下载 RIS",
+        downloadPrisma: "下载 PRISMA",
+        portfolio: "组合",
+        score: "评分",
+        alerts: "告警",
+        portfolioHint: "跨项目总览：先处理完整性、过期审计、监控告警与待迁移，再进入项目。",
+        attention: "需关注",
+        needsAttention: "需关注",
+        released: "已发布",
+        activeCampaigns: "进行中",
+        openCampaign: "打开",
+        openPortfolio: "查看组合",
+        attentionEmpty: "没有需要关注的项目。",
+        noMatches: "没有匹配的项目。",
+        searchCampaigns: "搜索标题、ID 或领域",
+        lastSync: "同步于",
+        updated: "更新",
+        archivedProjects: "归档项目",
+        archivedEmpty: "还没有归档项目。",
+        archiveHint: "归档保留完整台账，可随时恢复。",
+        restore: "恢复",
+        restoreDone: "已恢复",
+        reasonStaleAudit: "审计过期",
+        reasonAuditBlocking: "审计阻断",
+        reasonMonitoringAlert: "监控告警",
+        reasonIntegrity: "完整性异常",
+        reasonSchema: "待迁移",
         bibtexDone: "BibTeX 已生成",
+        referencesDone: "参考文献已生成",
+        prismaDone: "PRISMA 流程图数据已生成",
         artifacts: "工件",
         matrixEmpty: "还没有抽取行。用 rsx_extract 把论文按维度抽成矩阵。",
         provenance: "溯源",
@@ -78,6 +139,9 @@ window.__ModuleLoader__.load({
         passed: "已通过",
         notRun: "未运行",
         sources: "来源",
+        searches: "检索",
+        sensitivities: "敏感性",
+        program: "研究程序",
         claims: "断言",
         evidence: "证据",
         numbers: "数字",
@@ -90,6 +154,13 @@ window.__ModuleLoader__.load({
         chainBroken: "事件链断裂",
         export: "导出研究包",
         exportDone: "研究包已生成",
+        actions: "研究动作",
+        actionsHint: "台账、审查随时可查；报告从写作阶段开放；导出需发布闸门通过且无暂停；归档是随时可恢复的收尾动作。",
+        working: "处理中…",
+        actionNeedRelease: "发布闸门通过后才能导出",
+        actionPaused: "先处理当前暂停",
+        actionNeedWrite: "写作阶段后可查看报告",
+        actionArchived: "项目已归档",
         continue: "继续研究",
         copied: "已复制到剪贴板",
         copyPrompt: "复制启动提示词",
@@ -123,6 +194,34 @@ window.__ModuleLoader__.load({
         language: "语言",
         dataDir: "数据目录",
         checkIntegrity: "校验事件链",
+        health: "健康",
+        healthHint: "体检只读：检查事件链、state 哈希、工件、索引、写锁、审计与 schema；修复动作需要单独点击。",
+        runHealth: "运行体检",
+        healthRunning: "体检中…",
+        healthOk: "全部通过",
+        healthErrors: "{n} 个错误",
+        healthWarnings: "{n} 个提醒",
+        healthIndex: "索引",
+        healthIndexOk: "索引一致",
+        healthIndexBad: "索引需重建",
+        healthUnmigrated: "待迁移",
+        healthSchema: "schema",
+        healthChain: "事件链",
+        healthArtifacts: "工件",
+        healthAudit: "审计",
+        healthStewardship: "治理",
+        healthLock: "写锁",
+        healthCampaign: "项目",
+        healthNoCampaigns: "还没有项目。",
+        reindex: "重建索引",
+        reindexDone: "索引已重建",
+        migrate: "迁移到 schema 5",
+        migrateConfirm: "显式迁移会先创建 state+ledger 备份，再改变项目契约。继续？",
+        migrateDone: "已迁移，请补齐治理字段",
+        alreadyCurrent: "已是当前 schema",
+        backup: "备份",
+        doctorChecks: "全局检查",
+        healthPaused: "体检失败",
         tierHint: "S 60k · M 400k · L 2M · XL 12M tokens",
         noGate: "尚未运行",
         gateAdvice: "在对话里调用 rsx_gate action:\"advance\"，通过后阶段才会前进。",
@@ -159,6 +258,37 @@ window.__ModuleLoader__.load({
       en: {
         panel: "Research Suite",
         overview: "Overview",
+        flywheel: "Research flywheel",
+        flywheelHint: "Each round starts from the current gate's blocker; write the action and observation back to the ledger before deciding the next round.",
+        roundN: "Round {n}",
+        preflight: "Preflight",
+        loopStatus: "Loop status",
+        loopIdle: "Not started",
+        loopRunning: "Running",
+        loopPaused: "Paused",
+        loopReady: "Ready",
+        loopStopped: "Stopped",
+        loopLastCheck: "Last check",
+        stageDone: "{done}/{total} stages done",
+        stageProgress: "stages",
+        gateProgress: "gate",
+        iterationTrail: "Iteration trail",
+        iterationEmptyTitle: "No cycle recorded yet",
+        iterationEmpty: "Use rsx_campaign action:\"cycle\" in the conversation to write this round's goal, observation and decision back to the ledger; the flywheel is built from real rounds, not estimates.",
+        nextAction: "Next action",
+        noNext: "No recommendation for this state.",
+        readyExport: "Every gate passed — export the research bundle.",
+        openPause: "Open pause",
+        pauseHuman: "Waiting for a human approval",
+        pauseInput: "Waiting for input",
+        pauseUnmapped: "Needs a human decision",
+        pauseMissing: "The loop is paused but no open pause record was found.",
+        pauseHint: "Resolve it, then call rsx_campaign action:\"loop\" resume:true in the conversation; an unchanged blocker is rejected.",
+        viewLedger: "Open ledger",
+        viewAudit: "Open review",
+        viewReport: "Open report",
+        events: "Events",
+        humanCheckpoint: "Human checkpoint",
         ledger: "Ledger",
         templates: "Templates",
         report: "Report",
@@ -176,7 +306,37 @@ window.__ModuleLoader__.load({
         auditMajor: "Major",
         auditMinor: "Minor",
         downloadBibtex: "Download references.bib",
+        downloadCsl: "Download CSL-JSON",
+        downloadRis: "Download RIS",
+        downloadPrisma: "Download PRISMA",
+        portfolio: "Portfolio",
+        score: "Score",
+        alerts: "Alerts",
+        portfolioHint: "Cross-campaign control room: clear integrity, stale audit, monitoring alerts and migrations before entering a campaign.",
+        attention: "Needs attention",
+        needsAttention: "Needs attention",
+        released: "Released",
+        activeCampaigns: "Active",
+        openCampaign: "Open",
+        openPortfolio: "Open portfolio",
+        attentionEmpty: "Nothing needs attention.",
+        noMatches: "No matching campaigns.",
+        searchCampaigns: "Search title, ID or domain",
+        lastSync: "Synced",
+        updated: "Updated",
+        archivedProjects: "Archived campaigns",
+        archivedEmpty: "No archived campaigns yet.",
+        archiveHint: "Archiving keeps the full ledger and can be restored at any time.",
+        restore: "Restore",
+        restoreDone: "Restored",
+        reasonStaleAudit: "stale audit",
+        reasonAuditBlocking: "audit blocking",
+        reasonMonitoringAlert: "monitoring alert",
+        reasonIntegrity: "integrity",
+        reasonSchema: "migration",
         bibtexDone: "BibTeX ready",
+        referencesDone: "References ready",
+        prismaDone: "PRISMA flow data ready",
         artifacts: "Artifacts",
         matrixEmpty: "No extraction rows yet. Use rsx_extract to build the matrix.",
         provenance: "Provenance",
@@ -202,6 +362,9 @@ window.__ModuleLoader__.load({
         passed: "passed",
         notRun: "not run",
         sources: "Sources",
+        searches: "Searches",
+        sensitivities: "Sensitivity",
+        program: "Program",
         claims: "Claims",
         evidence: "Evidence",
         numbers: "Numbers",
@@ -214,6 +377,13 @@ window.__ModuleLoader__.load({
         chainBroken: "event chain broken",
         export: "Export package",
         exportDone: "Research package written",
+        actions: "Research actions",
+        actionsHint: "Ledger and review are always available; report opens at the write stage; export needs a passed release gate and no open pause; archive is reversible and always available.",
+        working: "Working…",
+        actionNeedRelease: "Export opens after the release gate passes",
+        actionPaused: "Resolve the open pause first",
+        actionNeedWrite: "Report opens at the write stage",
+        actionArchived: "Campaign archived",
         continue: "Continue research",
         copied: "Copied",
         copyPrompt: "Copy launch prompt",
@@ -247,6 +417,34 @@ window.__ModuleLoader__.load({
         language: "Language",
         dataDir: "Data directory",
         checkIntegrity: "Verify event chain",
+        health: "Health",
+        healthHint: "The scan is read-only: chain, state hash, artifacts, index, write locks, audits and schema; repairs are separate clicks.",
+        runHealth: "Run health scan",
+        healthRunning: "Scanning…",
+        healthOk: "All clear",
+        healthErrors: "{n} error(s)",
+        healthWarnings: "{n} warning(s)",
+        healthIndex: "Index",
+        healthIndexOk: "index is consistent",
+        healthIndexBad: "index needs rebuilding",
+        healthUnmigrated: "unmigrated",
+        healthSchema: "schema",
+        healthChain: "Chain",
+        healthArtifacts: "Artifacts",
+        healthAudit: "Audit",
+        healthStewardship: "Stewardship",
+        healthLock: "Write lock",
+        healthCampaign: "Campaign",
+        healthNoCampaigns: "No campaigns yet.",
+        reindex: "Reindex",
+        reindexDone: "Index rebuilt",
+        migrate: "Migrate to schema 5",
+        migrateConfirm: "An explicit migration writes a state+ledger backup first, then changes the campaign contract. Continue?",
+        migrateDone: "Migrated — complete the stewardship fields",
+        alreadyCurrent: "Already current",
+        backup: "Backup",
+        doctorChecks: "Global checks",
+        healthPaused: "Health scan failed",
         tierHint: "S 60k · M 400k · L 2M · XL 12M tokens",
         noGate: "not run yet",
         gateAdvice: "Call rsx_gate action:\"advance\" in the conversation; the stage only moves on a pass.",
@@ -369,13 +567,25 @@ window.__ModuleLoader__.load({
       }
     }
 
+    function apiFailure(response, payload) {
+      const error = new Error(payload && payload.error ? payload.error : `HTTP ${response.status}`)
+      if (payload && payload.code) error.code = payload.code
+      if (payload && payload.detail) error.detail = payload.detail
+      error.status = response.status
+      return error
+    }
+
+    /** Keep the machine code visible so an operator can act on a refusal. */
+    function errorText(error, lang) {
+      if (!error) return ""
+      const message = error.message || String(error)
+      return error.code ? `[${error.code}] ${message}` : message
+    }
+
     async function apiGet(path) {
       const response = await fetch(API_BASE + path, { headers: { accept: "application/json" } })
       const payload = await response.json().catch(() => null)
-      if (!response.ok || !payload || payload.ok !== true) {
-        const message = payload && payload.error ? payload.error : `HTTP ${response.status}`
-        throw new Error(message)
-      }
+      if (!response.ok || !payload || payload.ok !== true) throw apiFailure(response, payload)
       return payload.data
     }
 
@@ -386,12 +596,7 @@ window.__ModuleLoader__.load({
         body: JSON.stringify(body || {}),
       })
       const payload = await response.json().catch(() => null)
-      if (!response.ok || !payload || payload.ok !== true) {
-        const message = payload && payload.error ? payload.error : `HTTP ${response.status}`
-        const error = new Error(message)
-        if (payload && payload.detail) error.detail = payload.detail
-        throw error
-      }
+      if (!response.ok || !payload || payload.ok !== true) throw apiFailure(response, payload)
       return payload.data
     }
 
@@ -411,6 +616,69 @@ window.__ModuleLoader__.load({
       if (index < currentIndex) return "ok"
       if (index === currentIndex) return gate && gate.ok ? "ok" : "current"
       return "idle"
+    }
+
+    /**
+     * The flywheel is a view over real ledger state, never a separate score.
+     * A stage is:
+     *   blocked — its latest gate check failed (only up to the current stage),
+     *   done    — it is behind the current stage, or its current gate passed,
+     *   current — the campaign is sitting on it with no passing gate,
+     *   pending — not reached yet.
+     */
+    function flywheelModel(state, gate) {
+      const currentRaw = STAGES.findIndex((item) => item.id === (state && state.stage))
+      const currentIndex = currentRaw < 0 ? 0 : currentRaw
+      const gates = latestGates(state)
+      const liveGate = gate && STAGES[currentIndex] && gate.stage === STAGES[currentIndex].id ? gate : null
+      const nodes = STAGES.map((stage, index) => {
+        const stageGate = gates[stage.id]
+        const gateOk = stageGate ? stageGate.ok === true : index === currentIndex && liveGate ? liveGate.ok === true : null
+        let status = "pending"
+        if (index <= currentIndex && gateOk === false) status = "blocked"
+        else if (index < currentIndex) status = "done"
+        else if (index === currentIndex) status = gateOk === true ? "done" : "current"
+        return { id: stage.id, index: index, status: status, gateOk: gateOk }
+      })
+      const done = nodes.filter((node) => node.status === "done").length
+      const blocked = nodes.filter((node) => node.status === "blocked")
+      const cycles = safeArray(state && state.cycles)
+      return {
+        nodes: nodes,
+        currentIndex: currentIndex,
+        done: done,
+        total: STAGES.length,
+        progress: STAGES.length ? done / STAGES.length : 0,
+        blocked: blocked,
+        round: cycles.length,
+        hasCycles: cycles.length > 0,
+        gatePassed: gate && Number.isFinite(Number(gate.passed)) ? Number(gate.passed) : 0,
+        gateTotal: gate && Number.isFinite(Number(gate.total)) ? Number(gate.total) : 0,
+        gateOk: gate ? gate.ok === true : null,
+      }
+    }
+
+    function flywheelActionAvailability(state, gate, options) {
+      const opts = options || {}
+      const model = flywheelModel(state, gate)
+      const releaseNode = model.nodes[model.nodes.length - 1] || null
+      const releasePassed = Boolean(releaseNode && releaseNode.gateOk === true)
+      const archived = Boolean(state && state.archived === true)
+      const paused = opts.paused === true
+      const busy = opts.busy === true
+      const writeIndex = STAGES.findIndex((item) => item.id === "write")
+      const reportReady = writeIndex >= 0 && model.currentIndex >= writeIndex
+      // Export is a delivery action and follows the release gate. Archive is a
+      // reversible lifecycle action: blocked or paused work can be shelved.
+      const exportReason = paused ? "paused" : archived ? "archived" : !releasePassed ? "release" : busy ? "busy" : null
+      const archiveReason = archived ? "archived" : busy ? "busy" : null
+      return {
+        export: { enabled: exportReason === null, reason: exportReason },
+        ledger: { enabled: true, reason: null },
+        audit: { enabled: true, reason: null },
+        report: { enabled: reportReady, reason: reportReady ? null : "write" },
+        archive: { enabled: archiveReason === null, reason: archiveReason },
+      }
     }
 
     function campaignPrompt(campaign, lang) {

@@ -1,0 +1,179 @@
+{
+  "ok": true,
+  "version": "1.0.0",
+  "schemaVersion": 5,
+  "generatedAt": "2026-11-19T03:29:35.458Z",
+  "elapsedMs": 1108,
+  "checks": [
+    {
+      "name": "release: schema 5",
+      "ok": true,
+      "detail": "5"
+    },
+    {
+      "name": "release: 13/13",
+      "ok": true,
+      "detail": "13/13"
+    },
+    {
+      "name": "release: stewardship complete",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "release: chain and state verify",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "export: manifest path",
+      "ok": true,
+      "detail": "E:\\DEEPSE~2\\temp\\dsh-rs-SRNuU1\\campaigns\\rs-2b1e2ae2\\exports\\MANIFEST.json"
+    },
+    {
+      "name": "export: stewardship path",
+      "ok": true,
+      "detail": "E:\\DEEPSE~2\\temp\\dsh-rs-SRNuU1\\campaigns\\rs-2b1e2ae2\\exports\\STEWARDSHIP.md"
+    },
+    {
+      "name": "export: manifest format",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "export: manifest gate ready",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "export: manifest has STEWARDSHIP.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "export: every manifest hash verifies",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "export: BUNDLE has MANIFEST.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "export: BUNDLE has STEWARDSHIP.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "export: report has stewardship section",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "migration: dry-run stays schema 4",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "migration: dry-run reports missing fields",
+      "ok": true,
+      "detail": "6"
+    },
+    {
+      "name": "migration: schema becomes 5",
+      "ok": true,
+      "detail": "5"
+    },
+    {
+      "name": "migration: backup exists",
+      "ok": true,
+      "detail": "backup-2026-11-19T03-29-35-394-92cb93.zip"
+    },
+    {
+      "name": "migration: backup hash recorded",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "migration: one campaign.migrated event",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "migration: chain still verifies",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "migration: idempotent",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "reindex: doctor sees stale index",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "reindex: doctor recommends reindex",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "reindex: all directories indexed",
+      "ok": true,
+      "detail": "3"
+    },
+    {
+      "name": "reindex: doctor index consistent",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "reindex: doctor remains healthy",
+      "ok": true,
+      "detail": "{\"campaigns\":3,\"scanned\":3,\"errors\":0,\"warnings\":0,\"staleLocks\":0,\"staleAudits\":0,\"unmigrated\":0}"
+    },
+    {
+      "name": "reindex: second campaign readable",
+      "ok": true,
+      "detail": ""
+    }
+  ],
+  "phases": [
+    {
+      "name": "release",
+      "ok": true,
+      "ms": 903
+    },
+    {
+      "name": "export",
+      "ok": true,
+      "ms": 112
+    },
+    {
+      "name": "migration",
+      "ok": true,
+      "ms": 44
+    },
+    {
+      "name": "reindex",
+      "ok": true,
+      "ms": 45
+    }
+  ],
+  "counts": {
+    "checks": 27,
+    "passed": 27,
+    "failed": 0
+  },
+  "evidence": {
+    "released": "rs-2b1e2ae2",
+    "export": "E:\\DEEPSE~2\\temp\\dsh-rs-SRNuU1\\campaigns\\rs-2b1e2ae2\\exports",
+    "bundleBytes": 158078,
+    "manifestFiles": 24,
+    "backup": "backup-2026-11-19T03-29-35-394-92cb93.zip",
+    "campaigns": 3
+  }
+}

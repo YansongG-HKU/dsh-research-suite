@@ -1,0 +1,38 @@
+{
+  "ok": true,
+  "generatedAt": "2026-11-17T20:36:00Z",
+  "exitCodes": {
+    "test": 0,
+    "check": 0,
+    "rsi": 0,
+    "rsiSuite": 0,
+    "devkit": 0
+  },
+  "tests": {
+    "total": 122,
+    "passed": 122,
+    "failed": 0,
+    "durationMs": 7385
+  },
+  "check": "client.js up to date (6 fragments, 104875 bytes)",
+  "rsi": {
+    "score": 100,
+    "grade": "A",
+    "level": "L4",
+    "rsiReady": true
+  },
+  "rsiSuite": "5/5 ready=true",
+  "devkit": {
+    "runId": "20261117-203649-x5c0bw",
+    "boundary": "pass",
+    "version": "pass",
+    "unit": "pass (122 tests)"
+  },
+  "logs": [
+    "F:/dsh插件创造/_artifacts/final-verify-0.9/test.log",
+    "F:/dsh插件创造/_artifacts/final-verify-0.9/check.log",
+    "F:/dsh插件创造/_artifacts/final-verify-0.9/rsi.log",
+    "F:/dsh插件创造/_artifacts/final-verify-0.9/rsi-suite.log",
+    "F:/dsh插件创造/_artifacts/final-verify-0.9/devkit.log"
+  ]
+}

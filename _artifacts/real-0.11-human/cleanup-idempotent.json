@@ -1,0 +1,61 @@
+{
+  "ok": true,
+  "generatedAt": "2026-11-17T22:15:41.117Z",
+  "dataDir": "C:\\Users\\13645\\.dsh\\research-suite",
+  "changed": [],
+  "clean": {
+    "id": "rs-a874c2ae",
+    "seq": 25,
+    "events": 25,
+    "chainOk": true,
+    "stateOk": true,
+    "Q0002": {
+      "id": "Q-0002",
+      "kind": "disconfirming",
+      "database": "OpenAlex",
+      "query": "autonomous agent loop skip human checkpoint null result",
+      "dateFrom": "2023-01-01",
+      "dateTo": "2026-12-31",
+      "hits": 3,
+      "screened": 3,
+      "included": 0,
+      "disconfirming": true,
+      "notes": "UNMEASURED PROTOCOL DRAFT — the 3/3/0 counts are placeholders from a pre-search protocol, not an executed query. Superseded by Q-0003 (measured: OpenAlex 10 + Crossref 10, 20/20/0). Do not cite Q-0002 as a search result.",
+      "at": "2026-11-17T21:14:33.167Z",
+      "measured": false,
+      "supersededBy": "Q-0003"
+    },
+    "Q0003": {
+      "id": "Q-0003",
+      "kind": "disconfirming",
+      "database": "OpenAlex + Crossref",
+      "query": "autonomous agent loop skip human checkpoint null result",
+      "dateFrom": "2023-01-01",
+      "dateTo": "2026-12-31",
+      "hits": 20,
+      "screened": 20,
+      "included": 0,
+      "disconfirming": true,
+      "notes": "MEASURED disconfirming search: actual rsx_search returned OpenAlex 10 + Crossref 10, merged 10 candidates; none supports skipping a human checkpoint. Q-0002 is an unmeasured draft retained only as the correction object; this row is the measured record.",
+      "at": "2026-11-17T21:16:15.808Z",
+      "measured": true,
+      "supersedes": "Q-0002"
+    }
+  },
+  "fixture": {
+    "id": "rs-e710b015",
+    "seq": 20,
+    "events": 20,
+    "archived": true,
+    "quarantine": {
+      "citable": false,
+      "reason": "Mechanics fixture used synthetic bibliographic entries with the reserved DOI prefix 10.0000/; it is not research evidence and must not be cited. Archived and excluded from the 0.11 acceptance.",
+      "by": "YG",
+      "at": "2026-11-17T22:15:38.063Z",
+      "evidence": "synthetic DOIs under 10.0000/",
+      "scope": "campaign"
+    },
+    "chainOk": true,
+    "stateOk": true
+  }
+}

@@ -1,0 +1,1 @@
+{"command":"weld DOE fixture","seed":7,"permute":false,"n":54,"current_effect_mm_per_a":0.004271,"mean_penetration_mm":1.014565,"rmse_mm":0.103491}

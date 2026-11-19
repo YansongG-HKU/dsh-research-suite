@@ -1,0 +1,72 @@
+{
+  "ok": true,
+  "passed": 12,
+  "total": 12,
+  "blocking": [],
+  "checks": [
+    {
+      "code": "upstream_gates",
+      "ok": true,
+      "detail": "failing upstream: "
+    },
+    {
+      "code": "declaration",
+      "ok": true,
+      "detail": "declare AI assistance and add a watermark"
+    },
+    {
+      "code": "declaration_model",
+      "ok": true,
+      "detail": "name the model / tool used"
+    },
+    {
+      "code": "declaration_reviewer",
+      "ok": true,
+      "detail": "name the human reviewer"
+    },
+    {
+      "code": "dual_use",
+      "ok": true,
+      "detail": "record world.safety.dual_use = \"pass\" (current: pass)"
+    },
+    {
+      "code": "budget",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "code": "no_contested_claims",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "code": "human_approval",
+      "ok": true,
+      "detail": "approved by YG (human-reviewer)"
+    },
+    {
+      "code": "ai_contribution",
+      "ok": true,
+      "detail": "declaration.contributions must list at least one ai and one human role"
+    },
+    {
+      "code": "waiver_hygiene",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "code": "repro_package",
+      "ok": true,
+      "detail": "reproduction package needs exact commands, seeds, env lock and captured stdout"
+    },
+    {
+      "code": "chain_integrity",
+      "ok": true,
+      "detail": "hash chain, state.json and 11 artifacts verified"
+    }
+  ],
+  "searchLog": 1,
+  "sensitivity": 1,
+  "chainOk": true,
+  "stateHash": "a00ad08d938f9928c4b9327c915146c9eae8cb9dccd420b28eeda45db7ba5a14"
+}

@@ -1,9 +1,9 @@
 {
-  "promptText": "Research Suite (科研套件) is the project container for multi-step research here. Use it whenever the task will outlive one answer: literature reviews, replications, data analyses, evaluations, due diligence, or anything the user calls a 研究/项目/综述/复现/尽调/评测. A campaign has nine gates: scoping → survey → hypothesis → design → execute → analyze → write → review → release. Start with rsx_template action:\"apply\" (11 task presets + replication/ablation/adversarial-review protocols) or rsx_campaign action:\"create\". Record the question, scope and success criteria, then run rsx_gate action:\"check\" before advancing. For sector work select a domain profile with rsx_domain action:\"set\": finance, ai, medicine or industrial. A profile turns protocol fields into blocking checks at their stages (point-in-time/OOS dates, TRIPOD+AI, PRISMA counts, MSA/DOE, review roles, monitoring); conditional fields switch off when the design/risk tier makes them inapplicable. It is an alignment checklist, not a certification claim. Use rsx_domain action:\"check\" to see the exact missing fields for the current stage. Log as you work, not at the end: rsx_source for what you read (action:\"import\" ingests Zotero/Scholar BibTeX), rsx_claim for what you assert, rsx_evidence to link claim↔source/run, rsx_run for a real command + seed + metrics, rsx_number for every number with trace run:R-xxxxxxxxxx#metric or source:S-0001, rsx_extract to build the source × dimension matrix, rsx_artifact for datasets/code/environments, rsx_figure for figure+code+data provenance. Numbers in the manuscript are written as {{N-0001}} and citations as [[src:S-0001]]; the write gate rejects orphan digits and unknown refs. Before the review gate, run rsx_review action:\"audit\": it checks citations resolve, quotes occur in the captured text, numbers match the run that produced them, figures carry code+data, the pre-registration still describes the analysis, and domain fields/roles are present. Findings are blocking/major/minor/info; only blocking stops the gate, and any later edit makes the audit stale. For a domain campaign add one rsx_gate action:\"review\" per domain role (affiliation, conflict, independent, qualification), then audit after those reviews. Never invent a ledger entry: run the command first, then record what actually happened. If a gate blocks, read detail.blocking and fix the checks instead of working around them. Before delivery call rsx_write action:\"declaration\" (AI + watermark + human reviewer), record rsx_campaign action:\"monitor\" (plan, owner, cadence, metrics, observations), run rsx_campaign action:\"evaluate\" for the 12-dimension loop score, then action:\"export\", and give the user the REPORT.md path plus LOOP.md / DOMAIN.md / references.bib / AUDIT.md / provenance.json. The sidebar panel shows the same state; the user can create campaigns, inspect the ledger, browse templates, edit domain/monitoring state, run the loop evaluation and read the report there. Continue an existing campaign by reading rsx_campaign action:\"status\" rather than starting over.",
+  "promptText": "Research Suite (科研套件) is the project container for multi-step research here. Use it whenever the task will outlive one answer: literature reviews, replications, data analyses, evaluations, due diligence, or anything the user calls a 研究/项目/综述/复现/尽调/评测. A campaign has nine gates: scoping → survey → hypothesis → design → execute → analyze → write → review → release. Start with rsx_template action:\"apply\" (11 task presets + replication/ablation/adversarial-review protocols) or rsx_campaign action:\"create\". Record the question, scope and success criteria, then run rsx_gate action:\"check\" before advancing. Before each iteration call rsx_campaign action:\"loop\": it checks integrity, budget, the gate and the autonomy cycle budget, then returns continue, pause, stop or ready. It records a pause (LP-xxxx plus a loop.paused event) when the primary action needs input, a human checkpoint or an unmapped gate recipe; it never runs or approves the action. Stop there and resume only after the input is supplied, with action:\"loop\" resume:true; an unchanged blocker is rejected, a cleared one records loop.resumed. Use action:\"next\" for the read-only plan without the loop control. For sector work select a domain profile with rsx_domain action:\"set\": finance, ai, medicine or industrial. A profile turns protocol fields into blocking checks at their stages (point-in-time/OOS dates, TRIPOD+AI, PRISMA counts, MSA/DOE, review roles, monitoring); conditional fields switch off when the design/risk tier makes them inapplicable. It is an alignment checklist, not a certification claim. Use rsx_domain action:\"check\" to see the exact missing fields for the current stage. Log as you work, not at the end: rsx_search for live OpenAlex/Crossref metadata discovery (read-only, DOI-deduplicated, bounded; a provider failure is a warning, never a citation), rsx_source for what you actually read (action:\"import\" ingests Zotero/Scholar BibTeX), rsx_claim for what you assert, rsx_evidence to link claim↔source/run, rsx_run for a real command + seed + metrics, rsx_number for every number with trace run:R-xxxxxxxxxx#metric or source:S-0001, rsx_extract to build the source × dimension matrix, rsx_artifact for datasets/code/environments, rsx_figure for figure+code+data provenance. Register only candidates you inspected; record the retrieval protocol with rsx_campaign action:\"searchLog\". For schema-3+ campaigns also log the database, query, dates and hits/screened/included of every search and rsx_claim action:\"sensitivity\" (changed specification, result, direction, optional trace); lock the pre-registration before the first run. Numbers in the manuscript are written as {{N-0001}} and citations as [[src:S-0001]]; the write gate rejects orphan digits and unknown refs. For schema-4 campaigns build the research programme with rsx_program (action:\"plan\"/\"perspective\"/\"autonomy\"/\"cycle\"/\"match\"/\"quality\"/\"contradiction\"): at least two covered plan questions, two sourced perspectives, an explicit maxCycles/stopCriteria/escalation/humanCheckpoints policy, one act→observe→decide cycle, one pairwise claim match, a six-dimension rubric with overall≥0.7, and no open contradictions. The review gate blocks until the programme is complete; the Elo ranking and rubric are bookkeeping, not proof. Before the review gate, run rsx_review action:\"audit\": it checks citations resolve, quotes occur in the captured text, numbers match the run that produced them, figures carry code+data, the pre-registration still describes the analysis, and domain fields/roles are present. Findings are blocking/major/minor/info; only blocking stops the gate, and any later edit makes the audit stale. For a domain campaign add one rsx_gate action:\"review\" per domain role (affiliation, conflict, independent, qualification), then audit after those reviews. Never invent a ledger entry: run the command first, then record what actually happened. If a gate blocks, read detail.blocking and fix the checks instead of working around them. Before delivery call rsx_write action:\"declaration\" (AI + watermark + human reviewer), record rsx_campaign action:\"monitor\" (plan, owner, cadence, metrics, observations), run rsx_campaign action:\"evaluate\" for the 13-dimension loop score, then action:\"export\", and give the user the REPORT.md path plus PROGRAM.md / LOOP.md / DOMAIN.md / references.bib / AUDIT.md / provenance.json. The sidebar panel shows the same state; the user can create campaigns, inspect the ledger, browse templates, edit domain/monitoring state, run the loop evaluation and read the report there. Continue an existing campaign by reading rsx_campaign action:\"status\" rather than starting over.",
   "schemas": [
     {
       "name": "rsx_campaign",
-      "description": "Research campaign control room: create/list/get/update a campaign, record the world model, the disconfirming search, the pre-registration and budget spend, and inspect integrity. A campaign moves through scoping → survey → hypothesis → design → execute → analyze → write → review → release. Use this first, then the entity tools (source/claim/evidence/run/number/extract/artifact/figure/review), then rsx_gate to advance. action:\"status\" returns the current stage, the gate state and the hash-chain integrity; action:\"world\" records entities/facts/questions/failures/coverage/novelty/safety used by the gates; action:\"monitor\" records the post-release monitoring plan that closes the loop; action:\"evaluate\" scores 12 research-loop dimensions, persists a baseline and returns the gaps.",
+      "description": "Research campaign control room: create/list/get/update a campaign, record the world model, the disconfirming search, the pre-registration and budget spend, and inspect integrity. A campaign moves through scoping → survey → hypothesis → design → execute → analyze → write → review → release. Use this first, then the entity tools (source/claim/evidence/run/number/extract/artifact/figure/review), then rsx_gate to advance. action:\"search\" records a disconfirming search; action:\"searchLog\" records any database/snowball/grey search with its query, date window and hit/screened/included counts. The searches are executed externally; this tool only keeps the protocol auditable. action:\"status\" returns the current stage, the gate state and the hash-chain integrity; action:\"world\" records entities/facts/questions/failures/coverage/novelty/safety used by the gates; action:\"monitor\" records the post-release monitoring plan that closes the loop; action:\"evaluate\" scores 13 research-loop dimensions, persists a baseline and returns the gaps. action:\"portfolio\" is a read-only cross-campaign view (score, level, audit freshness, alert count, integrity, attention reasons); action:\"graph\" returns the claim/source/run/number edge list for one campaign. action:\"archive\" shelves any campaign that is not busy, even before release, and action:\"unarchive\" restores it with the full ledger; archive is reversible, export remains gated by release. action:\"next\" is a deterministic planner: it returns one primary next tool call plus alternatives, ordered by the current gate and the programme gaps. It never writes or auto-approves; human checkpoints are marked and integrity/budget/prereg-timing failures stop the plan. action:\"loop\" is the host-loop checkpoint to call before each iteration: it verifies integrity/budget/gate/cycle budget and returns continue, pause, stop or ready. A pause is recorded as an LP-xxxx row and a loop.paused event when the primary action needs input, a human or an unmapped gate recipe; it never runs the action or approves. After the input is supplied call action:\"loop\" resume:true; an unchanged blocker is rejected, a cleared one records loop.resumed. 1.0 stewardship: action:\"stewardship\" sets the FAIR/CRediT fields (license, data/code availability, competing interests, ethics, funding, keywords, contributors); schema-5 release blocks until they are complete. action:\"migrate\" is the explicit schema upgrade: it verifies, writes a state+ledger backup, records campaign.migrated and can dry-run first. action:\"doctor\" is a read-only health scan (chain, state, artifacts, index, locks, audits, migrations); action:\"reindex\" rebuilds only index.json from the campaign directories.",
       "parameters": {
         "type": "object",
         "properties": {
@@ -16,12 +16,22 @@
               "update",
               "world",
               "search",
+              "searchLog",
               "prereg",
               "budget",
               "archive",
+              "unarchive",
               "status",
+              "next",
+              "loop",
               "monitor",
-              "evaluate"
+              "evaluate",
+              "portfolio",
+              "graph",
+              "stewardship",
+              "migrate",
+              "doctor",
+              "reindex"
             ],
             "description": "Operation (default: get)."
           },
@@ -59,6 +69,15 @@
               "XL"
             ],
             "description": "Effort tier; S=60k tokens, M=400k, L=2M, XL=12M."
+          },
+          "stewardship": {
+            "type": "object",
+            "additionalProperties": true,
+            "description": "FAIR/CRediT fields: {license, licenseUrl, dataAvailability, codeAvailability, funding:[], competingInterests, ethics, keywords:[], contributors:[{name, roles:[CRediT role], orcid, affiliation}]}. Also accepted at create and migrate."
+          },
+          "dryRun": {
+            "type": "boolean",
+            "description": "For migrate: report the missing stewardship fields and target schema without writing a backup or changing state."
           },
           "domain": {
             "type": "string",
@@ -115,7 +134,11 @@
           },
           "reason": {
             "type": "string",
-            "description": "Why the loop is reopened (monitor action)."
+            "description": "Why the loop is reopened (monitor) or why a pause is resumed (loop)."
+          },
+          "resume": {
+            "type": "boolean",
+            "description": "For loop: resume after the missing input or human checkpoint was supplied; an unchanged blocker is rejected."
           },
           "status": {
             "type": "string",
@@ -147,16 +170,62 @@
           },
           "query": {
             "type": "string",
-            "description": "Query used for the disconfirming search."
+            "description": "Query used for the disconfirming search (or searchLog)."
           },
           "disconfirming": {
             "type": "boolean",
             "description": "Set true to record that a disconfirming search was run."
           },
+          "searchKind": {
+            "type": "string",
+            "enum": [
+              "database",
+              "disconfirming",
+              "snowball",
+              "grey",
+              "other"
+            ],
+            "description": "Search type for searchLog (default database)."
+          },
+          "database": {
+            "type": "string",
+            "description": "Database/source searched, e.g. PubMed, CNKI, Google Scholar (searchLog)."
+          },
+          "dateFrom": {
+            "type": "string",
+            "description": "Search window start, e.g. 2015-01-01 (searchLog)."
+          },
+          "dateTo": {
+            "type": "string",
+            "description": "Search window end, e.g. 2025-12-31 (searchLog)."
+          },
+          "hits": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "Raw hits returned by the query (searchLog)."
+          },
+          "screened": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "Records screened after deduplication (searchLog)."
+          },
+          "included": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "Records included after screening (searchLog)."
+          },
+          "notes": {
+            "type": "string",
+            "description": "Screening/exclusion notes (searchLog or sensitivity)."
+          },
           "spec": {
             "type": "object",
             "additionalProperties": true,
-            "description": "Pre-registration: {hypothesisId, metric, n, analysisPlan, stoppingRule, seed, controls:[\"negative\"], envLock}."
+            "description": "Pre-registration: {hypothesisId, metric, n, analysisPlan, stoppingRule, seed, controls:[\"negative\"], envLock, alpha, power, effectSize, test}. A locked protocol must be amended with amend:true + reason."
+          },
+          "amend": {
+            "type": "boolean",
+            "description": "For prereg: confirm a protocol amendment after the hash was locked."
           },
           "stage": {
             "type": "string",
@@ -182,6 +251,56 @@
             "description": "Seconds to charge to the stage budget."
           }
         },
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "rsx_search",
+      "description": "Live literature metadata search on the host: queries OpenAlex and Crossref public APIs and returns normalized candidates with title, year, authors, DOI, URL, venue, abstract and citation count. This is read-only: it does not write the ledger, download full text or trust provider text as instructions. Register selected items with rsx_source; record the protocol with rsx_campaign action:\"searchLog\". provider:\"both\" is the default; a failed provider is reported in warnings, and only all-providers-failed is an error. Results are bounded, DOI-deduplicated and never fabricated.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string",
+            "description": "Bibliographic query, e.g. \"multi-agent research systems\". Required; maximum 500 characters."
+          },
+          "provider": {
+            "type": "string",
+            "enum": [
+              "both",
+              "openalex",
+              "crossref"
+            ],
+            "description": "Metadata source (default: both)."
+          },
+          "limit": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 20,
+            "description": "Maximum merged candidates to return (default 10)."
+          },
+          "yearFrom": {
+            "type": "integer",
+            "minimum": 1800,
+            "maximum": 3000,
+            "description": "Optional lower publication year."
+          },
+          "yearTo": {
+            "type": "integer",
+            "minimum": 1800,
+            "maximum": 3000,
+            "description": "Optional upper publication year."
+          },
+          "timeoutMs": {
+            "type": "integer",
+            "minimum": 1000,
+            "maximum": 15000,
+            "description": "Per-provider timeout in milliseconds (default 8000)."
+          }
+        },
+        "required": [
+          "query"
+        ],
         "additionalProperties": false
       }
     },
@@ -266,7 +385,7 @@
     },
     {
       "name": "rsx_source",
-      "description": "Evidence ledger — sources. Record a paper/preprint/dataset/registry/report/news item with title, year, kind, reliability (primary/secondary/tertiary), DOI/authors/journal, and captured content (text or a file path). Captured content is stored as a content-addressed artifact and hashed; the survey gate needs 8 sources, 2 primary, 1 from 2023+, captured content, a disconfirming search and a coverage map. action:\"import\" parses a BibTeX string (Zotero/Google Scholar export) into multiple sources, deduplicating DOI/title; action:\"bibtex\" renders references.bib. action:\"list\" returns rows; ids look like S-0001 and are cited in manuscripts as [[src:S-0001]].",
+      "description": "Evidence ledger — sources. Record a paper/preprint/dataset/registry/report/news item with title, year, kind, reliability (primary/secondary/tertiary), DOI/authors/journal, and captured content (text or a file path). Captured content is stored as a content-addressed artifact and hashed; the survey gate needs 8 sources, 2 primary, 1 from 2023+, captured content, a disconfirming search, a coverage map, two independent primary sources and a risk-of-bias assessment on every primary source. Record lineage (derivedFrom/relation) so eight copies of one press release are not counted as eight independent confirmations; riskOfBias high/some-concerns needs robNote. action:\"update\" patches independence/design/riskOfBias/robNote/lineage/capture fields. action:\"import\" accepts BibTeX, CSL-JSON (Zotero) or RIS, detects the format when format:\"auto\", deduplicates DOI/title, and imports up to 100 records. action:\"bibtex\" renders references.bib; action:\"export\" returns BibTeX, CSL-JSON or RIS for the whole ledger; action:\"lookup\" resolves one DOI through Crossref and returns a sourceDraft ready for action:\"add\". action:\"screen\" records one candidate decision at stage title/abstract/full-text with an optional exclusion reason; action:\"prisma\" returns the candidate decisions and PRISMA 2020 flow counts. action:\"list\" returns rows; ids look like S-0001 and are cited in manuscripts as [[src:S-0001]].",
       "parameters": {
         "type": "object",
         "properties": {
@@ -274,16 +393,72 @@
             "type": "string",
             "enum": [
               "add",
+              "update",
               "list",
               "get",
               "import",
-              "bibtex"
+              "bibtex",
+              "export",
+              "lookup",
+              "screen",
+              "prisma"
             ],
             "description": "Operation (default: add)."
           },
           "campaign": {
             "type": "string",
             "description": "Campaign id. Omit to use the current campaign."
+          },
+          "candidate": {
+            "type": "string",
+            "description": "Screening candidate id, e.g. R-0001 (screen). Omit to create or reuse one by DOI/title."
+          },
+          "source": {
+            "type": "string",
+            "description": "Optional S-0001 to link a candidate to a ledger source and copy missing bibliographic fields."
+          },
+          "stage": {
+            "type": "string",
+            "enum": [
+              "title",
+              "abstract",
+              "full-text"
+            ],
+            "description": "Screening stage: title, abstract, or full-text."
+          },
+          "decision": {
+            "type": "string",
+            "enum": [
+              "include",
+              "exclude",
+              "maybe"
+            ],
+            "description": "include, exclude, or maybe at the selected stage."
+          },
+          "reason": {
+            "type": "string",
+            "enum": [
+              "not-relevant",
+              "wrong-population",
+              "wrong-intervention",
+              "wrong-comparator",
+              "wrong-outcome",
+              "wrong-design",
+              "not-peer-reviewed",
+              "duplicate",
+              "not-retrieved",
+              "insufficient-data",
+              "other"
+            ],
+            "description": "Exclusion reason code; required when decision is exclude."
+          },
+          "duplicateOf": {
+            "type": "string",
+            "description": "Retained candidate id when this record is a duplicate; omit stage/decision."
+          },
+          "reviewer": {
+            "type": "string",
+            "description": "Reviewer name recorded with the decision (default agent)."
           },
           "title": {
             "type": "string",
@@ -295,7 +470,7 @@
           },
           "doi": {
             "type": "string",
-            "description": "DOI (without https://doi.org/)."
+            "description": "DOI (without https://doi.org/). Used by add and lookup."
           },
           "authors": {
             "type": "string",
@@ -311,7 +486,21 @@
           },
           "bibtex": {
             "type": "string",
-            "description": "BibTeX text: one record for add, many for import."
+            "description": "BibTeX text: one record for add, many for import (legacy alias for data)."
+          },
+          "data": {
+            "type": "string",
+            "description": "Reference-manager export text for import: BibTeX, CSL-JSON or RIS."
+          },
+          "format": {
+            "type": "string",
+            "enum": [
+              "auto",
+              "bibtex",
+              "csl-json",
+              "ris"
+            ],
+            "description": "Import/export format; defaults to auto for import and bibtex for export."
           },
           "year": {
             "type": "integer",
@@ -360,9 +549,69 @@
             "type": "boolean",
             "description": "Mark a source as retracted; citing it blocks the audit."
           },
+          "independence": {
+            "type": "string",
+            "enum": [
+              "independent",
+              "derived",
+              "same-group",
+              "unknown"
+            ],
+            "description": "Independence of a primary source from the other cited evidence."
+          },
+          "design": {
+            "type": "string",
+            "description": "Study design (RCT, cohort, DOE, in-vitro, benchmark, …)."
+          },
+          "riskOfBias": {
+            "type": "string",
+            "enum": [
+              "low",
+              "some-concerns",
+              "high",
+              "not-assessed"
+            ],
+            "description": "Risk-of-bias judgement for a primary source."
+          },
+          "robNote": {
+            "type": "string",
+            "description": "Concrete reason and expected direction of bias when riskOfBias is not low."
+          },
+          "derivedFrom": {
+            "type": "string",
+            "description": "Source id this item derives from (lineage)."
+          },
+          "relation": {
+            "type": "string",
+            "enum": [
+              "same-dataset",
+              "reanalysis",
+              "press-release",
+              "same-group",
+              "other"
+            ],
+            "description": "Lineage relation when derivedFrom is set."
+          },
+          "lineageNote": {
+            "type": "string",
+            "description": "How the derivation works (shared cohort, reused dataset, …)."
+          },
+          "lineage": {
+            "type": "object",
+            "additionalProperties": true,
+            "description": "Alternative to derivedFrom/relation/lineageNote: {derivedFrom, relation, note}."
+          },
+          "captureMethod": {
+            "type": "string",
+            "description": "How full text was captured (html, pdf, api, manual)."
+          },
+          "capturedAt": {
+            "type": "string",
+            "description": "Capture timestamp; defaults to now when content is supplied."
+          },
           "id": {
             "type": "string",
-            "description": "Source id for get."
+            "description": "Source id for get/update."
           }
         },
         "additionalProperties": false
@@ -370,7 +619,7 @@
     },
     {
       "name": "rsx_claim",
-      "description": "Evidence ledger — claims and hypotheses. A hypothesis must state falsifier, killCriterion, predicted observation, metricName and metricUnit; the hypothesis gate needs two supporting evidence rows and a novelty check. action:\"status\" sets proposed/supported/contested/refuted with a reason; every claim must leave \"proposed\" before analyze/review gates pass. Use kind:\"hypothesis\" for the main testable claim (one per campaign is enough), kind:\"claim\" for supporting assertions.",
+      "description": "Evidence ledger — claims and hypotheses. A hypothesis must state falsifier, killCriterion, predicted observation, metricName, metricUnit and a warrant (the rule that lets evidence support it); the hypothesis gate needs two supporting evidence rows, a counter-evidence search and a novelty check. action:\"status\" sets proposed/supported/contested/refuted with a reason; every claim must leave \"proposed\" before analyze/review gates pass. action:\"update\" records warrant/counterEvidence/certainty after creation. action:\"sensitivity\" records one robustness check (name, method, specification, result, direction, optional trace); schema-3 campaigns need at least one before the analyze gate passes. Use kind:\"hypothesis\" for the main testable claim (one per campaign is enough), kind:\"claim\" for supporting assertions.",
       "parameters": {
         "type": "object",
         "properties": {
@@ -378,7 +627,9 @@
             "type": "string",
             "enum": [
               "add",
+              "update",
               "status",
+              "sensitivity",
               "list"
             ],
             "description": "Operation (default: add)."
@@ -424,9 +675,27 @@
             "type": "number",
             "description": "0–1 subjective confidence."
           },
+          "warrant": {
+            "type": "string",
+            "description": "The inferential rule that licenses evidence → claim (Toulmin warrant)."
+          },
+          "counterEvidence": {
+            "type": "string",
+            "description": "What counter-evidence search was run and what it found, including a null result."
+          },
+          "certainty": {
+            "type": "string",
+            "enum": [
+              "high",
+              "moderate",
+              "low",
+              "very-low"
+            ],
+            "description": "GRADE-style certainty of the evidence body (not the hypothesis)."
+          },
           "claim": {
             "type": "string",
-            "description": "Claim id (status action)."
+            "description": "Claim id (status/update/sensitivity action)."
           },
           "status": {
             "type": "string",
@@ -440,7 +709,41 @@
           },
           "reason": {
             "type": "string",
-            "description": "Why the status changed."
+            "description": "Why the status changed / why a protocol was amended."
+          },
+          "name": {
+            "type": "string",
+            "description": "Sensitivity check name (sensitivity action)."
+          },
+          "method": {
+            "type": "string",
+            "description": "Sensitivity method, e.g. leave-one-out, alternative-model, subgroup (sensitivity action)."
+          },
+          "specification": {
+            "type": "string",
+            "description": "What exactly changed in this robustness check (sensitivity action)."
+          },
+          "result": {
+            "type": "string",
+            "description": "Result under the alternative specification (sensitivity action)."
+          },
+          "direction": {
+            "type": "string",
+            "enum": [
+              "consistent",
+              "attenuated",
+              "reversed",
+              "inconclusive"
+            ],
+            "description": "What happened to the conclusion (sensitivity action)."
+          },
+          "trace": {
+            "type": "string",
+            "description": "Optional trace for the sensitivity result: run:R-xxxxxxxxxx#metric or source:S-0001."
+          },
+          "notes": {
+            "type": "string",
+            "description": "Caveats or interpretation for the sensitivity check."
           }
         },
         "additionalProperties": false
@@ -495,7 +798,7 @@
     },
     {
       "name": "rsx_run",
-      "description": "Record a real execution (default: record only, the plugin does not run commands). Pass the exact command, status, seed, exit code, control:\"negative\" for the negative control, metrics as a JSON object, and optionally stdoutPath. The execute gate requires one successful seeded run with metrics, its exact command, and a really-run negative control. Metrics keys become traceable number sources: run:R-xxxxxxxxxx#key. Never invent a run: run the command yourself with the shell tool, then record it here with the real outputs.",
+      "description": "Record a real execution (default: record only, the plugin does not run commands). Pass the exact command, status, seed, exit code, control:\"negative\" for the negative control, metrics as a JSON object, and optionally stdoutPath. Use action:\"attach\" with id + stdoutPath to fill a missing stdout artifact on an existing run; replay the exact command and verify the metrics match before attaching. The execute gate requires one successful seeded run with metrics, its exact command, and a really-run negative control. Metrics keys become traceable number sources: run:R-xxxxxxxxxx#key. Never invent a run: run the command yourself with the shell tool, then record it here with the real outputs.",
       "parameters": {
         "type": "object",
         "properties": {
@@ -503,6 +806,7 @@
             "type": "string",
             "enum": [
               "record",
+              "attach",
               "list",
               "get"
             ],
@@ -567,7 +871,7 @@
           },
           "id": {
             "type": "string",
-            "description": "Run id for get."
+            "description": "Run id for get or attach."
           }
         },
         "additionalProperties": false
@@ -671,7 +975,7 @@
     },
     {
       "name": "rsx_review",
-      "description": "Automated reviewer (Claude Science-style): checks every manuscript citation resolves to a captured source, every quote occurs in the captured text, every number matches the run that produced it, every figure has figure+code+data provenance, the pre-registration still describes the executed analysis, and the negative control is real. Findings have severity blocking/major/minor/info. Only blocking findings stop the rsx_gate review gate; majors are for the human reviewer to resolve. The audit records a subject hash and an HMAC-SHA256 signature over the decision, so any later edit makes it stale or invalid and the review gate asks for a fresh audit. action:\"audit\" runs and records the signed audit; action:\"view\" returns the latest audit + matrix; action:\"list\" shows audit history, signature status and freshness.",
+      "description": "Automated reviewer (Claude Science-style): checks every manuscript citation resolves to a captured source, every quote occurs in the captured text, every number matches the run that produced it, every figure has figure+code+data provenance, the pre-registration still describes the executed analysis, and the negative control is real. Findings have severity blocking/major/minor/info. Only blocking findings stop the rsx_gate review gate; majors are for the human reviewer to resolve. The audit records a subject hash and an HMAC-SHA256 signature over the decision, so any later edit makes it stale or invalid and the review gate asks for a fresh audit. action:\"audit\" runs and records the signed audit; action:\"view\" returns the latest audit + matrix; action:\"list\" shows audit history, signature status and freshness. For a domain campaign record the role reviews before auditing, otherwise the audit sees missing roles and blocks the review gate. action:\"packet\" builds a reviewer packet (claims with warrants/certainty, source independence, numbers, runs, ten review questions); action:\"entailment\" runs the lexical claim↔quote screen only. The screen checks that claim terms occur in the supporting quote — it is not semantic entailment, and a human still decides meaning.",
       "parameters": {
         "type": "object",
         "properties": {
@@ -680,7 +984,9 @@
             "enum": [
               "audit",
               "view",
-              "list"
+              "list",
+              "packet",
+              "entailment"
             ],
             "description": "Operation (default: audit)."
           },
@@ -843,7 +1149,7 @@
     },
     {
       "name": "rsx_domain",
-      "description": "Domain research profiles: finance, AI/ML, medicine/clinical and industrial/engineering. Each profile maps required protocol fields to pipeline stages and adds blocking domain checks (PRISMA ordering, OOS dates, review roles, monitoring, etc.); conditional fields switch off when the study design/risk tier makes them inapplicable. action:\"list\" returns the four profiles; action:\"get\" returns the selected profile, values, completeness and current gate; action:\"set\" selects a profile and optionally merges values; action:\"check\" evaluates one stage. Selecting a domain is not a compliance claim: the profile is a structured alignment checklist. Use rsx_campaign action:\"monitor\" for metrics/observations and action:\"evaluate\" for the 12-dimension loop score.",
+      "description": "Domain research profiles: finance, AI/ML, medicine/clinical and industrial/engineering. Each profile maps required protocol fields to pipeline stages and adds blocking domain checks (PRISMA ordering, OOS dates, review roles, monitoring, etc.); conditional fields switch off when the study design/risk tier makes them inapplicable. action:\"list\" returns the four profiles; action:\"get\" returns the selected profile, values, completeness and current gate; action:\"set\" selects a profile and optionally merges values; action:\"check\" evaluates one stage. Selecting a domain is not a compliance claim: the profile is a structured alignment checklist. Use rsx_campaign action:\"monitor\" for metrics/observations and action:\"evaluate\" for the 13-dimension loop score.",
       "parameters": {
         "type": "object",
         "properties": {
@@ -891,7 +1197,7 @@
     },
     {
       "name": "rsx_gate",
-      "description": "The nine gates. action:\"check\" runs the gate for a stage (default: current) and records the result; action:\"advance\" advances only when the current stage passes, otherwise returns the blocking checks; action:\"back\" returns to an earlier stage with a reason. action:\"review\" records a structured review (reviewer, affiliation, conflict, independent, qualification, adversarial, verdict accept/minor/major/reject, issues with severity blocking/major/minor); the review gate needs two reviews and at least one adversarial. Review roles: a domain campaign needs one review per profile role (quant/risk, ml/safety, clinical/statistics, engineering/quality); pass role with the review. 0.5 reviews also declare affiliation, conflict and independent so role coverage is not a string match. Run check before advance so you can see the exact blocking codes. Gate results are append-only history. The review gate also requires a fresh, passing automated audit whose HMAC signature verifies (`rsx_review action:\"audit\"`); release requires `stateOk !== false`.",
+      "description": "The nine gates. action:\"check\" runs the gate for a stage (default: current) and records the result; action:\"advance\" advances only when the current stage passes, otherwise returns the blocking checks; action:\"back\" returns to an earlier stage with a reason. action:\"review\" records a structured review (reviewer, affiliation, conflict, independent, qualification, adversarial, verdict accept/minor/major/reject, issues with severity blocking/major/minor); the review gate needs two reviews and at least one adversarial. Review roles: a domain campaign needs one review per profile role (quant/risk, ml/safety, clinical/statistics, engineering/quality); pass role with the review. 0.5 reviews also declare affiliation, conflict and independent so role coverage is not a string match. Run check before advance so you can see the exact blocking codes. Gate results are append-only history. The review gate also requires a fresh, passing automated audit whose HMAC signature verifies (`rsx_review action:\"audit\"`); release requires `stateOk !== false`. action:\"approve\" records a named human approval bound to the current audit subject hash (it goes stale when substantive evidence changes); action:\"waive\" records an expiring, attributed waiver for one failing check; action:\"waivers\"/\"approvals\" list them. Waivers cannot cover integrity, audit signature, review independence, declaration, upstream-gate or human-approval checks.",
       "parameters": {
         "type": "object",
         "properties": {
@@ -902,7 +1208,11 @@
               "advance",
               "back",
               "history",
-              "review"
+              "review",
+              "approve",
+              "waive",
+              "waivers",
+              "approvals"
             ],
             "description": "Operation (default: check)."
           },
@@ -978,6 +1288,227 @@
           "notes": {
             "type": "string",
             "description": "Review summary."
+          },
+          "approver": {
+            "type": "string",
+            "description": "Human approver name (approve action); must not be the model name."
+          },
+          "statement": {
+            "type": "string",
+            "description": "What the approver is signing off on (at least 12 characters)."
+          },
+          "scope": {
+            "type": "string",
+            "description": "Scope of the approval/waiver (default campaign)."
+          },
+          "code": {
+            "type": "string",
+            "description": "Gate check id to waive (waive action)."
+          },
+          "approvedBy": {
+            "type": "string",
+            "description": "Who approved the waiver (waive action)."
+          },
+          "expiresAt": {
+            "type": "string",
+            "description": "Waiver expiry date YYYY-MM-DD (waive action)."
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "rsx_program",
+      "description": "Research program orchestration above the nine gates. It records what a multi-agent or long-running research effort actually planned and decided, so the programme is auditable even when the agents are external. action:\"plan\" sets the objective and question list (each question needs an owner, priority and resolving source coverage); action:\"perspective\" records a stakeholder view and its sources; action:\"autonomy\" records maxCycles, stopCriteria, escalation and humanCheckpoints; action:\"cycle\" records one act→observe→decide step, refused once maxCycles is exhausted. action:\"match\" records a pairwise judgement between two claims (Elo bookkeeping, not truth); action:\"rank\" returns the current ranking; action:\"quality\" records the six-dimension rubric (factual accuracy, citation accuracy, completeness, source quality, tool efficiency, limitations); action:\"contradiction\" records conflicting evidence and its resolution. action:\"list\" returns the programme summary and completeness checks. Schema-4/5 campaigns must have a complete programme before the review gate passes: plan≥2 covered questions, perspectives≥2 with sources, autonomy policy, ≥1 cycle, ≥1 hypothesis/competing-claim match, a rubric row with overall≥0.7, and no open contradictions. The game is local and deterministic; it does not run agents or searches.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "action": {
+            "type": "string",
+            "enum": [
+              "plan",
+              "perspective",
+              "autonomy",
+              "cycle",
+              "match",
+              "rank",
+              "quality",
+              "contradiction",
+              "list"
+            ],
+            "description": "Operation (default: list)."
+          },
+          "campaign": {
+            "type": "string",
+            "description": "Campaign id. Omit to use the current campaign."
+          },
+          "objective": {
+            "type": "string",
+            "description": "Plan objective (plan action)."
+          },
+          "question": {
+            "type": "string",
+            "description": "A plan question to append, or the perspective question (plan/perspective)."
+          },
+          "questions": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": true
+            },
+            "description": "Replace the plan questions: [{id?,question,priority:\"high\"|\"medium\"|\"low\",owner,status:\"open\"|\"active\"|\"answered\"|\"abandoned\",coverage:[\"S-0001\"]}]."
+          },
+          "priority": {
+            "type": "string",
+            "enum": [
+              "high",
+              "medium",
+              "low"
+            ],
+            "description": "Plan question priority (default medium)."
+          },
+          "owner": {
+            "type": "string",
+            "description": "Plan/autonomy owner."
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "open",
+              "active",
+              "answered",
+              "abandoned"
+            ],
+            "description": "Plan question status (default open)."
+          },
+          "coverage": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Resolving source ids covering the plan question."
+          },
+          "name": {
+            "type": "string",
+            "description": "Perspective name."
+          },
+          "stakeholder": {
+            "type": "string",
+            "description": "Stakeholder represented by the perspective."
+          },
+          "sources": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Resolving source ids used by the perspective."
+          },
+          "maxCycles": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 50,
+            "description": "Autonomy cycle budget (autonomy action)."
+          },
+          "stopCriteria": {
+            "type": "string",
+            "description": "When the autonomous loop stops (autonomy action)."
+          },
+          "escalation": {
+            "type": "string",
+            "description": "When the loop escalates to a human (autonomy action)."
+          },
+          "humanCheckpoints": {
+            "type": "string",
+            "description": "Where a human must confirm before continuing (autonomy action)."
+          },
+          "goal": {
+            "type": "string",
+            "description": "Cycle goal (cycle action)."
+          },
+          "step": {
+            "type": "string",
+            "description": "The action actually taken in this cycle (cycle action)."
+          },
+          "observation": {
+            "type": "string",
+            "description": "What the cycle observed (cycle action)."
+          },
+          "decision": {
+            "type": "string",
+            "enum": [
+              "continue",
+              "revise",
+              "stop",
+              "escalate"
+            ],
+            "description": "Cycle decision (cycle action)."
+          },
+          "run": {
+            "type": "string",
+            "description": "Optional R-xxxxxxxxxx run id linked to the cycle."
+          },
+          "a": {
+            "type": "string",
+            "description": "First claim id in a match (match action)."
+          },
+          "b": {
+            "type": "string",
+            "description": "Second claim id in a match (match action)."
+          },
+          "winner": {
+            "type": "string",
+            "enum": [
+              "a",
+              "b",
+              "draw"
+            ],
+            "description": "Recorded judgement (match action)."
+          },
+          "criterion": {
+            "type": "string",
+            "description": "The criterion used for the pairwise judgement (match action)."
+          },
+          "reviewer": {
+            "type": "string",
+            "description": "Quality reviewer name/role (quality action)."
+          },
+          "scores": {
+            "type": "object",
+            "additionalProperties": true,
+            "description": "Quality scores 0–1 for factual_accuracy, citation_accuracy, completeness, source_quality, tool_efficiency, limitations."
+          },
+          "scope": {
+            "type": "string",
+            "description": "What the quality rubric covered (quality action)."
+          },
+          "claim": {
+            "type": "string",
+            "description": "Claim id for a contradiction (contradiction action)."
+          },
+          "evidenceA": {
+            "type": "string",
+            "description": "First conflicting evidence ref: E-xxxx / S-xxxx / R-xxxxxxxxxx / sha256:…."
+          },
+          "evidenceB": {
+            "type": "string",
+            "description": "Second conflicting evidence ref."
+          },
+          "resolutionStatus": {
+            "type": "string",
+            "enum": [
+              "open",
+              "resolved",
+              "explained"
+            ],
+            "description": "Contradiction status (default open)."
+          },
+          "resolution": {
+            "type": "string",
+            "description": "How a resolved/explained contradiction was handled (at least 12 characters)."
+          },
+          "note": {
+            "type": "string",
+            "description": "Optional note for plan/perspective/match/cycle/contradiction."
           }
         },
         "additionalProperties": false
@@ -985,7 +1516,7 @@
     },
     {
       "name": "rsx_write",
-      "description": "Writing and delivery. action:\"manuscript\" stores the draft (text or path) and runs the write gate; \"declaration\" records AI assistance + watermark + model + human reviewer; \"render\" writes REPORT.md, campaign.json, ledger.jsonl, declaration.md, references.bib, MATRIX.md, matrix.csv, AUDIT.md, DOMAIN.md (when a domain profile is set), LOOP.md (when evaluated), provenance.json and ro-crate-metadata.json into the campaign exports folder. action:\"export\" additionally copies artifacts and builds BUNDLE.zip. action:\"report\" returns the Markdown without writing. Manuscript rules: numbers as {{N-0001}}, sources as [[src:S-0001]]; the write gate rejects orphan digits and unknown refs.",
+      "description": "Writing and delivery. action:\"manuscript\" stores the draft (text or path) and runs the write gate; \"declaration\" records AI assistance + watermark + model + human reviewer + an AI/human contribution matrix; \"render\" writes REPORT.md, campaign.json, ledger.jsonl, declaration.md, STEWARDSHIP.md, references.bib, MATRIX.md, matrix.csv, AUDIT.md, REVIEW_PACKET.md, REPRO.md, repro.json, checksums.txt, AI_CONTRIBUTION.md, DOMAIN.md (when a domain profile is set), LOOP.md (when evaluated), provenance.json and ro-crate-metadata.json into the campaign exports folder. action:\"export\" additionally writes MANIFEST.json (per-file bytes + SHA-256 and the release gate), copies artifacts and builds BUNDLE.zip; the manifest does not hash itself or the archive. action:\"repro\" returns the executable reproduction manifest; action:\"packet\" returns the review packet; action:\"report\" returns the Markdown without writing. Manuscript rules: numbers as {{N-0001}}, sources as [[src:S-0001]]; the write gate rejects orphan digits and unknown refs.",
       "parameters": {
         "type": "object",
         "properties": {
@@ -996,7 +1527,9 @@
               "render",
               "export",
               "declaration",
-              "report"
+              "report",
+              "repro",
+              "packet"
             ],
             "description": "Operation (default: render)."
           },
@@ -1039,6 +1572,14 @@
           "notes": {
             "type": "string",
             "description": "Declaration notes."
+          },
+          "contributions": {
+            "type": "array",
+            "description": "AI/human contribution matrix: [{actor:\"ai\"|\"human\", role, name, scope}]. Defaults to one AI drafting role plus the human reviewer.",
+            "items": {
+              "type": "object",
+              "additionalProperties": true
+            }
           }
         },
         "additionalProperties": false

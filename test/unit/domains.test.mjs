@@ -24,9 +24,11 @@ import {
   passExecute,
   passHypothesis,
   passScoping,
+  passStewardship,
   passSurvey,
   passWrite,
   makeService,
+  seedProgram,
 } from '../helpers.mjs'
 
 function domainCampaign(service, domain = 'finance') {
@@ -58,6 +60,10 @@ test('domain registry exposes four complete profiles and stage-mapped fields', (
     assert.ok(domain.summary.zh && domain.summary.en)
     assert.ok(domain.fields.length >= 20, `${domain.id} should have a substantive field set`)
     assert.ok(domain.standards.length >= 4, `${domain.id} should cite several standards`)
+    assert.ok(
+      domain.standards.every((item) => item.status === 'current' && /^\d{4}-\d{2}-\d{2}$/u.test(item.reviewedAt)),
+      `${domain.id} standards need a lifecycle status and review date`,
+    )
     assert.equal(domain.reviewRoles.length, 2)
     assert.equal(domain.monitoring.required, true)
     for (const field of domain.fields) {
@@ -278,6 +284,7 @@ test('full AI campaign runs all nine gates with domain fields, roles and monitor
 
     fillStage(service, id, profile, 'write')
     assert.equal(passWrite(service, id, analyzed.number.id).stage, 'review')
+    seedProgram(service, id)
 
     service.gate(id, {
       action: 'review',
@@ -320,7 +327,14 @@ test('full AI campaign runs all nine gates with domain fields, roles and monitor
       model: 'DeepSeek Harness test',
       humanReviewer: 'YG',
     })
+    passStewardship(service, id)
     service.audit(id)
+    service.gate(id, {
+      action: 'approve',
+      approver: 'YG',
+      role: 'human-reviewer',
+      statement: '已核对领域协议、证据与监测计划，批准发布。',
+    })
     const released = service.gate(id, { action: 'advance' })
     assert.equal(released.released, true)
     const state = store.get(id)

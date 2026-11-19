@@ -1,0 +1,23 @@
+{
+  "ok": true,
+  "campaign": "rs-f7edf967",
+  "version": "0.8.0",
+  "stage": "release",
+  "gate": {
+    "ok": true,
+    "blocking": [],
+    "passed": 12,
+    "total": 12
+  },
+  "planQuestions": 3,
+  "perspectives": 3,
+  "cycles": 1,
+  "matches": 1,
+  "quality": 1,
+  "contradictions": 1,
+  "openContradictions": 0,
+  "chainOk": true,
+  "stateOk": true,
+  "artifacts": 11,
+  "checkedAt": "2026-11-17T20:18:23.9623797Z"
+}

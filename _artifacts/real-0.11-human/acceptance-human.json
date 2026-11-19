@@ -1,0 +1,232 @@
+{
+  "ok": true,
+  "generatedAt": "2026-11-17T22:37:19.366Z",
+  "dataDir": "C:\\Users\\13645\\.dsh\\research-suite",
+  "campaign": {
+    "id": "rs-f7edf967",
+    "title": "0.8 真实验收：schema-4 研究程序与 review 闸门",
+    "stage": "release",
+    "seq": 77,
+    "events": 77,
+    "artifacts": 13,
+    "chainOk": true,
+    "stateOk": true,
+    "artifactProblems": [],
+    "lastHash": "3161e6725635f28da2d7816d21835d853f31853c0f888a956e19990dbb48e395"
+  },
+  "revision": {
+    "source": {
+      "id": "S-0011",
+      "title": "Agentic AI and Autonomous Decision-Making: A Review of Human-in-the-Loop Frameworks, Oversight Mechanisms, and Trust Calibration",
+      "doi": "10.51584/ijrias.2026.11030104",
+      "url": "https://doi.org/10.51584/ijrias.2026.11030104",
+      "year": 2026,
+      "kind": "paper",
+      "reliability": "secondary",
+      "contentHash": "sha256:8d05031c379ceb66d19e2b6d9a1daa31b9cea3b941e841dd1fdcdb7a6ce6b126",
+      "captureMethod": "api"
+    },
+    "manuscriptChars": 930,
+    "manuscriptArtifact": "sha256:73e82417b2c35668235a42a6484e1cfb98ae4374243d5de754f1ca10e6319dce",
+    "programCycle": {
+      "id": "K-0002",
+      "goal": "为发布后的证据修订取得一次新的真实人工批准",
+      "action": "加入真实外部综述 S-0011，修订文稿并重跑 write/review/release 闸门；把审批对象固定到新审计 A-0002。",
+      "observation": "新增综述 S-0011 并在局限段引用后，write 7/7、review 7/7、release 11/12，唯一阻断是 human_approval；旧批准 P-0001 因审查对象哈希变化失效。",
+      "decision": "continue",
+      "question": "",
+      "run": "",
+      "note": "这是发布后的修订循环：不新增实验结论，只把证据版本变化交给人工重新批准。循环保持 open，直到人完成批准。",
+      "at": "2026-11-17T22:17:05.020Z"
+    },
+    "audit": {
+      "id": "A-0003",
+      "ok": true,
+      "verdict": "major",
+      "counts": {
+        "blocking": 0,
+        "major": 1,
+        "minor": 2,
+        "info": 0
+      },
+      "subjectHash": "3a1cd91a2ee7542bc75731ba35e7bc09fff77129c37c01cac1836e16e65a9094",
+      "signature": "f739c63df0048dd83591fb141d6624ad6a96758bc2e15db5569e8eff6beda6b0",
+      "keyId": "2bf5ca3613676c83"
+    }
+  },
+  "pause": {
+    "id": "LP-0001",
+    "status": "resumed",
+    "kind": "human_checkpoint",
+    "stage": "release",
+    "iteration": 3,
+    "cycle": 2,
+    "maxCycles": 3,
+    "tool": "rsx_gate",
+    "label": "取得人工批准",
+    "human": true,
+    "needsInput": true,
+    "unmapped": false,
+    "blocking": [
+      "human_approval"
+    ],
+    "gateOk": false,
+    "planHash": "c9fb70cd50525dcbaefeb89d68ffcfba2b4aeb0712b8c2b9755b07868b5defe6",
+    "at": "2026-11-17T22:17:08.810Z",
+    "resumedAt": "2026-11-17T22:36:27.240Z",
+    "resumeReason": "YG 已明确批准修订发布（审批 P-0002，绑定审计 A-0003 / 对象哈希 3a1cd91a…），人工检查点完成，恢复宿主循环。"
+  },
+  "approvals": {
+    "prior": {
+      "id": "P-0001",
+      "subjectHash": "e16cb0958bd2807925cd703c3a950f10d70d30030ba64d23c1c3ca7946be4446",
+      "createdAt": "2026-11-17T20:12:35.233Z"
+    },
+    "approval": {
+      "id": "P-0002",
+      "approver": "YG",
+      "role": "human-reviewer",
+      "statement": "YG 在真实宿主选择「批准（YG）」：已核对新增来源 S-0011、930 字符文稿修订、审计 A-0003 与 release 唯一阻断 human_approval，明确批准该修订版本发布。",
+      "subjectHash": "3a1cd91a2ee7542bc75731ba35e7bc09fff77129c37c01cac1836e16e65a9094",
+      "createdAt": "2026-11-17T22:36:25.809Z",
+      "fresh": true
+    },
+    "count": 2
+  },
+  "release": {
+    "before": {
+      "ok": false,
+      "passed": 11,
+      "total": 12,
+      "blocking": [
+        "human_approval"
+      ],
+      "ts": "2026-11-17T22:17:07.388Z"
+    },
+    "after": {
+      "ok": true,
+      "passed": 12,
+      "total": 12,
+      "blocking": [],
+      "ts": "2026-11-17T22:36:59.288Z"
+    }
+  },
+  "loop": {
+    "status": "running",
+    "lastStatus": "ready",
+    "pauseId": null,
+    "lastCheckAt": "2026-11-17T22:36:27.240Z"
+  },
+  "userSelection": "批准（YG）",
+  "events": {
+    "sourceAdded": [
+      {
+        "seq": 66,
+        "ts": "2026-11-17T22:16:24.876Z"
+      }
+    ],
+    "manuscriptSet": [
+      {
+        "seq": 67,
+        "ts": "2026-11-17T22:16:28.874Z"
+      }
+    ],
+    "auditRecorded": [
+      {
+        "seq": 72,
+        "ts": "2026-11-17T22:17:06.222Z"
+      }
+    ],
+    "programCycle": [
+      {
+        "seq": 71,
+        "ts": "2026-11-17T22:17:05.023Z"
+      }
+    ],
+    "loopPaused": [
+      {
+        "seq": 74,
+        "ts": "2026-11-17T22:17:08.813Z",
+        "payload": {
+          "id": "LP-0001",
+          "kind": "human_checkpoint",
+          "stage": "release",
+          "tool": "rsx_gate",
+          "human": true,
+          "needsInput": true,
+          "unmapped": false,
+          "planHash": "c9fb70cd50525dcbaefeb89d68ffcfba2b4aeb0712b8c2b9755b07868b5defe6",
+          "cycle": 2,
+          "maxCycles": 3
+        }
+      }
+    ],
+    "releaseApproved": [
+      {
+        "seq": 57,
+        "ts": "2026-11-17T20:12:35.236Z",
+        "payload": {
+          "id": "P-0001",
+          "approver": "YG",
+          "role": "human-reviewer",
+          "subjectHash": "e16cb0958bd2807925cd703c3a950f10d70d30030ba64d23c1c3ca7946be4446"
+        }
+      },
+      {
+        "seq": 75,
+        "ts": "2026-11-17T22:36:25.812Z",
+        "payload": {
+          "id": "P-0002",
+          "approver": "YG",
+          "role": "human-reviewer",
+          "subjectHash": "3a1cd91a2ee7542bc75731ba35e7bc09fff77129c37c01cac1836e16e65a9094"
+        }
+      }
+    ],
+    "loopResumed": [
+      {
+        "seq": 76,
+        "ts": "2026-11-17T22:36:27.243Z",
+        "payload": {
+          "pause": "LP-0001",
+          "kind": "human_checkpoint",
+          "stage": "release",
+          "next": "ready",
+          "reason": "YG 已明确批准修订发布（审批 P-0002，绑定审计 A-0003 / 对象哈希 3a1cd91a…），人工检查点完成，恢复宿主循环。"
+        }
+      }
+    ],
+    "latest": [
+      {
+        "seq": 72,
+        "kind": "audit.recorded",
+        "ts": "2026-11-17T22:17:06.222Z"
+      },
+      {
+        "seq": 73,
+        "kind": "gate.checked",
+        "ts": "2026-11-17T22:17:07.391Z"
+      },
+      {
+        "seq": 74,
+        "kind": "loop.paused",
+        "ts": "2026-11-17T22:17:08.813Z"
+      },
+      {
+        "seq": 75,
+        "kind": "release.approved",
+        "ts": "2026-11-17T22:36:25.812Z"
+      },
+      {
+        "seq": 76,
+        "kind": "loop.resumed",
+        "ts": "2026-11-17T22:36:27.243Z"
+      },
+      {
+        "seq": 77,
+        "kind": "gate.checked",
+        "ts": "2026-11-17T22:36:59.290Z"
+      }
+    ]
+  }
+}

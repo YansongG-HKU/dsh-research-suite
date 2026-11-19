@@ -1,0 +1,145 @@
+{
+  "ok": true,
+  "version": "0.8.0",
+  "campaign": "rs-f7edf967",
+  "schema": 4,
+  "program": {
+    "planQuestions": 3,
+    "perspectives": 3,
+    "autonomy": {
+      "maxCycles": 3,
+      "stopCriteria": "所有预设探针运行完毕、无开放矛盾且质量评分不低于 0.7 时停止。",
+      "escalation": "出现方向相反的独立证据或闸门行为与预期不符时升级给人类评审。",
+      "humanCheckpoints": "发布前由人类评审者核对探针输出、负对照、程序记录与导出包。",
+      "owner": "YG",
+      "updatedAt": "2026-11-17T20:12:34.300Z"
+    },
+    "cycles": 1,
+    "matches": 1,
+    "qualityRows": 1,
+    "latestQuality": {
+      "id": "Y-0001",
+      "reviewer": "自动化质量评分",
+      "scope": "0.8 schema-4 真实验收包",
+      "scores": {
+        "factual_accuracy": 0.86,
+        "citation_accuracy": 0.9,
+        "completeness": 0.84,
+        "source_quality": 0.88,
+        "tool_efficiency": 0.8,
+        "limitations": 0.9
+      },
+      "minimum": 0.8,
+      "overall": 0.863,
+      "notes": "事实与引用依据探针输出及六篇外部来源；局限已写入手稿。",
+      "at": "2026-11-17T20:12:35.042Z"
+    },
+    "contradictions": 1,
+    "openContradictions": 0,
+    "leader": {
+      "id": "C-0001",
+      "statement": "在 schema-4 中，缺少程序记录、开放矛盾或低质量评分会让 review 闸门阻断 program_complete；补齐后放行。",
+      "kind": "hypothesis",
+      "rating": 1016,
+      "wins": 1,
+      "losses": 0,
+      "draws": 0,
+      "matches": 1,
+      "rank": 1
+    },
+    "complete": {
+      "ok": true,
+      "checks": [
+        {
+          "code": "plan_objective",
+          "ok": true,
+          "detail": "record a plan objective of at least 12 characters"
+        },
+        {
+          "code": "plan_questions",
+          "ok": true,
+          "detail": "record at least 2 plan questions, have 3"
+        },
+        {
+          "code": "plan_coverage",
+          "ok": true,
+          "detail": "every high/medium plan question has a resolving source coverage ref"
+        },
+        {
+          "code": "perspectives",
+          "ok": true,
+          "detail": "record at least 2 perspectives, have 3"
+        },
+        {
+          "code": "perspective_sources",
+          "ok": true,
+          "detail": "every perspective has resolving sources"
+        },
+        {
+          "code": "autonomy_policy",
+          "ok": true,
+          "detail": "autonomy needs maxCycles, stopCriteria, escalation and humanCheckpoints"
+        },
+        {
+          "code": "cycle_log",
+          "ok": true,
+          "detail": "log at least one act→observe→decide cycle"
+        },
+        {
+          "code": "hypothesis_competition",
+          "ok": true,
+          "detail": "need a hypothesis, a competing claim and a recorded match (hypotheses 1, claims 2, matches 1)"
+        },
+        {
+          "code": "quality_rubric",
+          "ok": true,
+          "detail": "latest rubric overall 0.863 (minimum 0.7, all six dimensions required)"
+        },
+        {
+          "code": "contradictions_resolved",
+          "ok": true,
+          "detail": "no open contradictions"
+        }
+      ],
+      "missing": []
+    },
+    "completeOk": true,
+    "missing": []
+  },
+  "release": {
+    "ok": true,
+    "passed": 12,
+    "total": 12,
+    "blocking": []
+  },
+  "audit": {
+    "id": "A-0001",
+    "ok": true,
+    "verdict": "accept",
+    "fresh": true,
+    "subjectHash": "e16cb0958bd2807925cd703c3a950f10d70d30030ba64d23c1c3ca7946be4446"
+  },
+  "probe": {
+    "blocked_cases": 3,
+    "metrics": {
+      "blocked_cases": 3,
+      "missing_blocked": 1,
+      "complete_blocked": 0,
+      "open_contradiction_blocked": 1,
+      "resolved_contradiction_blocked": 0,
+      "low_quality_blocked": 1,
+      "legacy_blocked": 0
+    },
+    "negative": {
+      "legacy_missing_blocked": 0,
+      "blocked_cases": 0
+    }
+  },
+  "legacy": {
+    "id": "rs-ad07b91f",
+    "releaseOk": true,
+    "releasePassed": 16,
+    "releaseTotal": 16
+  },
+  "generatedAt": "2026-11-17T20:18:27.942Z"
+}

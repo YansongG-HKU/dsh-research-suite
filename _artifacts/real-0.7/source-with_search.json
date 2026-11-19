@@ -1,0 +1,8 @@
+{
+  "seed": 7,
+  "case": "with_search",
+  "blocked": false,
+  "blocking": [],
+  "note": "补齐检索协议后 survey 闸门放行",
+  "source": "exploratory probe run; confirmatory run recorded inside the campaign"
+}

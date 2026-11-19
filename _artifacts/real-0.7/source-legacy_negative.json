@@ -1,0 +1,8 @@
+{
+  "seed": 7,
+  "case": "legacy_negative",
+  "blocked": false,
+  "blocking": [],
+  "note": "早期 schema 项目上同一缺失不阻断，只作为 advisory",
+  "source": "exploratory probe run; confirmatory run recorded inside the campaign"
+}

@@ -1,0 +1,22 @@
+{
+  "campaign": "rs-a874c2ae",
+  "checks": [
+    {
+      "name": "missing exclusion reason",
+      "status": 400,
+      "code": "invalid_input",
+      "recordsBefore": 4,
+      "recordsAfter": 4,
+      "phantom": false
+    },
+    {
+      "name": "full-text without title+abstract include",
+      "candidate": "R-0002",
+      "status": 400,
+      "code": "invalid_input",
+      "fullTextAfter": null
+    }
+  ],
+  "complete": true,
+  "consistencyOk": true
+}

@@ -1,0 +1,300 @@
+{
+  "generatedAt": "2026-11-17T22:46:13.696Z",
+  "pluginVersion": "0.11.0",
+  "host": "http://127.0.0.1:57091",
+  "campaign": {
+    "id": "rs-a874c2ae",
+    "title": "0.11 宿主循环验收：真实题录与两次暂停",
+    "stage": "hypothesis",
+    "events": 25,
+    "artifactCount": 8,
+    "stateArtifacts": 8,
+    "loop": {
+      "status": "paused",
+      "pauseId": "LP-0002",
+      "pausedAt": "2026-11-17T21:14:46.656Z",
+      "lastCheckAt": "2026-11-17T21:14:46.656Z",
+      "lastStatus": "pause"
+    },
+    "pauses": [
+      {
+        "id": "LP-0001",
+        "at": "2026-11-17T21:13:38.993Z",
+        "status": "resumed",
+        "kind": "needs_input",
+        "reason": "primary action \"填写范围/边界\" contains input that the host must supply before it is run: scoping requires scope and boundaries",
+        "detail": "scoping requires scope and boundaries",
+        "stage": "scoping",
+        "iteration": 1,
+        "cycle": 0,
+        "maxCycles": 5,
+        "tool": "rsx_campaign",
+        "args": {
+          "action": "update",
+          "scope": "<范围/边界>"
+        },
+        "label": "填写范围/边界",
+        "needsInput": true,
+        "human": false,
+        "unmapped": false,
+        "planHash": "7c5fea30f4eb819d0b4ab8cda52e98f2ee9e0d41d3e86f692756cd2513e198bd",
+        "blocking": [
+          "scope",
+          "world_question"
+        ],
+        "gateOk": false,
+        "integrityOk": true,
+        "budgetRatio": 0,
+        "resumedAt": "2026-11-17T21:13:43.829Z",
+        "resumeReason": "真实宿主已补齐范围/边界；题录稍后只用真实检索候选。"
+      },
+      {
+        "id": "LP-0002",
+        "at": "2026-11-17T21:14:46.656Z",
+        "status": "open",
+        "kind": "needs_input",
+        "reason": "primary action \"登记可检验假设\" contains input that the host must supply before it is run: hypothesis gate needs a hypothesis claim with a falsifier and kill criterion",
+        "detail": "hypothesis gate needs a hypothesis claim with a falsifier and kill criterion",
+        "stage": "hypothesis",
+        "iteration": 3,
+        "cycle": 2,
+        "maxCycles": 5,
+        "tool": "rsx_claim",
+        "args": {
+          "action": "add",
+          "kind": "hypothesis",
+          "statement": "<testable hypothesis>",
+          "falsifier": "<observation that would refute it>",
+          "killCriterion": "<when to abandon the line>",
+          "predicted": "<predicted observation>",
+          "metricName": "<metric>",
+          "metricUnit": "<unit>",
+          "warrant": "<why evidence supports the claim>",
+          "counterEvidence": "<counter-evidence search + null result>"
+        },
+        "label": "登记可检验假设",
+        "needsInput": true,
+        "human": false,
+        "unmapped": false,
+        "planHash": "eca9da017a4f399f0ff4eebebccb1230728a0787a02b7040ccde041f574716e3",
+        "blocking": [
+          "hypothesis"
+        ],
+        "gateOk": false,
+        "integrityOk": true,
+        "budgetRatio": 0
+      }
+    ],
+    "cycles": [
+      {
+        "id": "K-0001",
+        "goal": "在真实宿主完成定题暂停、恢复与推进",
+        "decision": "continue",
+        "at": "2026-11-17T21:13:50.250Z"
+      },
+      {
+        "id": "K-0002",
+        "goal": "在 survey 完成真实题录检索、登记与推进",
+        "decision": "continue",
+        "at": "2026-11-17T21:14:45.409Z"
+      }
+    ],
+    "searchLog": [
+      {
+        "id": "Q-0001",
+        "kind": "database",
+        "hits": 16,
+        "screened": 8,
+        "included": 8,
+        "measured": true,
+        "supersededBy": null,
+        "supersedes": null,
+        "query": "human-in-the-loop agent checkpoint audit trail research workflow"
+      },
+      {
+        "id": "Q-0002",
+        "kind": "disconfirming",
+        "hits": 3,
+        "screened": 3,
+        "included": 0,
+        "measured": false,
+        "supersededBy": "Q-0003",
+        "supersedes": null,
+        "query": "autonomous agent loop skip human checkpoint null result"
+      },
+      {
+        "id": "Q-0003",
+        "kind": "disconfirming",
+        "hits": 20,
+        "screened": 20,
+        "included": 0,
+        "measured": true,
+        "supersededBy": null,
+        "supersedes": "Q-0002",
+        "query": "autonomous agent loop skip human checkpoint null result"
+      }
+    ],
+    "sources": 8,
+    "claims": 0
+  },
+  "observed": {
+    "loopPausedEvent": 2,
+    "loopResumedEvent": 1,
+    "latestEvent": "search.annotated",
+    "latestSeq": 25
+  },
+  "externalSearch": {
+    "primary": {
+      "query": "human-in-the-loop agent checkpoint audit trail research workflow",
+      "providers": [
+        "openalex",
+        "crossref"
+      ],
+      "counts": {
+        "openalex": 8,
+        "crossref": 8
+      },
+      "merged": 8,
+      "elapsedMs": 3534
+    },
+    "disconfirming": {
+      "query": "autonomous agent loop skip human checkpoint null result",
+      "providers": [
+        "openalex",
+        "crossref"
+      ],
+      "counts": {
+        "openalex": 10,
+        "crossref": 10
+      },
+      "merged": 10,
+      "elapsedMs": 3453
+    }
+  },
+  "acceptance": {
+    "realHostLoopCalls": 8,
+    "cyclesRecorded": 2,
+    "firstPauseResumed": true,
+    "secondPauseOpen": true,
+    "resumeRejectedWithoutInput": true,
+    "humanApprovalCreated": false,
+    "eventChainObservedByTool": true,
+    "noModelCalls": true,
+    "cleanupRecorded": true,
+    "humanCheckpointTested": true,
+    "humanCheckpointApprovalCreated": true
+  },
+  "knownFixture": {
+    "archivedCampaign": "rs-e710b015",
+    "citable": false,
+    "quarantine": {
+      "citable": false,
+      "reason": "Mechanics fixture used synthetic bibliographic entries with the reserved DOI prefix 10.0000/; it is not research evidence and must not be cited. Archived and excluded from the 0.11 acceptance.",
+      "by": "YG",
+      "at": "2026-11-17T22:15:38.063Z",
+      "evidence": "synthetic DOIs under 10.0000/",
+      "scope": "campaign"
+    },
+    "note": "Synthetic bibliographic entries under the reserved DOI prefix 10.0000/; archived and quarantined. It is not acceptance evidence and must not be cited."
+  },
+  "limitations": [
+    "Q-0002 remains in the search log as the unmeasured protocol draft (3/3/0 placeholders); Q-0003 is the measured 20/20/0 record. The counts are preserved, but Q-0002 is marked measured:false and supersededBy:\"Q-0003\"; it must not be cited as a search result.",
+    "The clean campaign rs-a874c2ae still stops at the hypothesis input checkpoint by design; the human-checkpoint branch was exercised on the released rs-f7edf967.",
+    "The released rs-f7edf967 had a terminal cycle K-0001 (decision stop), so the first loop check returned cycle_stop. A post-release revision cycle K-0002 (decision continue) was recorded after a real source/manuscript revision; the loop then paused at human_approval. This documents a real workflow step, not an automatic bypass: the approval itself was supplied by YG in the host conversation.",
+    "The human approval P-0002 is bound to audit A-0003 / subject 3a1cd91a…; the prior P-0001 remains in history as stale. No approval was created by a model and no resume was attempted before the person answered.",
+    "A post-approval re-audit A-0004 produced the same subject hash and still reports historical P-0001 as a major approval_stale even though P-0002 is fresh. This is a non-blocking audit-history false positive (release stays 12/12); it is a candidate follow-up fix, not a reason to invalidate the approval."
+  ],
+  "humanCheckpoint": {
+    "campaign": "rs-f7edf967",
+    "title": "0.8 真实验收：schema-4 研究程序与 review 闸门",
+    "audit": "A-0003",
+    "subjectHash": "3a1cd91a2ee7542bc75731ba35e7bc09fff77129c37c01cac1836e16e65a9094",
+    "revision": {
+      "source": "S-0011",
+      "doi": "10.51584/ijrias.2026.11030104",
+      "manuscriptChars": 930,
+      "cycle": "K-0002"
+    },
+    "loopCalls": 3,
+    "initialLoopOutcome": "stop / cycle_stop: the released campaign latest cycle K-0001 still said stop; a new revision cycle K-0002 (decision continue) was recorded because the evidence object changed.",
+    "pause": {
+      "id": "LP-0001",
+      "kind": "human_checkpoint",
+      "tool": "rsx_gate",
+      "blocking": [
+        "human_approval"
+      ],
+      "gateOk": false,
+      "at": "2026-11-17T22:17:08.810Z",
+      "resumedAt": "2026-11-17T22:36:27.240Z",
+      "eventSeq": 74
+    },
+    "approval": {
+      "id": "P-0002",
+      "approver": "YG",
+      "role": "human-reviewer",
+      "subjectHash": "3a1cd91a2ee7542bc75731ba35e7bc09fff77129c37c01cac1836e16e65a9094",
+      "createdAt": "2026-11-17T22:36:25.809Z",
+      "fresh": true,
+      "userSelection": "批准（YG）",
+      "eventSeq": 75
+    },
+    "release": {
+      "before": {
+        "ok": false,
+        "passed": 11,
+        "total": 12,
+        "blocking": [
+          "human_approval"
+        ],
+        "ts": "2026-11-17T22:17:07.388Z"
+      },
+      "after": {
+        "ok": true,
+        "passed": 12,
+        "total": 12,
+        "blocking": [],
+        "ts": "2026-11-17T22:36:59.288Z"
+      }
+    },
+    "resume": {
+      "outcome": "ready",
+      "loopStatus": "running",
+      "lastStatus": "ready",
+      "eventSeq": 76
+    },
+    "evidence": "_artifacts/real-0.11-human/acceptance-human.json",
+    "panel": "_artifacts/real-0.11-human/panel-human-1440.png"
+  },
+  "cleanup": {
+    "script": "workspace/dsh-research-suite/scripts/annotate-0.11-records.mjs",
+    "evidence": "_artifacts/real-0.11-human/cleanup.json",
+    "changed": [
+      {
+        "campaign": "rs-a874c2ae",
+        "event": 25
+      },
+      {
+        "campaign": "rs-e710b015",
+        "event": 20
+      }
+    ],
+    "Q0002": {
+      "measured": false,
+      "supersededBy": "Q-0003",
+      "notes": "UNMEASURED PROTOCOL DRAFT — the 3/3/0 counts are placeholders from a pre-search protocol, not an executed query. Superseded by Q-0003 (measured: OpenAlex 10 + Crossref 10, 20/20/0). Do not cite Q-0002 as a search result."
+    },
+    "Q0003": {
+      "measured": true,
+      "supersedes": "Q-0002",
+      "notes": "MEASURED disconfirming search: actual rsx_search returned OpenAlex 10 + Crossref 10, merged 10 candidates; none supports skipping a human checkpoint. Q-0002 is an unmeasured draft retained only as the correction object; this row is the measured record."
+    },
+    "fixture": {
+      "campaign": "rs-e710b015",
+      "archived": true,
+      "citable": false,
+      "reason": "Mechanics fixture used synthetic bibliographic entries with the reserved DOI prefix 10.0000/; it is not research evidence and must not be cited. Archived and excluded from the 0.11 acceptance.",
+      "eventSeq": 20
+    }
+  }
+}

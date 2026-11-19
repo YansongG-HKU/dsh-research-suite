@@ -1,0 +1,39 @@
+{
+  "ok": true,
+  "id": "rs-f7edf967",
+  "schema": 5,
+  "stage": "release",
+  "seq": 86,
+  "releasedAt": "2026-11-17T20:12:35.321Z",
+  "gateOk": true,
+  "gatePassed": 13,
+  "gateTotal": 13,
+  "blocking": [],
+  "stewardship": {
+    "ok": true,
+    "required": 6,
+    "present": 6,
+    "percent": 100,
+    "missing": [],
+    "missingFields": [],
+    "contributors": 2,
+    "keywords": 4
+  },
+  "chainOk": true,
+  "stateOk": true,
+  "artifacts": 13,
+  "artifactProblems": 0,
+  "migrations": [
+    {
+      "from": 4,
+      "to": 5,
+      "at": "2026-11-18T18:31:44.839Z",
+      "version": "1.0.0",
+      "backup": {
+        "name": "backup-2026-11-18T18-31-44-834-e8c0d8.zip",
+        "sha256": "a7b25309294437c825d37eeefb35f22bc4196902b6b9acbcfd87619a2a26f399",
+        "bytes": 112949
+      }
+    }
+  ]
+}

@@ -1,0 +1,83 @@
+{
+  "campaigns": [
+    {
+      "id": "rs-5495250c",
+      "schema": 3,
+      "stage": "release",
+      "releasedAt": "2026-11-17T17:49:56.427Z",
+      "subjectHash": "14145feb4b601bd70208f9b4a3a1e5da22d0f42bd632c2997325747a5c6b2aba",
+      "latestAudit": {
+        "id": "A-0001",
+        "verdict": "accept",
+        "counts": {
+          "blocking": 0,
+          "major": 0,
+          "minor": 1,
+          "info": 0
+        },
+        "subjectHash": "14145feb4b601bd70208f9b4a3a1e5da22d0f42bd632c2997325747a5c6b2aba",
+        "signature": true,
+        "fresh": true
+      },
+      "release": {
+        "ok": true,
+        "passed": 12,
+        "total": 12,
+        "blocking": []
+      },
+      "searchLog": 1,
+      "sensitivity": 1,
+      "extractions": 1,
+      "loop": {
+        "score": 100,
+        "level": "L4 可审计闭环"
+      },
+      "chainOk": true,
+      "artifactProblems": 0
+    },
+    {
+      "id": "rs-ad07b91f",
+      "stage": "release",
+      "releasedAt": "2026-11-17T16:49:24.787Z",
+      "subjectHash": "7c86dde835f0d983798432baef21f0b99277e9ba9e7e1df18164c2a153dc1083",
+      "latestAudit": {
+        "id": "A-0004",
+        "verdict": "accept",
+        "counts": {
+          "blocking": 0,
+          "major": 0,
+          "minor": 8,
+          "info": 1
+        },
+        "subjectHash": "7c86dde835f0d983798432baef21f0b99277e9ba9e7e1df18164c2a153dc1083",
+        "signature": true,
+        "fresh": true
+      },
+      "release": {
+        "ok": true,
+        "passed": 16,
+        "total": 16,
+        "blocking": []
+      },
+      "searchLog": 0,
+      "sensitivity": 0,
+      "extractions": 5,
+      "loop": {
+        "score": 100,
+        "level": "L4 可审计闭环"
+      },
+      "chainOk": true,
+      "artifactProblems": 0
+    }
+  ],
+  "exportFiles": {
+    "REPORT.md": true,
+    "SEARCH.md": true,
+    "SENSITIVITY.md": true,
+    "AUDIT.md": true,
+    "LOOP.md": true,
+    "REVIEW_PACKET.md": true,
+    "BUNDLE.zip": true
+  },
+  "generatedAt": "2026-11-17T17:52:47.396Z"
+}

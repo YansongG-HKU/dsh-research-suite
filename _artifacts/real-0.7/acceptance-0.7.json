@@ -1,0 +1,121 @@
+{
+  "campaign": "rs-5495250c",
+  "version": "0.7.0",
+  "schema": 3,
+  "released": true,
+  "audit": {
+    "id": "A-0001",
+    "ok": true,
+    "verdict": "accept",
+    "counts": {
+      "blocking": 0,
+      "major": 0,
+      "minor": 1,
+      "info": 0
+    },
+    "blocking": [],
+    "fresh": true
+  },
+  "releaseGate": {
+    "ok": true,
+    "passed": 12,
+    "total": 12,
+    "blocking": []
+  },
+  "loop": {
+    "score": 100,
+    "level": "L4 可审计闭环",
+    "rsiReady": true,
+    "latest": "L-0001"
+  },
+  "probe": {
+    "exploratory": {
+      "missing_search_blocked": 1,
+      "with_search_passed": 1,
+      "missing_sensitivity_blocked": 1,
+      "with_sensitivity_passed": 1,
+      "legacy_missing_search_blocked": 0,
+      "probe_cases": 5
+    },
+    "confirmatory": {
+      "missing_search_blocked": 1,
+      "with_search_passed": 1,
+      "missing_sensitivity_blocked": 1,
+      "with_sensitivity_passed": 1,
+      "legacy_missing_search_blocked": 0,
+      "probe_cases": 5,
+      "blocked_cases": 2
+    },
+    "negative": {
+      "seed": 7,
+      "mode": "negative",
+      "legacy_missing_search_blocked": 0,
+      "blocked": false,
+      "note": "早期 schema 的同一缺失检索不阻断 survey（版本化契约的负对照）。"
+    },
+    "preregLockedAt": "2026-11-17T17:49:54.902Z",
+    "firstRunAt": "2026-11-17T17:49:56.199Z",
+    "preregBeforeRun": true
+  },
+  "searchLog": [
+    {
+      "id": "Q-0001",
+      "kind": "disconfirming",
+      "database": "local gate-probe",
+      "query": "schema three search protocol sensitivity null result",
+      "dateFrom": "2026-01-01",
+      "dateTo": "2026-12-31",
+      "hits": 5,
+      "screened": 5,
+      "included": 4,
+      "disconfirming": true,
+      "notes": "五个探针中两个缺失案例被阻断，两个补齐案例放行，一个早期 schema 负对照不阻断。",
+      "at": "2026-11-17T17:49:54.793Z"
+    }
+  ],
+  "sensitivity": [
+    {
+      "id": "Z-0001",
+      "claim": "C-0001",
+      "name": "schema-one negative control",
+      "method": "negative-control",
+      "specification": "把同一缺失检索的 state 标为早期 schema 后重跑 gate，隔离版本化契约的影响。",
+      "result": "早期 schema 不触发 search_protocol 阻断；第三代 schema 触发。",
+      "direction": "consistent",
+      "trace": "run:R-c292d0fe5f#legacy_missing_search_blocked",
+      "notes": "负对照同时约束“所有缺失都会阻断”的替代解释。",
+      "at": "2026-11-17T17:49:56.255Z"
+    }
+  ],
+  "paths": {
+    "dir": "C:\\Users\\13645\\.dsh\\research-suite\\campaigns\\rs-5495250c\\exports",
+    "report": "C:\\Users\\13645\\.dsh\\research-suite\\campaigns\\rs-5495250c\\exports\\REPORT.md",
+    "search": "C:\\Users\\13645\\.dsh\\research-suite\\campaigns\\rs-5495250c\\exports\\SEARCH.md",
+    "sensitivity": "C:\\Users\\13645\\.dsh\\research-suite\\campaigns\\rs-5495250c\\exports\\SENSITIVITY.md",
+    "declaration": "C:\\Users\\13645\\.dsh\\research-suite\\campaigns\\rs-5495250c\\exports\\declaration.md",
+    "campaign": "C:\\Users\\13645\\.dsh\\research-suite\\campaigns\\rs-5495250c\\exports\\campaign.json",
+    "ledger": "C:\\Users\\13645\\.dsh\\research-suite\\campaigns\\rs-5495250c\\exports\\ledger.jsonl",
+    "bibtex": "C:\\Users\\13645\\.dsh\\research-suite\\campaigns\\rs-5495250c\\exports\\references.bib",
+    "matrix": "C:\\Users\\13645\\.dsh\\research-suite\\campaigns\\rs-5495250c\\exports\\MATRIX.md",
+    "matrixCsv": "C:\\Users\\13645\\.dsh\\research-suite\\campaigns\\rs-5495250c\\exports\\matrix.csv",
+    "audit": "C:\\Users\\13645\\.dsh\\research-suite\\campaigns\\rs-5495250c\\exports\\AUDIT.md",
+    "loop": "C:\\Users\\13645\\.dsh\\research-suite\\campaigns\\rs-5495250c\\exports\\LOOP.md",
+    "provenance": "C:\\Users\\13645\\.dsh\\research-suite\\campaigns\\rs-5495250c\\exports\\provenance.json",
+    "roCrate": "C:\\Users\\13645\\.dsh\\research-suite\\campaigns\\rs-5495250c\\exports\\ro-crate-metadata.json",
+    "repro": "C:\\Users\\13645\\.dsh\\research-suite\\campaigns\\rs-5495250c\\exports\\REPRO.md",
+    "reproJson": "C:\\Users\\13645\\.dsh\\research-suite\\campaigns\\rs-5495250c\\exports\\repro.json",
+    "checksums": "C:\\Users\\13645\\.dsh\\research-suite\\campaigns\\rs-5495250c\\exports\\checksums.txt",
+    "packet": "C:\\Users\\13645\\.dsh\\research-suite\\campaigns\\rs-5495250c\\exports\\REVIEW_PACKET.md",
+    "contribution": "C:\\Users\\13645\\.dsh\\research-suite\\campaigns\\rs-5495250c\\exports\\AI_CONTRIBUTION.md",
+    "bundle": "C:\\Users\\13645\\.dsh\\research-suite\\campaigns\\rs-5495250c\\exports\\BUNDLE.zip"
+  },
+  "exports": {
+    "report": "C:\\Users\\13645\\.dsh\\research-suite\\campaigns\\rs-5495250c\\exports\\REPORT.md",
+    "search": "C:\\Users\\13645\\.dsh\\research-suite\\campaigns\\rs-5495250c\\exports\\SEARCH.md",
+    "sensitivity": "C:\\Users\\13645\\.dsh\\research-suite\\campaigns\\rs-5495250c\\exports\\SENSITIVITY.md",
+    "audit": "C:\\Users\\13645\\.dsh\\research-suite\\campaigns\\rs-5495250c\\exports\\AUDIT.md",
+    "packet": "C:\\Users\\13645\\.dsh\\research-suite\\campaigns\\rs-5495250c\\exports\\REVIEW_PACKET.md",
+    "bundle": "C:\\Users\\13645\\.dsh\\research-suite\\campaigns\\rs-5495250c\\exports\\BUNDLE.zip"
+  },
+  "generatedAt": "2026-11-17T17:49:56.528Z"
+}

@@ -1,0 +1,60 @@
+{
+  "seed": 7,
+  "version": "0.8.0",
+  "cases": {
+    "missing_program": {
+      "blocked": true,
+      "complete": [
+        "plan_objective",
+        "plan_questions",
+        "perspectives",
+        "autonomy_policy",
+        "cycle_log",
+        "hypothesis_competition",
+        "quality_rubric"
+      ]
+    },
+    "complete_program": {
+      "blocked": false,
+      "complete": []
+    },
+    "open_contradiction": {
+      "blocked": true,
+      "complete": [
+        "contradictions_resolved"
+      ]
+    },
+    "resolved_contradiction": {
+      "blocked": false,
+      "complete": []
+    },
+    "low_quality": {
+      "blocked": true,
+      "complete": [
+        "quality_rubric"
+      ]
+    },
+    "legacy_schema3": {
+      "blocked": false,
+      "complete": [
+        "plan_objective",
+        "plan_questions",
+        "perspectives",
+        "autonomy_policy",
+        "cycle_log",
+        "hypothesis_competition",
+        "quality_rubric"
+      ]
+    }
+  },
+  "blocked_cases": 3,
+  "metrics": {
+    "blocked_cases": 3,
+    "missing_blocked": 1,
+    "complete_blocked": 0,
+    "open_contradiction_blocked": 1,
+    "resolved_contradiction_blocked": 0,
+    "low_quality_blocked": 1,
+    "legacy_blocked": 0
+  }
+}

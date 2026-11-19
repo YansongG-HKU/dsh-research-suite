@@ -1,0 +1,90 @@
+{
+  "ok": true,
+  "generatedAt": "2026-11-17T20:54:19.670Z",
+  "tool": "rsx_campaign",
+  "action": "next",
+  "campaign": "rs-28542a8d",
+  "readOnly": true,
+  "eventsBeforeAfterRead": [
+    1,
+    1
+  ],
+  "eventsAfterWorldAdvance": 3,
+  "steps": [
+    {
+      "phase": "fresh",
+      "stage": "scoping",
+      "primary": {
+        "tool": "rsx_campaign",
+        "args": {
+          "action": "world",
+          "kind": "question",
+          "key": "main",
+          "value": "确定性下一步规划器能否随闸门变化给出可执行的单一主推荐？"
+        },
+        "phase": "gate",
+        "priority": 50,
+        "label": "登记世界模型问题",
+        "why": "the world model has no question yet; scoping checks it",
+        "unblocks": [
+          "world_question"
+        ],
+        "needsInput": false,
+        "human": false,
+        "risk": "low",
+        "followUps": []
+      },
+      "blocking": [
+        "world_question"
+      ]
+    },
+    {
+      "phase": "survey",
+      "stage": "survey",
+      "primary": {
+        "tool": "rsx_search",
+        "args": {
+          "query": "确定性下一步规划器能否随闸门变化给出可执行的单一主推荐？",
+          "limit": 10,
+          "provider": "both"
+        },
+        "phase": "gate",
+        "priority": 50,
+        "label": "检索候选文献",
+        "why": "survey needs 8 sources (currently 0); search first, then register what you actually read",
+        "unblocks": [
+          "min_sources",
+          "primary_sources",
+          "recent_source"
+        ],
+        "needsInput": false,
+        "human": false,
+        "risk": "low",
+        "followUps": [
+          {
+            "tool": "rsx_source",
+            "args": {
+              "action": "add",
+              "title": "<candidate title>",
+              "year": "<year>",
+              "kind": "paper"
+            },
+            "note": "register only inspected candidates"
+          }
+        ]
+      },
+      "blocking": [
+        "min_sources",
+        "primary_sources",
+        "recent_source",
+        "content_captured",
+        "disconfirming_search",
+        "search_protocol",
+        "coverage_map",
+        "source_independence",
+        "source_rob"
+      ]
+    }
+  ],
+  "note": "The host still executes the recommended tool call; next never runs a search, records a cycle or approves a gate."
+}

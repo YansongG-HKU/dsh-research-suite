@@ -1,0 +1,14 @@
+{
+  "ok": true,
+  "generatedAt": "2026-11-17T20:36:00Z",
+  "source": "live DSH host tool call after bundle reload",
+  "tool": "rsx_search",
+  "input": { "query": " ", "limit": 1 },
+  "expected": "structured invalid_input, no network request, no ledger write",
+  "response": {
+    "ok": false,
+    "code": "invalid_input",
+    "error": "query must be a non-empty string",
+    "repair": "Re-read the parameter descriptions and pass valid values."
+  }
+}

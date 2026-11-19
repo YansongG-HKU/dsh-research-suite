@@ -1,0 +1,35 @@
+{
+  "ok": true,
+  "generatedAt": "2026-11-17T20:34:00Z",
+  "source": "live DSH host tool call in the current session after bundle reload",
+  "tool": "rsx_search",
+  "query": "reproducibility crisis psychology",
+  "provider": "both",
+  "providers": ["openalex", "crossref"],
+  "counts": { "openalex": 3, "crossref": 3 },
+  "candidates": 3,
+  "mergedCandidates": 1,
+  "warnings": [],
+  "elapsedMs": 2606,
+  "top": [
+    {
+      "title": "Perspectives on Machine Learning from Psychology's Reproducibility Crisis",
+      "year": 2021,
+      "doi": "10.48550/arxiv.2104.08878",
+      "providers": ["openalex"]
+    },
+    {
+      "title": "Reproducibility, Diversity, and the Crisis of Inference in Psychology",
+      "year": 2021,
+      "doi": "10.31234/osf.io/89buj",
+      "providers": ["openalex", "crossref"]
+    },
+    {
+      "title": "Double trouble? The communication dimension of the reproducibility crisis in experimental psychology and neuroscience",
+      "year": 2020,
+      "doi": "10.1007/s13194-020-00317-6",
+      "providers": ["openalex"]
+    }
+  ],
+  "note": "Host registry showed rsx_search after plugin disable/enable; the call returned normalized candidates with abstracts and no ledger write."
+}

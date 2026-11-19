@@ -1,0 +1,47 @@
+{
+  "seed": 7,
+  "mode": "main",
+  "metrics": {
+    "missing_search_blocked": 1,
+    "with_search_passed": 1,
+    "missing_sensitivity_blocked": 1,
+    "with_sensitivity_passed": 1,
+    "legacy_missing_search_blocked": 0,
+    "probe_cases": 5
+  },
+  "blocked_cases": 2,
+  "cases": {
+    "missing_search": {
+      "blocked": true,
+      "blocking": [
+        "disconfirming_search",
+        "search_protocol"
+      ]
+    },
+    "with_search": {
+      "blocked": false,
+      "blocking": []
+    },
+    "missing_sensitivity": {
+      "blocked": true,
+      "blocking": [
+        "sensitivity"
+      ]
+    },
+    "with_sensitivity": {
+      "blocked": false,
+      "blocking": []
+    },
+    "legacy_negative": {
+      "blocked": false,
+      "blocking": []
+    }
+  },
+  "notes": {
+    "missing_search": "缺少检索协议时 survey 闸门阻断",
+    "with_search": "补齐检索协议后 survey 闸门放行",
+    "missing_sensitivity": "缺少敏感性记录时 analyze 闸门阻断",
+    "with_sensitivity": "补齐敏感性记录后 analyze 闸门放行",
+    "legacy_negative": "早期 schema 项目上同一缺失不阻断，只作为 advisory"
+  }
+}

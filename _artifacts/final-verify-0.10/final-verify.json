@@ -1,0 +1,47 @@
+{
+  "ok": true,
+  "version": "0.10.0",
+  "generatedAt": "2026-11-17T20:57:40Z",
+  "exitCodes": {
+    "test": 0,
+    "check": 0,
+    "rsi": 0,
+    "rsiSuite": 0,
+    "devkit": 0
+  },
+  "tests": {
+    "passed": 133,
+    "failed": 0,
+    "durationMs": 9998,
+    "plannerTests": 11
+  },
+  "check": {
+    "ok": true,
+    "clientFragments": 6,
+    "clientBytes": 107805
+  },
+  "rsi": {
+    "score": 100,
+    "grade": "A",
+    "level": "L4",
+    "rsiReady": true
+  },
+  "rsiSuite": {
+    "ready": "5/5",
+    "domains": ["general", "finance", "ai", "medicine", "industrial"]
+  },
+  "devkit": {
+    "run": "20261117-205918-7rlc2t",
+    "gates": ["boundary", "version", "unit"],
+    "passed": 3,
+    "failed": 0,
+    "tests": 133,
+    "durationMs": 10270
+  },
+  "tokenOverhead": {
+    "cl100k": 11537,
+    "o200k": 11505
+  },
+  "logs": "F:/dsh插件创造/_artifacts/final-verify-0.10"
+}
+

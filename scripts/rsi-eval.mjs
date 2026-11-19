@@ -3,7 +3,7 @@
  * RSI evaluation harness for the research loop.
  *
  * It builds a deterministic, complete campaign through the same service API the
- * agent uses, records a real stdout artifact, evaluates the 12 loop dimensions,
+ * agent uses, records a real stdout artifact, evaluates the 13 loop dimensions,
  * and compares the candidate score with a versioned baseline. This is a
  * regression gate for the loop evaluator itself, not a claim that the system is
  * autonomous or generally intelligent.
@@ -156,3 +156,4 @@ if (updateBaseline) {
 console.log(`score=${candidate.summary.score} grade=${candidate.summary.grade} level=${candidate.summary.level} rsiReady=${candidate.summary.rsiReady}`)
 console.log(`report=${reportPath}`)
 if (regression) process.exitCode = 1
+

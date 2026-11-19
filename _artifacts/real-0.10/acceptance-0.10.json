@@ -1,0 +1,105 @@
+{
+  "ok": true,
+  "version": "0.10.0",
+  "generatedAt": "2026-11-17T20:55:00Z",
+  "feature": "deterministic next-action planner",
+  "entry": "rsx_campaign action:\"next\"",
+  "unitTests": {
+    "total": 133,
+    "planner": 11,
+    "command": "npm test",
+    "durationMs": 9998,
+    "devkitRun": "20261117-205918-7rlc2t",
+    "devkitGates": "boundary/version/unit pass"
+  },
+  "toolAcceptance": {
+    "script": "tool-planner.json",
+    "readOnly": true,
+    "eventsBeforeAfterRead": [1, 1],
+    "fresh": {
+      "stage": "scoping",
+      "blocking": ["world_question"],
+      "primary": "rsx_campaign action:world",
+      "needsInput": false
+    },
+    "survey": {
+      "stage": "survey",
+      "primary": "rsx_search provider:both limit:10",
+      "stopBlocked": false
+    }
+  },
+  "hostCalls": [
+    {
+      "campaign": "rs-79d63da4",
+      "stage": "scoping",
+      "gateOk": false,
+      "blocking": ["world_question"],
+      "primary": {
+        "tool": "rsx_campaign",
+        "action": "world",
+        "value": "签名审查、stateHash 与 PROV-JSON 导出能否在同一条真实链路上被验证？",
+        "needsInput": false
+      },
+      "integrity": { "chainOk": true, "stateOk": true, "events": 21, "artifacts": 1 },
+      "checkedAt": "2026-11-17T20:52:10.607Z"
+    },
+    {
+      "campaign": "rs-7bcc3f06",
+      "stage": "survey",
+      "gateOk": false,
+      "blocking": ["min_sources", "primary_sources", "content_captured", "disconfirming_search", "coverage_map"],
+      "primary": {
+        "tool": "rsx_search",
+        "provider": "both",
+        "limit": 10,
+        "query": "BibTeX 导入、证据抽取矩阵、图溯源与自动化审查能否在同一条真实项目链路里协同工作？"
+      },
+      "note": "The plan recommends search first and only then source registration; it does not auto-register candidates.",
+      "checkedAt": "2026-11-17T20:52:13.284Z"
+    },
+    {
+      "campaign": "rs-f7edf967",
+      "stage": "release",
+      "gateOk": true,
+      "passed": 12,
+      "total": 12,
+      "stop": { "ready": true, "blocked": false, "code": "released" },
+      "primary": { "tool": "rsx_write", "action": "export" },
+      "integrity": { "chainOk": true, "stateOk": true, "events": 65, "artifacts": 11 },
+      "note": "The final cycle decision is stop; a passing release gate correctly outranks it, which a first host call exposed as a bug and the planner now fixes.",
+      "checkedAt": "2026-11-17T21:00:12.682Z"
+    }
+  ],
+  "panel": {
+    "url": "http://127.0.0.1:57091",
+    "versionShown": "0.10.0",
+    "nextCard": "下一步 / 可交付 / 导出研究包，交给人类复核者。/ {\"action\":\"export\"}",
+    "copyButton": "已复制到剪贴板",
+    "screenshots": [
+      "panel-next-1440.png",
+      "panel-next-copied-1440.png",
+      "panel-next-390.png"
+    ],
+    "checkedAt": "2026-11-17T20:53:45Z"
+  },
+  "tokenOverhead": {
+    "cl100k": 11537,
+    "o200k": 11505,
+    "promptCl100k": 997,
+    "promptO200k": 982,
+    "deltaFrom090": { "cl100k": 115, "o200k": 115 },
+    "schemas": 16
+  },
+  "limits": [
+    "The planner recommends tool calls; the host executes them. It does not call a model, run a search or write evidence.",
+    "Some recommendations contain explicit placeholders and are marked needsInput; they cannot be executed blindly.",
+    "The mapping table is curated and must be updated when gate checks change; unmapped checks fall back to rsx_gate action:check.",
+    "The planner has no retrieval-quality estimator, no multi-campaign scheduler and no automatic waiver or approval.",
+    "Live host calls were read-only; no new host campaign or external search was run for this acceptance."
+  ]
+}
+
+
+
+
+

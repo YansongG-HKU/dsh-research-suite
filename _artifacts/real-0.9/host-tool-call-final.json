@@ -1,0 +1,28 @@
+{
+  "ok": true,
+  "generatedAt": "2026-11-17T20:38:00Z",
+  "source": "live DSH host tool call after the final 0.9.0 bundle reload",
+  "tool": "rsx_search",
+  "query": "open science reproducibility",
+  "provider": "both",
+  "limit": 2,
+  "counts": { "openalex": 2, "crossref": 2 },
+  "candidates": 2,
+  "warnings": [],
+  "elapsedMs": 3442,
+  "top": [
+    {
+      "title": "Open science, reproducibility, and transparency in ecology",
+      "year": 2018,
+      "doi": "10.1002/eap.1822",
+      "providers": ["openalex"]
+    },
+    {
+      "title": "Center for Open Science Reproducibility Lecture/Workshop",
+      "year": 2014,
+      "doi": "",
+      "providers": ["openalex"]
+    }
+  ],
+  "note": "The final code includes the 4 MB provider response cap; this call returned normalized candidates and did not write a campaign."
+}

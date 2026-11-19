@@ -1,0 +1,174 @@
+{
+  "campaign": "rs-f7edf967",
+  "version": "0.8.0",
+  "schema": 4,
+  "released": true,
+  "audit": {
+    "id": "A-0001",
+    "ok": true,
+    "verdict": "accept",
+    "counts": {
+      "blocking": 0,
+      "major": 0,
+      "minor": 2,
+      "info": 0
+    },
+    "blocking": [],
+    "fresh": true
+  },
+  "releaseGate": {
+    "ok": true,
+    "passed": 12,
+    "total": 12,
+    "blocking": []
+  },
+  "loop": {
+    "score": 100,
+    "level": "L4 可审计闭环",
+    "rsiReady": true,
+    "dimensions": 13,
+    "latest": "L-0001"
+  },
+  "program": {
+    "complete": true,
+    "planQuestions": 3,
+    "perspectives": 3,
+    "cycles": 1,
+    "matches": 1,
+    "quality": 1,
+    "contradictions": 1,
+    "openContradictions": 0,
+    "leader": {
+      "id": "C-0001",
+      "statement": "在 schema-4 中，缺少程序记录、开放矛盾或低质量评分会让 review 闸门阻断 program_complete；补齐后放行。",
+      "kind": "hypothesis",
+      "rating": 1016,
+      "wins": 1,
+      "losses": 0,
+      "draws": 0,
+      "matches": 1,
+      "rank": 1
+    }
+  },
+  "probe": {
+    "exploratory": {
+      "blocked_cases": 3,
+      "missing_blocked": 1,
+      "complete_blocked": 0,
+      "open_contradiction_blocked": 1,
+      "resolved_contradiction_blocked": 0,
+      "low_quality_blocked": 1,
+      "legacy_blocked": 0
+    },
+    "confirmatory": {
+      "blocked_cases": 3,
+      "missing_blocked": 1,
+      "complete_blocked": 0,
+      "open_contradiction_blocked": 1,
+      "resolved_contradiction_blocked": 0,
+      "low_quality_blocked": 1,
+      "legacy_blocked": 0
+    },
+    "negative": {
+      "legacy_missing_blocked": 0,
+      "blocked_cases": 0
+    },
+    "preregLockedAt": "2026-11-17T20:12:34.457Z",
+    "firstRunAt": "2026-11-17T20:12:34.885Z",
+    "preregBeforeRun": true
+  },
+  "sources": [
+    {
+      "id": "S-0001",
+      "title": "Anthropic: How we built our multi-agent research system",
+      "year": 2025,
+      "reliability": "primary"
+    },
+    {
+      "id": "S-0002",
+      "title": "Anthropic: Building effective agents",
+      "year": 2024,
+      "reliability": "primary"
+    },
+    {
+      "id": "S-0003",
+      "title": "Co-Scientist: Accelerating scientific discovery with a multi-agent system",
+      "year": 2025,
+      "reliability": "primary"
+    },
+    {
+      "id": "S-0004",
+      "title": "Kosmos: An AI Scientist for Autonomous Discovery",
+      "year": 2025,
+      "reliability": "primary"
+    },
+    {
+      "id": "S-0005",
+      "title": "PaperQA2: Language agents achieve superhuman synthesis of scientific knowledge",
+      "year": 2024,
+      "reliability": "primary"
+    },
+    {
+      "id": "S-0006",
+      "title": "STORM: Assisting in Writing Wikipedia-like Articles From Scratch",
+      "year": 2024,
+      "reliability": "primary"
+    },
+    {
+      "id": "S-0007",
+      "title": "The AI Scientist-v2: Workshop-Level Automated Scientific Discovery",
+      "year": 2025,
+      "reliability": "primary"
+    },
+    {
+      "id": "S-0008",
+      "title": "dsh-research-suite 0.8 README and CHANGELOG",
+      "year": 2026,
+      "reliability": "secondary"
+    },
+    {
+      "id": "S-0009",
+      "title": "0.8 程序探针：exploratory",
+      "year": 2026,
+      "reliability": "primary"
+    },
+    {
+      "id": "S-0010",
+      "title": "0.8 程序探针：negative",
+      "year": 2026,
+      "reliability": "primary"
+    }
+  ],
+  "paths": {
+    "dir": "C:\\Users\\13645\\.dsh\\research-suite\\campaigns\\rs-f7edf967\\exports",
+    "report": "C:\\Users\\13645\\.dsh\\research-suite\\campaigns\\rs-f7edf967\\exports\\REPORT.md",
+    "search": "C:\\Users\\13645\\.dsh\\research-suite\\campaigns\\rs-f7edf967\\exports\\SEARCH.md",
+    "sensitivity": "C:\\Users\\13645\\.dsh\\research-suite\\campaigns\\rs-f7edf967\\exports\\SENSITIVITY.md",
+    "program": "C:\\Users\\13645\\.dsh\\research-suite\\campaigns\\rs-f7edf967\\exports\\PROGRAM.md",
+    "declaration": "C:\\Users\\13645\\.dsh\\research-suite\\campaigns\\rs-f7edf967\\exports\\declaration.md",
+    "campaign": "C:\\Users\\13645\\.dsh\\research-suite\\campaigns\\rs-f7edf967\\exports\\campaign.json",
+    "ledger": "C:\\Users\\13645\\.dsh\\research-suite\\campaigns\\rs-f7edf967\\exports\\ledger.jsonl",
+    "bibtex": "C:\\Users\\13645\\.dsh\\research-suite\\campaigns\\rs-f7edf967\\exports\\references.bib",
+    "matrix": "C:\\Users\\13645\\.dsh\\research-suite\\campaigns\\rs-f7edf967\\exports\\MATRIX.md",
+    "matrixCsv": "C:\\Users\\13645\\.dsh\\research-suite\\campaigns\\rs-f7edf967\\exports\\matrix.csv",
+    "audit": "C:\\Users\\13645\\.dsh\\research-suite\\campaigns\\rs-f7edf967\\exports\\AUDIT.md",
+    "loop": "C:\\Users\\13645\\.dsh\\research-suite\\campaigns\\rs-f7edf967\\exports\\LOOP.md",
+    "provenance": "C:\\Users\\13645\\.dsh\\research-suite\\campaigns\\rs-f7edf967\\exports\\provenance.json",
+    "roCrate": "C:\\Users\\13645\\.dsh\\research-suite\\campaigns\\rs-f7edf967\\exports\\ro-crate-metadata.json",
+    "repro": "C:\\Users\\13645\\.dsh\\research-suite\\campaigns\\rs-f7edf967\\exports\\REPRO.md",
+    "reproJson": "C:\\Users\\13645\\.dsh\\research-suite\\campaigns\\rs-f7edf967\\exports\\repro.json",
+    "checksums": "C:\\Users\\13645\\.dsh\\research-suite\\campaigns\\rs-f7edf967\\exports\\checksums.txt",
+    "packet": "C:\\Users\\13645\\.dsh\\research-suite\\campaigns\\rs-f7edf967\\exports\\REVIEW_PACKET.md",
+    "contribution": "C:\\Users\\13645\\.dsh\\research-suite\\campaigns\\rs-f7edf967\\exports\\AI_CONTRIBUTION.md",
+    "bundle": "C:\\Users\\13645\\.dsh\\research-suite\\campaigns\\rs-f7edf967\\exports\\BUNDLE.zip"
+  },
+  "exports": {
+    "report": "C:\\Users\\13645\\.dsh\\research-suite\\campaigns\\rs-f7edf967\\exports\\REPORT.md",
+    "program": "C:\\Users\\13645\\.dsh\\research-suite\\campaigns\\rs-f7edf967\\exports\\PROGRAM.md",
+    "search": "C:\\Users\\13645\\.dsh\\research-suite\\campaigns\\rs-f7edf967\\exports\\SEARCH.md",
+    "sensitivity": "C:\\Users\\13645\\.dsh\\research-suite\\campaigns\\rs-f7edf967\\exports\\SENSITIVITY.md",
+    "audit": "C:\\Users\\13645\\.dsh\\research-suite\\campaigns\\rs-f7edf967\\exports\\AUDIT.md",
+    "bundle": "C:\\Users\\13645\\.dsh\\research-suite\\campaigns\\rs-f7edf967\\exports\\BUNDLE.zip"
+  },
+  "generatedAt": "2026-11-17T20:12:35.465Z"
+}

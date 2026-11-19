@@ -1,0 +1,68 @@
+{
+  "campaign": "rs-ad07b91f",
+  "schema": 1,
+  "before": {
+    "score": 100,
+    "stage": "release",
+    "schema": 1
+  },
+  "after": {
+    "score": 100,
+    "level": "L4 可审计闭环",
+    "released": true,
+    "audit": {
+      "id": "A-0004",
+      "ok": true,
+      "verdict": "accept",
+      "counts": {
+        "blocking": 0,
+        "major": 0,
+        "minor": 8,
+        "info": 1
+      }
+    },
+    "gateOk": true
+  },
+  "claims": {
+    "warrant": true,
+    "certainty": "low",
+    "counterEvidence": true
+  },
+  "sources": [
+    {
+      "id": "S-0001",
+      "independence": "independent",
+      "design": "experimental welding DOE fixture",
+      "riskOfBias": "high",
+      "robNote": true,
+      "capturedAt": "2026-11-17T13:59:29.141Z"
+    },
+    {
+      "id": "S-0002",
+      "independence": "independent",
+      "design": "metallographic porosity fixture",
+      "riskOfBias": "high",
+      "robNote": true,
+      "capturedAt": "2026-11-17T13:59:30.746Z"
+    }
+  ],
+  "prereg": {
+    "lockedHash": true,
+    "hashMatches": false,
+    "amendments": 1,
+    "alpha": "0.05",
+    "power": "0.80"
+  },
+  "approval": {
+    "id": "P-0001",
+    "approver": "YG",
+    "role": "human-reviewer"
+  },
+  "exportDir": "C:\\Users\\13645\\.dsh\\research-suite\\campaigns\\rs-ad07b91f\\exports",
+  "evaluation": {
+    "latest": "L-0007",
+    "before": "L-0006 99.1",
+    "after": "L-0007 100",
+    "fix": "world failure bucket singular/plural"
+  }
+}

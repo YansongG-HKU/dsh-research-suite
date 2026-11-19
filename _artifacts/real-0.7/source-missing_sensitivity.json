@@ -1,0 +1,10 @@
+{
+  "seed": 7,
+  "case": "missing_sensitivity",
+  "blocked": true,
+  "blocking": [
+    "sensitivity"
+  ],
+  "note": "缺少敏感性记录时 analyze 闸门阻断",
+  "source": "exploratory probe run; confirmatory run recorded inside the campaign"
+}

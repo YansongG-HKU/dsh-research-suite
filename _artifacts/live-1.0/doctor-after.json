@@ -1,0 +1,701 @@
+{
+  "ok": true,
+  "data": {
+    "ok": true,
+    "healthy": false,
+    "version": "1.0.0",
+    "schemaVersion": 5,
+    "generatedAt": "2026-11-18T18:31:57.975Z",
+    "ms": 64,
+    "checks": [
+      {
+        "code": "data_dir",
+        "ok": true,
+        "detail": "C:\\Users\\13645\\.dsh\\research-suite",
+        "severity": "error"
+      },
+      {
+        "code": "index_consistent",
+        "ok": true,
+        "detail": "14 indexed / 14 directories",
+        "severity": "error"
+      },
+      {
+        "code": "signing_key",
+        "ok": true,
+        "detail": "local audit signing key is readable",
+        "severity": "error"
+      },
+      {
+        "code": "campaign_limit",
+        "ok": true,
+        "detail": "14/200 campaigns",
+        "severity": "info"
+      }
+    ],
+    "index": {
+      "ok": true,
+      "dirs": 14,
+      "indexed": 14,
+      "duplicated": [],
+      "missing": [],
+      "orphan": [],
+      "current": "rs-f7edf967",
+      "currentMissing": false
+    },
+    "counts": {
+      "campaigns": 14,
+      "scanned": 14,
+      "errors": 0,
+      "warnings": 5,
+      "staleLocks": 0,
+      "staleAudits": 3,
+      "unmigrated": 13
+    },
+    "campaigns": [
+      {
+        "id": "rs-f7edf967",
+        "title": "0.8 真实验收：schema-4 研究程序与 review 闸门",
+        "stage": "release",
+        "archived": false,
+        "schema": 5,
+        "targetSchema": 5,
+        "canMigrate": false,
+        "seq": 86,
+        "stateOk": true,
+        "chainOk": true,
+        "artifacts": 13,
+        "artifactProblems": 0,
+        "audit": {
+          "id": "A-0004",
+          "fresh": true,
+          "signed": true,
+          "verdict": "major"
+        },
+        "stewardship": {
+          "ok": true,
+          "percent": 100,
+          "missing": []
+        },
+        "lock": null,
+        "errors": 0,
+        "warnings": 0,
+        "ok": true,
+        "issues": []
+      },
+      {
+        "id": "rs-a874c2ae",
+        "title": "0.11 宿主循环验收：真实题录与两次暂停",
+        "stage": "hypothesis",
+        "archived": false,
+        "schema": 4,
+        "targetSchema": 5,
+        "canMigrate": true,
+        "seq": 35,
+        "stateOk": true,
+        "chainOk": true,
+        "artifacts": 8,
+        "artifactProblems": 0,
+        "audit": null,
+        "stewardship": {
+          "ok": false,
+          "percent": 0,
+          "missing": [
+            "license",
+            "dataAvailability",
+            "codeAvailability",
+            "competingInterests",
+            "ethics",
+            "contributors"
+          ]
+        },
+        "lock": null,
+        "errors": 0,
+        "warnings": 0,
+        "ok": true,
+        "issues": [
+          {
+            "code": "schema_outdated",
+            "severity": "info",
+            "detail": "schema 4 can be migrated to 5 with rsx_campaign action:\"migrate\"",
+            "ref": "rs-a874c2ae"
+          }
+        ]
+      },
+      {
+        "id": "rs-e710b015",
+        "title": "0.11 宿主循环验收：输入暂停、恢复与第二轮暂停",
+        "stage": "survey",
+        "archived": true,
+        "schema": 4,
+        "targetSchema": 5,
+        "canMigrate": true,
+        "seq": 20,
+        "stateOk": true,
+        "chainOk": true,
+        "artifacts": 0,
+        "artifactProblems": 0,
+        "audit": null,
+        "stewardship": {
+          "ok": false,
+          "percent": 0,
+          "missing": [
+            "license",
+            "dataAvailability",
+            "codeAvailability",
+            "competingInterests",
+            "ethics",
+            "contributors"
+          ]
+        },
+        "lock": null,
+        "errors": 0,
+        "warnings": 0,
+        "ok": true,
+        "issues": [
+          {
+            "code": "schema_outdated",
+            "severity": "info",
+            "detail": "schema 4 can be migrated to 5 with rsx_campaign action:\"migrate\"",
+            "ref": "rs-e710b015"
+          },
+          {
+            "code": "archived",
+            "severity": "info",
+            "detail": "campaign is archived",
+            "ref": "rs-e710b015"
+          }
+        ]
+      },
+      {
+        "id": "rs-b0b0e8c5",
+        "title": "0.8 真实验收：schema-4 研究程序与 review 闸门",
+        "stage": "write",
+        "archived": true,
+        "schema": 4,
+        "targetSchema": 5,
+        "canMigrate": true,
+        "seq": 50,
+        "stateOk": true,
+        "chainOk": true,
+        "artifacts": 11,
+        "artifactProblems": 0,
+        "audit": null,
+        "stewardship": {
+          "ok": false,
+          "percent": 0,
+          "missing": [
+            "license",
+            "dataAvailability",
+            "codeAvailability",
+            "competingInterests",
+            "ethics",
+            "contributors"
+          ]
+        },
+        "lock": null,
+        "errors": 0,
+        "warnings": 0,
+        "ok": true,
+        "issues": [
+          {
+            "code": "schema_outdated",
+            "severity": "info",
+            "detail": "schema 4 can be migrated to 5 with rsx_campaign action:\"migrate\"",
+            "ref": "rs-b0b0e8c5"
+          },
+          {
+            "code": "archived",
+            "severity": "info",
+            "detail": "campaign is archived",
+            "ref": "rs-b0b0e8c5"
+          }
+        ]
+      },
+      {
+        "id": "rs-716acc0d",
+        "title": "0.8 真实验收：schema-4 研究程序与 review 闸门",
+        "stage": "release",
+        "archived": true,
+        "schema": 4,
+        "targetSchema": 5,
+        "canMigrate": true,
+        "seq": 63,
+        "stateOk": true,
+        "chainOk": true,
+        "artifacts": 11,
+        "artifactProblems": 0,
+        "audit": {
+          "id": "A-0001",
+          "fresh": true,
+          "signed": true,
+          "verdict": "major"
+        },
+        "stewardship": {
+          "ok": false,
+          "percent": 0,
+          "missing": [
+            "license",
+            "dataAvailability",
+            "codeAvailability",
+            "competingInterests",
+            "ethics",
+            "contributors"
+          ]
+        },
+        "lock": null,
+        "errors": 0,
+        "warnings": 0,
+        "ok": true,
+        "issues": [
+          {
+            "code": "schema_outdated",
+            "severity": "info",
+            "detail": "schema 4 can be migrated to 5 with rsx_campaign action:\"migrate\"",
+            "ref": "rs-716acc0d"
+          },
+          {
+            "code": "archived",
+            "severity": "info",
+            "detail": "campaign is archived",
+            "ref": "rs-716acc0d"
+          }
+        ]
+      },
+      {
+        "id": "rs-ef4519ed",
+        "title": "0.8 真实验收：schema-4 研究程序与 review 闸门",
+        "stage": "analyze",
+        "archived": true,
+        "schema": 4,
+        "targetSchema": 5,
+        "canMigrate": true,
+        "seq": 45,
+        "stateOk": true,
+        "chainOk": true,
+        "artifacts": 10,
+        "artifactProblems": 0,
+        "audit": null,
+        "stewardship": {
+          "ok": false,
+          "percent": 0,
+          "missing": [
+            "license",
+            "dataAvailability",
+            "codeAvailability",
+            "competingInterests",
+            "ethics",
+            "contributors"
+          ]
+        },
+        "lock": null,
+        "errors": 0,
+        "warnings": 0,
+        "ok": true,
+        "issues": [
+          {
+            "code": "schema_outdated",
+            "severity": "info",
+            "detail": "schema 4 can be migrated to 5 with rsx_campaign action:\"migrate\"",
+            "ref": "rs-ef4519ed"
+          },
+          {
+            "code": "archived",
+            "severity": "info",
+            "detail": "campaign is archived",
+            "ref": "rs-ef4519ed"
+          }
+        ]
+      },
+      {
+        "id": "rs-8781b230",
+        "title": "0.8 真实验收：schema-4 研究程序与 review 闸门",
+        "stage": "release",
+        "archived": true,
+        "schema": 4,
+        "targetSchema": 5,
+        "canMigrate": true,
+        "seq": 64,
+        "stateOk": true,
+        "chainOk": true,
+        "artifacts": 11,
+        "artifactProblems": 0,
+        "audit": {
+          "id": "A-0001",
+          "fresh": true,
+          "signed": true,
+          "verdict": "major"
+        },
+        "stewardship": {
+          "ok": false,
+          "percent": 0,
+          "missing": [
+            "license",
+            "dataAvailability",
+            "codeAvailability",
+            "competingInterests",
+            "ethics",
+            "contributors"
+          ]
+        },
+        "lock": null,
+        "errors": 0,
+        "warnings": 0,
+        "ok": true,
+        "issues": [
+          {
+            "code": "schema_outdated",
+            "severity": "info",
+            "detail": "schema 4 can be migrated to 5 with rsx_campaign action:\"migrate\"",
+            "ref": "rs-8781b230"
+          },
+          {
+            "code": "archived",
+            "severity": "info",
+            "detail": "campaign is archived",
+            "ref": "rs-8781b230"
+          }
+        ]
+      },
+      {
+        "id": "rs-5495250c",
+        "title": "0.7 真实验收：schema-3 检索协议与敏感性闸门探针",
+        "stage": "release",
+        "archived": false,
+        "schema": 3,
+        "targetSchema": 5,
+        "canMigrate": true,
+        "seq": 49,
+        "stateOk": true,
+        "chainOk": true,
+        "artifacts": 11,
+        "artifactProblems": 0,
+        "audit": {
+          "id": "A-0001",
+          "fresh": true,
+          "signed": true,
+          "verdict": "accept"
+        },
+        "stewardship": {
+          "ok": false,
+          "percent": 0,
+          "missing": [
+            "license",
+            "dataAvailability",
+            "codeAvailability",
+            "competingInterests",
+            "ethics",
+            "contributors"
+          ]
+        },
+        "lock": null,
+        "errors": 0,
+        "warnings": 0,
+        "ok": true,
+        "issues": [
+          {
+            "code": "schema_outdated",
+            "severity": "info",
+            "detail": "schema 3 can be migrated to 5 with rsx_campaign action:\"migrate\"",
+            "ref": "rs-5495250c"
+          }
+        ]
+      },
+      {
+        "id": "rs-e10017ec",
+        "title": "0.7 真实验收：schema-3 检索协议与敏感性闸门探针",
+        "stage": "release",
+        "archived": false,
+        "schema": 3,
+        "targetSchema": 5,
+        "canMigrate": true,
+        "seq": 48,
+        "stateOk": true,
+        "chainOk": true,
+        "artifacts": 11,
+        "artifactProblems": 0,
+        "audit": {
+          "id": "A-0001",
+          "fresh": true,
+          "signed": true,
+          "verdict": "accept"
+        },
+        "stewardship": {
+          "ok": false,
+          "percent": 0,
+          "missing": [
+            "license",
+            "dataAvailability",
+            "codeAvailability",
+            "competingInterests",
+            "ethics",
+            "contributors"
+          ]
+        },
+        "lock": null,
+        "errors": 0,
+        "warnings": 0,
+        "ok": true,
+        "issues": [
+          {
+            "code": "schema_outdated",
+            "severity": "info",
+            "detail": "schema 3 can be migrated to 5 with rsx_campaign action:\"migrate\"",
+            "ref": "rs-e10017ec"
+          }
+        ]
+      },
+      {
+        "id": "rs-ad07b91f",
+        "title": "工业 DOE 与测量系统：焊接工艺窗口 DOE 与测量系统确认",
+        "stage": "release",
+        "archived": false,
+        "schema": 1,
+        "targetSchema": 5,
+        "canMigrate": true,
+        "seq": 101,
+        "stateOk": true,
+        "chainOk": true,
+        "artifacts": 12,
+        "artifactProblems": 0,
+        "audit": {
+          "id": "A-0004",
+          "fresh": true,
+          "signed": true,
+          "verdict": "accept"
+        },
+        "stewardship": {
+          "ok": false,
+          "percent": 0,
+          "missing": [
+            "license",
+            "dataAvailability",
+            "codeAvailability",
+            "competingInterests",
+            "ethics",
+            "contributors"
+          ]
+        },
+        "lock": null,
+        "errors": 0,
+        "warnings": 0,
+        "ok": true,
+        "issues": [
+          {
+            "code": "schema_outdated",
+            "severity": "info",
+            "detail": "schema 1 can be migrated to 5 with rsx_campaign action:\"migrate\"",
+            "ref": "rs-ad07b91f"
+          }
+        ]
+      },
+      {
+        "id": "rs-79d63da4",
+        "title": "v0.3.0 加固核验：签名、状态哈希与 PROV",
+        "stage": "scoping",
+        "archived": false,
+        "schema": 1,
+        "targetSchema": 5,
+        "canMigrate": true,
+        "seq": 21,
+        "stateOk": true,
+        "chainOk": true,
+        "artifacts": 1,
+        "artifactProblems": 0,
+        "audit": {
+          "id": "A-0006",
+          "fresh": false,
+          "signed": true,
+          "verdict": "major"
+        },
+        "stewardship": {
+          "ok": false,
+          "percent": 0,
+          "missing": [
+            "license",
+            "dataAvailability",
+            "codeAvailability",
+            "competingInterests",
+            "ethics",
+            "contributors"
+          ]
+        },
+        "lock": null,
+        "errors": 0,
+        "warnings": 1,
+        "ok": true,
+        "issues": [
+          {
+            "code": "schema_outdated",
+            "severity": "info",
+            "detail": "schema 1 can be migrated to 5 with rsx_campaign action:\"migrate\"",
+            "ref": "rs-79d63da4"
+          },
+          {
+            "code": "stale_audit",
+            "severity": "warning",
+            "detail": "latest audit A-0006 no longer matches the campaign",
+            "ref": "rs-79d63da4"
+          }
+        ]
+      },
+      {
+        "id": "rs-b39d91d2",
+        "title": "v0.2.0 收尾核验：审查闸门与导出",
+        "stage": "scoping",
+        "archived": false,
+        "schema": 1,
+        "targetSchema": 5,
+        "canMigrate": true,
+        "seq": 22,
+        "stateOk": true,
+        "chainOk": true,
+        "artifacts": 7,
+        "artifactProblems": 0,
+        "audit": {
+          "id": "A-0002",
+          "fresh": false,
+          "signed": false,
+          "verdict": "major"
+        },
+        "stewardship": {
+          "ok": false,
+          "percent": 0,
+          "missing": [
+            "license",
+            "dataAvailability",
+            "codeAvailability",
+            "competingInterests",
+            "ethics",
+            "contributors"
+          ]
+        },
+        "lock": null,
+        "errors": 0,
+        "warnings": 2,
+        "ok": true,
+        "issues": [
+          {
+            "code": "schema_outdated",
+            "severity": "info",
+            "detail": "schema 1 can be migrated to 5 with rsx_campaign action:\"migrate\"",
+            "ref": "rs-b39d91d2"
+          },
+          {
+            "code": "stale_audit",
+            "severity": "warning",
+            "detail": "latest audit A-0002 no longer matches the campaign",
+            "ref": "rs-b39d91d2"
+          },
+          {
+            "code": "audit_signature_invalid",
+            "severity": "warning",
+            "detail": "latest audit A-0002 does not verify with this installation",
+            "ref": "rs-b39d91d2"
+          }
+        ]
+      },
+      {
+        "id": "rs-7bcc3f06",
+        "title": "v0.2 真实验收：证据矩阵与自动化审查",
+        "stage": "survey",
+        "archived": false,
+        "schema": 1,
+        "targetSchema": 5,
+        "canMigrate": true,
+        "seq": 22,
+        "stateOk": true,
+        "chainOk": true,
+        "artifacts": 4,
+        "artifactProblems": 0,
+        "audit": {
+          "id": "A-0003",
+          "fresh": false,
+          "signed": false,
+          "verdict": "major"
+        },
+        "stewardship": {
+          "ok": false,
+          "percent": 0,
+          "missing": [
+            "license",
+            "dataAvailability",
+            "codeAvailability",
+            "competingInterests",
+            "ethics",
+            "contributors"
+          ]
+        },
+        "lock": null,
+        "errors": 0,
+        "warnings": 2,
+        "ok": true,
+        "issues": [
+          {
+            "code": "schema_outdated",
+            "severity": "info",
+            "detail": "schema 1 can be migrated to 5 with rsx_campaign action:\"migrate\"",
+            "ref": "rs-7bcc3f06"
+          },
+          {
+            "code": "stale_audit",
+            "severity": "warning",
+            "detail": "latest audit A-0003 no longer matches the campaign",
+            "ref": "rs-7bcc3f06"
+          },
+          {
+            "code": "audit_signature_invalid",
+            "severity": "warning",
+            "detail": "latest audit A-0003 does not verify with this installation",
+            "ref": "rs-7bcc3f06"
+          }
+        ]
+      },
+      {
+        "id": "rs-c537de08",
+        "title": "睡眠纺锤波与工作记忆：可复现验证",
+        "stage": "release",
+        "archived": false,
+        "schema": 1,
+        "targetSchema": 5,
+        "canMigrate": true,
+        "seq": 51,
+        "stateOk": true,
+        "chainOk": true,
+        "artifacts": 11,
+        "artifactProblems": 0,
+        "audit": null,
+        "stewardship": {
+          "ok": false,
+          "percent": 0,
+          "missing": [
+            "license",
+            "dataAvailability",
+            "codeAvailability",
+            "competingInterests",
+            "ethics",
+            "contributors"
+          ]
+        },
+        "lock": null,
+        "errors": 0,
+        "warnings": 0,
+        "ok": true,
+        "issues": [
+          {
+            "code": "schema_outdated",
+            "severity": "info",
+            "detail": "schema 1 can be migrated to 5 with rsx_campaign action:\"migrate\"",
+            "ref": "rs-c537de08"
+          }
+        ]
+      }
+    ],
+    "next": [
+      {
+        "action": "migrate",
+        "reason": "13 campaign(s) can move to schema 5"
+      }
+    ]
+  }
+}

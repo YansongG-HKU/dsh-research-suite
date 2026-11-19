@@ -201,3 +201,18 @@ test('artifact reads reject content changed after the handle is opened', () => {
     cleanup()
   }
 })
+
+test('artifact reads enforce the remaining bundle budget on the open file', () => {
+  const { service, store, cleanup } = makeService()
+  try {
+    const id = createCampaign(service)
+    const { artifact } = service.artifactAdd(id, { content: '12345678', role: 'source', label: 'source.txt' })
+    assert.throws(
+      () => store.readArtifactBytes(id, artifact.id, { maxBytes: 7, expectedHash: artifact.id }),
+      (error) => error.code === 'too_large',
+    )
+    assert.equal(store.readArtifactBytes(id, artifact.id, { maxBytes: 8, expectedHash: artifact.id }).toString(), '12345678')
+  } finally {
+    cleanup()
+  }
+})

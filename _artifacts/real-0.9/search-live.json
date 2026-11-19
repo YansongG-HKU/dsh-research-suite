@@ -1,0 +1,199 @@
+{
+  "ok": true,
+  "generatedAt": "2026-11-17T20:31:30.352Z",
+  "checks": {
+    "primaryOk": true,
+    "bothProvidersQueried": true,
+    "bothProvidersReturned": true,
+    "candidatesAtLeastThree": true,
+    "everyCandidateHasTitle": true,
+    "doiPresentOnAtLeastThree": true,
+    "doiUnique": true,
+    "crossProviderMergeObserved": true,
+    "noWarnings": true,
+    "withinTimeoutBudget": true,
+    "fallbackOk": true,
+    "fallbackHasNoWarnings": true
+  },
+  "primary": {
+    "query": "multi-agent research system",
+    "provider": "both",
+    "providers": [
+      "openalex",
+      "crossref"
+    ],
+    "counts": {
+      "openalex": 6,
+      "crossref": 6
+    },
+    "warnings": [],
+    "elapsedMs": 3793,
+    "wallMs": 3794,
+    "candidates": [
+      {
+        "provider": "openalex",
+        "providers": [
+          "openalex",
+          "crossref"
+        ],
+        "providerIds": {
+          "openalex": "https://openalex.org/W7166062973",
+          "crossref": "10.26434/chemrxiv.15005228/v1"
+        },
+        "title": "GVIM 2.0: A Multi-Agent Research System for Chemistry and Materials Science",
+        "year": 2026,
+        "doi": "10.26434/chemrxiv.15005228/v1",
+        "url": "https://doi.org/10.26434/chemrxiv.15005228/v1",
+        "authors": [
+          "Kangyong Ma"
+        ],
+        "venue": "ChemRxiv",
+        "abstract": "Large language models are increasingly used as natural-language interfaces for chemistry and materials research, but their utility in scientific workflows depends on their ability to connect user requests with executable tools, structured data handling, and verifiable outputs. Here, we present GVIM 2.0, a multi-agent research system designed to support computational and informatics workflows in chemistry and materials science. GVIM 2.0 integrates language-model-based task planning with domain-specific Skills, packagebacked computational tools, sandboxed execution, and artifact generation. On a 400-question public benchmark suite spanning ChemBench, MaScQA, and ChemLLMBench, the complete GVIM 2.0 workflow answered 325/400 questions correctly, achieving an accuracy of 81.25%, compared with 285/400 questions and 71.25% accuracy for a same-base API-only baseline. We further evaluated GVIM 2.0 on task-native workflows covering molecular solubility prediction, steel yield-strength prediction, reaction-table extraction, MS/MS spectral retrieval, chemical entity extraction, retrospective BACE inhibitor prioritization, Matbench experimental band-gap modelling, and temporal external validation of BACE1 activity prediction. These workflows generated inspectable outputs, including prediction files, metrics, figures, and reports. The results show that GVIM 2.0 can organize reproducible data-to-result workflows for selected chemistry and materials informatics tasks, providing a practical framework for tool-augmented scientific research assistance.",
+        "citations": 0,
+        "kind": "preprint"
+      },
+      {
+        "provider": "openalex",
+        "providers": [
+          "openalex",
+          "crossref"
+        ],
+        "providerIds": {
+          "openalex": "https://openalex.org/W7223182505",
+          "crossref": "10.26434/chemrxiv.15005228/v2"
+        },
+        "title": "GVIM 2.0: A Multi-Agent Research System for Chemistry and Materials Science",
+        "year": 2026,
+        "doi": "10.26434/chemrxiv.15005228/v2",
+        "url": "https://doi.org/10.26434/chemrxiv.15005228/v2",
+        "authors": [
+          "Kangyong Ma"
+        ],
+        "venue": "ChemRxiv",
+        "abstract": "Large language models are increasingly used as natural-language interfaces for chemistry and materials research, but their utility in scientific workflows depends on their ability to connect user requests with executable tools, structured data handling, and verifiable outputs. Here, we present GVIM 2.0, a multi-agent research system designed to support computational and informatics workflows in chemistry and materials science. GVIM 2.0 integrates language-model-based task planning with domain-specific Skills, packagebacked computational tools, sandboxed execution, and artifact generation. On a 400-question public benchmark suite spanning ChemBench, MaScQA, and ChemLLMBench, the complete GVIM 2.0 workflow answered 325/400 questions correctly, achieving an accuracy of 81.25%, compared with 285/400 questions and 71.25% accuracy for a same-base API-only baseline. We further evaluated GVIM 2.0 on task-native workflows covering molecular solubility prediction, steel yield-strength prediction, reaction-table extraction, MS/MS spectral retrieval, chemical entity extraction, retrospective BACE inhibitor prioritization, Matbench experimental band-gap modelling, and temporal external validation of BACE1 activity prediction. These workflows generated inspectable outputs, including prediction files, metrics, figures, and reports. The results show that GVIM 2.0 can organize reproducible data-to-result workflows for selected chemistry and materials informatics tasks, providing a practical framework for tool-augmented scientific research assistance.",
+        "citations": 0,
+        "kind": "preprint"
+      },
+      {
+        "provider": "openalex",
+        "providers": [
+          "openalex"
+        ],
+        "providerIds": {
+          "openalex": "https://openalex.org/W2022374372"
+        },
+        "title": "Multi-agent systems: which research for which applications",
+        "year": 1999,
+        "doi": "10.1016/s0921-8890(98)00085-2",
+        "url": "https://doi.org/10.1016/s0921-8890(98)00085-2",
+        "authors": [
+          "Eugénio Oliveira",
+          "Klaus Fischer",
+          "Olga Štěpánková"
+        ],
+        "venue": "Robotics and Autonomous Systems",
+        "abstract": "",
+        "citations": 175,
+        "kind": "paper"
+      },
+      {
+        "provider": "openalex",
+        "providers": [
+          "openalex"
+        ],
+        "providerIds": {
+          "openalex": "https://openalex.org/W2626130669"
+        },
+        "title": "The research on multi-agent system for microgrid control and optimization",
+        "year": 2017,
+        "doi": "10.1016/j.rser.2017.05.279",
+        "url": "https://doi.org/10.1016/j.rser.2017.05.279",
+        "authors": [
+          "Muhammad Waseem Khan",
+          "Jie Wang"
+        ],
+        "venue": "Renewable and Sustainable Energy Reviews",
+        "abstract": "",
+        "citations": 131,
+        "kind": "paper"
+      },
+      {
+        "provider": "openalex",
+        "providers": [
+          "openalex"
+        ],
+        "providerIds": {
+          "openalex": "https://openalex.org/W2295710444"
+        },
+        "title": "Agent Environments for Multi-agent Systems – A Research Roadmap",
+        "year": 2015,
+        "doi": "10.1007/978-3-319-23850-0_1",
+        "url": "https://doi.org/10.1007/978-3-319-23850-0_1",
+        "authors": [
+          "Danny Weyns",
+          "Fabien Michel"
+        ],
+        "venue": "Lecture notes in computer science",
+        "abstract": "",
+        "citations": 33,
+        "kind": "other"
+      },
+      {
+        "provider": "openalex",
+        "providers": [
+          "openalex"
+        ],
+        "providerIds": {
+          "openalex": "https://openalex.org/W2369842154"
+        },
+        "title": "Research of Multi-Agent System",
+        "year": 2008,
+        "doi": "",
+        "url": "https://oversea.cnki.net/kcms/detail/detail.aspx?dbcode=CJFD&filename=DNZS200811055",
+        "authors": [
+          "Liang Guo"
+        ],
+        "venue": "Computer Knowledge and Technology",
+        "abstract": "Multi-Agent System(MAS) is one of main research areas of distributed artificial intelligence (DAI). This paper firstly introduces the background and concept of Multi-Agent System. Then analyzing the typical problems and structuring the organized model of MAS. Finally, it gives us some applications of Multi Agent System.",
+        "citations": 4,
+        "kind": "paper"
+      }
+    ]
+  },
+  "fallback": {
+    "query": "sleep deprivation working memory",
+    "provider": "crossref",
+    "providers": [
+      "crossref"
+    ],
+    "counts": {
+      "crossref": 3
+    },
+    "warnings": [],
+    "elapsedMs": 340,
+    "wallMs": 340,
+    "candidates": [
+      {
+        "title": "Sleep Deprivation and Performance: The Role of Working Memory",
+        "year": 2013,
+        "doi": "10.4324/9780203094600-18",
+        "provider": "crossref",
+        "url": "https://doi.org/10.4324/9780203094600-18"
+      },
+      {
+        "title": "Sleep deprivation impairs spatial working memory and reduces hippocampal AMPA receptor phosphorylation",
+        "year": 2009,
+        "doi": "10.1111/j.1365-2869.2009.00799.x",
+        "provider": "crossref",
+        "url": "https://doi.org/10.1111/j.1365-2869.2009.00799.x"
+      },
+      {
+        "title": "Correction to: The effect of total sleep deprivation on working memory: evidence from diffusion model",
+        "year": 2024,
+        "doi": "10.1093/sleep/zsae071",
+        "provider": "crossref",
+        "url": "https://doi.org/10.1093/sleep/zsae071"
+      }
+    ]
+  }
+}

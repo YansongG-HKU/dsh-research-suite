@@ -1,0 +1,299 @@
+{
+  "ok": true,
+  "data": {
+    "format": "json",
+    "prisma": {
+      "standard": "PRISMA 2020",
+      "scope": "flow counts from recorded candidate decisions; not a PRISMA compliance certification",
+      "campaign": "rs-a874c2ae",
+      "title": "0.11 宿主循环验收：真实题录与两次暂停",
+      "generatedAt": "2026-11-18T18:00:27.511Z",
+      "complete": true,
+      "consistency": {
+        "ok": true,
+        "codes": []
+      },
+      "counts": {
+        "recordsIdentified": 4,
+        "duplicatesRemoved": 1,
+        "recordsAfterDuplicates": 3,
+        "titleAbstractScreened": 3,
+        "titleAbstractExcluded": 1,
+        "reportsSought": 2,
+        "reportsNotRetrieved": 1,
+        "reportsAssessed": 1,
+        "fullTextExcluded": 0,
+        "studiesIncluded": 1,
+        "pending": 0,
+        "pendingScreening": 0,
+        "pendingFullText": 0
+      },
+      "stages": {
+        "title": {
+          "decided": 3,
+          "include": 3,
+          "exclude": 0,
+          "maybe": 0,
+          "missing": 0,
+          "reasons": {}
+        },
+        "abstract": {
+          "decided": 3,
+          "include": 2,
+          "exclude": 1,
+          "maybe": 0,
+          "missing": 0,
+          "reasons": {
+            "wrong-outcome": 1
+          }
+        },
+        "fullText": {
+          "decided": 2,
+          "include": 1,
+          "exclude": 1,
+          "maybe": 0,
+          "missing": 0,
+          "reasons": {
+            "not-retrieved": 1
+          }
+        }
+      },
+      "exclusionReasons": {
+        "title": {},
+        "abstract": {
+          "wrong-outcome": 1
+        },
+        "fullText": {
+          "not-retrieved": 1
+        }
+      },
+      "duplicates": {
+        "removed": 1,
+        "pairs": [
+          {
+            "id": "R-0004",
+            "duplicateOf": "R-0001"
+          }
+        ]
+      },
+      "pending": {
+        "total": 0,
+        "screening": 0,
+        "fullText": 0,
+        "candidateIds": []
+      },
+      "included": {
+        "studies": 1,
+        "candidateIds": [
+          "R-0001"
+        ]
+      },
+      "search": {
+        "searches": 3,
+        "hits": 39,
+        "screened": 31,
+        "included": 8,
+        "disconfirming": 2,
+        "missingCounts": 0
+      },
+      "flow": {
+        "nodes": [
+          {
+            "id": "records-identified",
+            "label": "Records identified",
+            "count": 4
+          },
+          {
+            "id": "duplicates-removed",
+            "label": "Duplicates removed",
+            "count": 1
+          },
+          {
+            "id": "records-screened",
+            "label": "Records screened",
+            "count": 3
+          },
+          {
+            "id": "records-excluded",
+            "label": "Records excluded at title/abstract",
+            "count": 1
+          },
+          {
+            "id": "reports-sought",
+            "label": "Reports sought for retrieval",
+            "count": 2
+          },
+          {
+            "id": "reports-not-retrieved",
+            "label": "Reports not retrieved",
+            "count": 1
+          },
+          {
+            "id": "reports-assessed",
+            "label": "Reports assessed for eligibility",
+            "count": 1
+          },
+          {
+            "id": "reports-excluded",
+            "label": "Reports excluded at full text",
+            "count": 0
+          },
+          {
+            "id": "studies-included",
+            "label": "Studies included",
+            "count": 1
+          }
+        ],
+        "edges": [
+          {
+            "from": "records-identified",
+            "to": "duplicates-removed"
+          },
+          {
+            "from": "records-identified",
+            "to": "records-screened"
+          },
+          {
+            "from": "records-screened",
+            "to": "records-excluded"
+          },
+          {
+            "from": "records-screened",
+            "to": "reports-sought"
+          },
+          {
+            "from": "reports-sought",
+            "to": "reports-not-retrieved"
+          },
+          {
+            "from": "reports-sought",
+            "to": "reports-assessed"
+          },
+          {
+            "from": "reports-assessed",
+            "to": "reports-excluded"
+          },
+          {
+            "from": "reports-assessed",
+            "to": "studies-included"
+          }
+        ]
+      },
+      "warnings": [],
+      "records": [
+        {
+          "id": "R-0001",
+          "title": "From Black Box to Audit Trail: Implementing Explainable Agentic AI and Human-in-the-Loop Governance for High-Risk Enterprise Decisions",
+          "doi": "10.55041/ijsrem53440",
+          "year": 2025,
+          "source": "S-0001",
+          "duplicateOf": "",
+          "duplicate": false,
+          "decisions": {
+            "title": {
+              "decision": "include",
+              "reason": "",
+              "note": "",
+              "reviewer": "YG",
+              "at": "2026-11-18T17:26:12.08Z"
+            },
+            "abstract": {
+              "decision": "include",
+              "reason": "",
+              "note": "",
+              "reviewer": "YG",
+              "at": "2026-11-18T17:26:12.112Z"
+            },
+            "fullText": {
+              "decision": "include",
+              "reason": "",
+              "note": "全文可获取，纳入",
+              "reviewer": "YG",
+              "at": "2026-11-18T17:26:12.131Z"
+            }
+          },
+          "createdAt": "2026-11-18T17:26:12.08Z",
+          "updatedAt": "2026-11-18T17:26:12.131Z"
+        },
+        {
+          "id": "R-0002",
+          "title": "Agentic Workflows for Economic Research: Design, Implementation, and Evaluation",
+          "doi": "10.48550/arxiv.2504.09736",
+          "year": 2025,
+          "source": "S-0002",
+          "duplicateOf": "",
+          "duplicate": false,
+          "decisions": {
+            "title": {
+              "decision": "include",
+              "reason": "",
+              "note": "",
+              "reviewer": "YG",
+              "at": "2026-11-18T17:26:12.157Z"
+            },
+            "abstract": {
+              "decision": "exclude",
+              "reason": "wrong-outcome",
+              "note": "经济研究工作流，结局指标与本研究不同",
+              "reviewer": "YG",
+              "at": "2026-11-18T17:26:12.174Z"
+            },
+            "fullText": null
+          },
+          "createdAt": "2026-11-18T17:26:12.157Z",
+          "updatedAt": "2026-11-18T17:26:12.174Z"
+        },
+        {
+          "id": "R-0003",
+          "title": "Auditing an AI-Agent Computational Drug-Discovery Workflow Through an SMPD1 Case Study",
+          "doi": "10.21203/rs.3.rs-11093091/v1",
+          "year": 2026,
+          "source": "S-0003",
+          "duplicateOf": "",
+          "duplicate": false,
+          "decisions": {
+            "title": {
+              "decision": "include",
+              "reason": "",
+              "note": "",
+              "reviewer": "YG",
+              "at": "2026-11-18T17:26:12.195Z"
+            },
+            "abstract": {
+              "decision": "include",
+              "reason": "",
+              "note": "",
+              "reviewer": "YG",
+              "at": "2026-11-18T17:26:12.214Z"
+            },
+            "fullText": {
+              "decision": "exclude",
+              "reason": "not-retrieved",
+              "note": "预印本全文在本地不可得",
+              "reviewer": "YG",
+              "at": "2026-11-18T17:26:12.231Z"
+            }
+          },
+          "createdAt": "2026-11-18T17:26:12.195Z",
+          "updatedAt": "2026-11-18T17:26:12.231Z"
+        },
+        {
+          "id": "R-0004",
+          "title": "From Black Box to Audit Trail: Implementing Explainable Agentic AI and Human-in-the-Loop Governance for High-Risk Enterprise Decisions",
+          "doi": "10.55041/ijsrem53440",
+          "year": 2025,
+          "source": "S-0001",
+          "duplicateOf": "R-0001",
+          "duplicate": true,
+          "decisions": {
+            "title": null,
+            "abstract": null,
+            "fullText": null
+          },
+          "createdAt": "2026-11-18T17:26:12.252Z",
+          "updatedAt": "2026-11-18T17:26:12.252Z"
+        }
+      ]
+    }
+  }
+}

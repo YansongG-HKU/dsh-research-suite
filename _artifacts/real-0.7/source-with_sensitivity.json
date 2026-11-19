@@ -1,0 +1,8 @@
+{
+  "seed": 7,
+  "case": "with_sensitivity",
+  "blocked": false,
+  "blocking": [],
+  "note": "补齐敏感性记录后 analyze 闸门放行",
+  "source": "exploratory probe run; confirmatory run recorded inside the campaign"
+}
